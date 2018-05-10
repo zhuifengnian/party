@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 扫描controller（controller层注入） -->
+    <context:component-scan base-package="com.hust.party"/>
+   <mvc:annotation-driven/>
+   <!-- 对模型视图添加前后缀 -->
+     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+      p:prefix="/WEB-INF/view/" p:suffix=".jsp"/>
+   <!--<mvc:resources location="/style/" mapping="/style/**"/>-->
+    <!--<mvc:resources location="/style/images/" mapping="/images/**"/>-->
+    <!--<mvc:resources location="/file/" mapping="/file/**"/>-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码 -->
+        <property name="defaultEncoding" value="utf-8" />
+        <!-- 文件大小最大值 -->
+        <property name="maxUploadSize" value="10485760000" />
+        <!-- 内存中的最大值 -->
+        <property name="maxInMemorySize" value="40960" />
+    </bean>
+    <mvc:default-servlet-handler />
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <!-- 多个拦截器，顺序执行 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/style/**"/>
+            <mvc:exclude-mapping path="/file/**"/>
+            <bean class="com.hust.party.interceptor.SessionInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <aop:config proxy-target-class="true"/>
+</beans>
