@@ -2,7 +2,7 @@
 .idea
 Party.iml
 /src/main/resources/rebel.xml
-
+/classes/
 # IntelliJ out
 /out/
 /target/
