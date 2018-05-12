@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/login")
 public class LoginController
 {
+
     @RequestMapping("/test")
     @ApiOperation(value = "教程", httpMethod = "POST", notes = "教程")
     public String logintest(@ApiParam(required = true, name = "name", value = "教程入参") @RequestParam(required = false)

@@ -2,16 +2,6 @@ package com.hust.party.dao;
 
 import com.hust.party.pojo.Order;
 
-public interface OrderMapper {
-    int deleteByPrimaryKey(Integer id);
+public interface OrderMapper  extends  BaseMapper<Order>{
 
-    int insert(Order record);
-
-    int insertSelective(Order record);
-
-    Order selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Order record);
-
-    int updateByPrimaryKey(Order record);
 }
