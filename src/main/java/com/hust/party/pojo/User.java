@@ -3,7 +3,7 @@ package com.hust.party.pojo;
 public class User {
     private Integer id;
 
-    private Integer chatId;
+    private String chatId;
 
     private String name;
 
@@ -19,7 +19,7 @@ public class User {
 
     private String phone;
 
-    public User(Integer id, Integer chatId, String name, String card, String nickname, Integer sex, Integer age, String email, String phone) {
+    public User(Integer id, String chatId, String name, String card, String nickname, Integer sex, Integer age, String email, String phone) {
         this.id = id;
         this.chatId = chatId;
         this.name = name;
@@ -43,12 +43,12 @@ public class User {
         this.id = id;
     }
 
-    public Integer getChatId() {
+    public String getChatId() {
         return chatId;
     }
 
-    public void setChatId(Integer chatId) {
-        this.chatId = chatId;
+    public void setChatId(String chatId) {
+        this.chatId = chatId == null ? null : chatId.trim();
     }
 
     public String getName() {

@@ -19,7 +19,9 @@ public class Activity {
 
     private Integer price;
 
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, Integer price) {
+    private String address;
+
+    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, Integer price, String address) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.title = title;
@@ -29,6 +31,7 @@ public class Activity {
         this.feature = feature;
         this.containPeople = containPeople;
         this.price = price;
+        this.address = address;
     }
 
     public Activity() {
@@ -105,5 +108,13 @@ public class Activity {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
     }
 }

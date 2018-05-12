@@ -12,10 +12,11 @@
       <arg column="feature" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="contain_people" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="price" jdbcType="DECIMAL" javaType="java.lang.Integer" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, enterprise_id, title, word, picture, video, feature, contain_people, price
+    id, enterprise_id, title, word, picture, video, feature, contain_people, price, address
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -30,12 +31,12 @@
   <insert id="insert" parameterType="com.hust.party.pojo.Activity" >
     insert into activity (id, enterprise_id, title, 
       word, picture, video, 
-      feature, contain_people, price
-      )
+      feature, contain_people, price, 
+      address)
     values (#{id,jdbcType=INTEGER}, #{enterpriseId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{word,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{video,jdbcType=VARCHAR}, 
-      #{feature,jdbcType=VARCHAR}, #{containPeople,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}
-      )
+      #{feature,jdbcType=VARCHAR}, #{containPeople,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+      #{address,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity" >
     insert into activity
@@ -67,6 +68,9 @@
       <if test="price != null" >
         price,
       </if>
+      <if test="address != null" >
+        address,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -95,6 +99,9 @@
       </if>
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -125,6 +132,9 @@
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -137,7 +147,8 @@
       video = #{video,jdbcType=VARCHAR},
       feature = #{feature,jdbcType=VARCHAR},
       contain_people = #{containPeople,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL}
+      price = #{price,jdbcType=DECIMAL},
+      address = #{address,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -3,7 +3,7 @@ package com.hust.party.pojo;
 public class Enterprise {
     private Integer id;
 
-    private Integer chatId;
+    private String chatId;
 
     private String name;
 
@@ -15,7 +15,7 @@ public class Enterprise {
 
     private Integer phone;
 
-    public Enterprise(Integer id, Integer chatId, String name, String licence, String username, String card, Integer phone) {
+    public Enterprise(Integer id, String chatId, String name, String licence, String username, String card, Integer phone) {
         this.id = id;
         this.chatId = chatId;
         this.name = name;
@@ -37,12 +37,12 @@ public class Enterprise {
         this.id = id;
     }
 
-    public Integer getChatId() {
+    public String getChatId() {
         return chatId;
     }
 
-    public void setChatId(Integer chatId) {
-        this.chatId = chatId;
+    public void setChatId(String chatId) {
+        this.chatId = chatId == null ? null : chatId.trim();
     }
 
     public String getName() {

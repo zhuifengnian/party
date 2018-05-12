@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.hust.party.pojo.User" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="chat_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="chat_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="card" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="nickname" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -31,7 +31,7 @@
     insert into user (id, chat_id, name, 
       card, nickname, sex, 
       age, email, phone)
-    values (#{id,jdbcType=INTEGER}, #{chatId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{chatId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{card,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
       #{age,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR})
   </insert>
@@ -71,7 +71,7 @@
         #{id,jdbcType=INTEGER},
       </if>
       <if test="chatId != null" >
-        #{chatId,jdbcType=INTEGER},
+        #{chatId,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -100,7 +100,7 @@
     update user
     <set >
       <if test="chatId != null" >
-        chat_id = #{chatId,jdbcType=INTEGER},
+        chat_id = #{chatId,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -128,7 +128,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.User" >
     update user
-    set chat_id = #{chatId,jdbcType=INTEGER},
+    set chat_id = #{chatId,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       card = #{card,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
