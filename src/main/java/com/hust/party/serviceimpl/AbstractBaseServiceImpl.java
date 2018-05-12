@@ -32,18 +32,13 @@ public abstract class AbstractBaseServiceImpl<T> implements BaseService<T> {
         return getDao().deleteByPrimaryKey(code);
     }
 
-    @Override
-    public List<T> select(T record,Page page) {
-        if(page==null) {
-            page = new Page();
-        }
-        if(page.getPageNumber()==null||page.getPageSize()==null||page.getPageSize()>=100){
-            page.setPageNumber(1);
-            page.setPageSize(10);
-        }
-        return getDao().select(ReflectUtil.generalMap(record,page));
+    public int insertSelective(T record) {return getDao().insertSelective(record);}
+    public int updateByPrimaryKey(T record) {
+      return getDao().updateByPrimaryKey(record);
     }
-
+    public int updateByPrimaryKeySelective(T record) {
+        return getDao().updateByPrimaryKeySelective(record);
+    }
     @Override
     public int selectCount(T record) {
         return getDao().selectCount(record);

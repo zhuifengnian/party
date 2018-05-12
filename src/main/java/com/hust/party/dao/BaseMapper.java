@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface BaseMapper<T> {
-    List<T> select(Map map);
+
 
     //根据实体类不为null的字段查询总数,条件全部使用=号and条件
     int selectCount(T record);
