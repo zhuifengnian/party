@@ -1,38 +1,54 @@
 package com.hust.party.pojo;
 
 public class User {
-    private String id;
+    private Integer id;
 
-    private String password;
+    private Integer chatId;
 
     private String name;
 
-    private String sexual;
+    private String card;
 
-    private Integer classcode;
+    private String nickname;
 
-    private Integer bounds;
+    private Integer sex;
 
-    private Integer credit;
-
-    private String phone;
+    private Integer age;
 
     private String email;
 
-    public String getId() {
+    private String phone;
+
+    public User(Integer id, Integer chatId, String name, String card, String nickname, Integer sex, Integer age, String email, String phone) {
+        this.id = id;
+        this.chatId = chatId;
+        this.name = name;
+        this.card = card;
+        this.nickname = nickname;
+        this.sex = sex;
+        this.age = age;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public User() {
+        super();
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getPassword() {
-        return password;
+    public Integer getChatId() {
+        return chatId;
     }
 
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+    public void setChatId(Integer chatId) {
+        this.chatId = chatId;
     }
 
     public String getName() {
@@ -43,44 +59,36 @@ public class User {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getSexual() {
-        return sexual;
+    public String getCard() {
+        return card;
     }
 
-    public void setSexual(String sexual) {
-        this.sexual = sexual == null ? null : sexual.trim();
+    public void setCard(String card) {
+        this.card = card == null ? null : card.trim();
     }
 
-    public Integer getClasscode() {
-        return classcode;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setClasscode(Integer classcode) {
-        this.classcode = classcode;
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
     }
 
-    public Integer getBounds() {
-        return bounds;
+    public Integer getSex() {
+        return sex;
     }
 
-    public void setBounds(Integer bounds) {
-        this.bounds = bounds;
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
-    public Integer getCredit() {
-        return credit;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setCredit(Integer credit) {
-        this.credit = credit;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getEmail() {
@@ -89,5 +97,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
     }
 }

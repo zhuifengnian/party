@@ -1,6 +1,6 @@
 package com.hust.party.test.controllertest;
 
-import com.hust.party.controller.LoginController;
+
 import com.hust.party.test.basetest.BaseControllerTest;
 import org.junit.Before;
 import org.junit.Test;

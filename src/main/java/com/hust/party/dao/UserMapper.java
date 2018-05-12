@@ -1,22 +1,17 @@
 package com.hust.party.dao;
 
 import com.hust.party.pojo.User;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-@Repository
 public interface UserMapper {
-	User selectById(String Id);
+    int deleteByPrimaryKey(Integer id);
 
-	User selectByUser(User user);
+    int insert(User record);
 
-	User selectUserbyId(String id);
+    int insertSelective(User record);
 
-	void resetpassword(User user);
+    User selectByPrimaryKey(Integer id);
 
-	void changepassword(User user);
+    int updateByPrimaryKeySelective(User record);
 
-	void updatecreorbounds(User user);
-
+    int updateByPrimaryKey(User record);
 }
