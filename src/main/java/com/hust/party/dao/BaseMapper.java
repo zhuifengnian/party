@@ -6,7 +6,7 @@ import java.util.Map;
 public interface BaseMapper<T> {
 
 
-    //根据实体类不为null的字段查询总数,条件全部使用=号and条件
+//    //根据实体类不为null的字段查询总数,条件全部使用=号and条件
     int selectCount(T record);
 
     //根据主键进行查询,必须保证结果唯一
