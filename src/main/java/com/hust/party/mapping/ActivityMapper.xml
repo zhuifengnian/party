@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hust.party.dao.ActivityMapper" >
-  <select id="getActivity" parameterType="Integer" resultType="com.hust.party.pojo.Activity">
-    select * from activity where id = #{id}
-  </select>
   <resultMap id="BaseResultMap" type="com.hust.party.pojo.Activity" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
@@ -14,12 +11,14 @@
       <arg column="video" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="feature" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="contain_people" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="price" jdbcType="DECIMAL" javaType="java.lang.Integer" />
+      <arg column="preferential_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="original_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, enterprise_id, title, word, picture, video, feature, contain_people, price, address
+    id, enterprise_id, title, word, picture, video, feature, contain_people, preferential_price, 
+    original_price, address
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -34,12 +33,12 @@
   <insert id="insert" parameterType="com.hust.party.pojo.Activity" >
     insert into activity (id, enterprise_id, title, 
       word, picture, video, 
-      feature, contain_people, price, 
-      address)
+      feature, contain_people, preferential_price, 
+      original_price, address)
     values (#{id,jdbcType=INTEGER}, #{enterpriseId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{word,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{video,jdbcType=VARCHAR}, 
-      #{feature,jdbcType=VARCHAR}, #{containPeople,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
-      #{address,jdbcType=VARCHAR})
+      #{feature,jdbcType=VARCHAR}, #{containPeople,jdbcType=INTEGER}, #{preferentialPrice,jdbcType=DECIMAL}, 
+      #{originalPrice,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity" >
     insert into activity
@@ -68,8 +67,11 @@
       <if test="containPeople != null" >
         contain_people,
       </if>
-      <if test="price != null" >
-        price,
+      <if test="preferentialPrice != null" >
+        preferential_price,
+      </if>
+      <if test="originalPrice != null" >
+        original_price,
       </if>
       <if test="address != null" >
         address,
@@ -100,8 +102,11 @@
       <if test="containPeople != null" >
         #{containPeople,jdbcType=INTEGER},
       </if>
-      <if test="price != null" >
-        #{price,jdbcType=DECIMAL},
+      <if test="preferentialPrice != null" >
+        #{preferentialPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="originalPrice != null" >
+        #{originalPrice,jdbcType=DECIMAL},
       </if>
       <if test="address != null" >
         #{address,jdbcType=VARCHAR},
@@ -132,8 +137,11 @@
       <if test="containPeople != null" >
         contain_people = #{containPeople,jdbcType=INTEGER},
       </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=DECIMAL},
+      <if test="preferentialPrice != null" >
+        preferential_price = #{preferentialPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="originalPrice != null" >
+        original_price = #{originalPrice,jdbcType=DECIMAL},
       </if>
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
@@ -150,7 +158,8 @@
       video = #{video,jdbcType=VARCHAR},
       feature = #{feature,jdbcType=VARCHAR},
       contain_people = #{containPeople,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL},
+      preferential_price = #{preferentialPrice,jdbcType=DECIMAL},
+      original_price = #{originalPrice,jdbcType=DECIMAL},
       address = #{address,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

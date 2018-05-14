@@ -1,14 +1,27 @@
 package com.hust.party.controller;
 
+import com.google.gson.Gson;
 import com.hust.party.common.ReturnMessage;
 import com.hust.party.exception.ApiExpection;
 import com.hust.party.pojo.Activity;
 import com.hust.party.service.ActivityService;
+
+import com.qiniu.common.QiniuException;
+import com.qiniu.common.Zone;
+import com.qiniu.http.Response;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.storage.model.DefaultPutRet;
+import com.qiniu.util.Auth;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
  * Created by luyue on 2018/5/12.
@@ -25,5 +38,45 @@ public class ActivityController
     public ReturnMessage getActivity(@ApiParam(required = true, name = "aid", value = "活动id") @PathVariable Integer aid){
         Activity activity = activityService.selectByPrimaryKey(aid);
         return new ReturnMessage(200, activity);
+    }
+
+    @ApiOperation(value="上传文件", notes="可以上传图片、文件存储到数据库")
+    @ResponseBody
+    @RequestMapping(value = "/activity/manageFile", method = {RequestMethod.POST})
+    public String manageFile(@RequestParam("file") MultipartFile file) {
+        //判断是否大于5M
+        if(file.getSize()<5*1048576) {
+            String key = LocalDateTime.now().getNano() + file.getOriginalFilename();
+            String keys = "http://p8p5n2pli.bkt.clouddn.com/";
+            Configuration cfg = new Configuration(Zone.zone0());
+            UploadManager uploadManager = new UploadManager(cfg);
+            //...生成上传凭证，然后准备上传
+            String accessKey = "f7S3xKlvKLRnqctORPPAth4GRw0JxtpqYUkgRhEL";
+            String secretKey = "SDvAjl6hONBXxM5CcEC4uf5ffZ-tiBCJ5-bhI6Id";
+            String bucket = "zhuifeng";
+            //默认不指定key的情况下，以文件内容的hash值作为文件名
+            Auth auth = Auth.create(accessKey, secretKey);
+            String upToken = auth.uploadToken(bucket);
+            try {
+                Response response = uploadManager.put(file.getBytes(), key, upToken);
+                //解析上传成功的结果
+                DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
+                keys = keys + key;
+            } catch (QiniuException ex) {
+                Response r = ex.response;
+                System.err.println(r.toString());
+                try {
+                    System.err.println(r.bodyString());
+                } catch (QiniuException ex2) {
+                    //ignore
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return keys;
+        }
+        //大于5M返回空
+        return null;
     }
 }

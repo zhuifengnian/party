@@ -7,10 +7,13 @@ public class OrderUser {
 
     private Integer userId;
 
-    public OrderUser(Integer id, Integer orderId, Integer userId) {
+    private Integer status;
+
+    public OrderUser(Integer id, Integer orderId, Integer userId, Integer status) {
         this.id = id;
         this.orderId = orderId;
         this.userId = userId;
+        this.status = status;
     }
 
     public OrderUser() {
@@ -39,5 +42,13 @@ public class OrderUser {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

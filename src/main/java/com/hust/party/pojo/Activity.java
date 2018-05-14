@@ -1,5 +1,7 @@
 package com.hust.party.pojo;
 
+import java.math.BigDecimal;
+
 public class Activity {
     private Integer id;
 
@@ -17,11 +19,13 @@ public class Activity {
 
     private Integer containPeople;
 
-    private Integer price;
+    private BigDecimal preferentialPrice;
+
+    private BigDecimal originalPrice;
 
     private String address;
 
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, Integer price, String address) {
+    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.title = title;
@@ -30,7 +34,8 @@ public class Activity {
         this.video = video;
         this.feature = feature;
         this.containPeople = containPeople;
-        this.price = price;
+        this.preferentialPrice = preferentialPrice;
+        this.originalPrice = originalPrice;
         this.address = address;
     }
 
@@ -102,12 +107,20 @@ public class Activity {
         this.containPeople = containPeople;
     }
 
-    public Integer getPrice() {
-        return price;
+    public BigDecimal getPreferentialPrice() {
+        return preferentialPrice;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setPreferentialPrice(BigDecimal preferentialPrice) {
+        this.preferentialPrice = preferentialPrice;
+    }
+
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
     }
 
     public String getAddress() {
