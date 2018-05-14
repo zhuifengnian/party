@@ -40,6 +40,15 @@ public class ActivityController
         return new ReturnMessage(200, activity);
     }
 
+    @ApiOperation(value = "插入活动", notes = "插入活动到数据库")
+    @ResponseBody
+    @RequestMapping(value="/insertActivity", method = RequestMethod.POST)
+    public ReturnMessage insertActivity(@RequestParam("activity") Activity activity){
+        int insertNum = activityService.insert(activity);
+        return new ReturnMessage(200, insertNum);
+
+    }
+
     @ApiOperation(value="上传文件", notes="可以上传图片、文件存储到数据库")
     @ResponseBody
     @RequestMapping(value = "/activity/manageFile", method = {RequestMethod.POST})

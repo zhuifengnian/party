@@ -138,4 +138,7 @@
       phone = #{phone,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectUserByChatId" parameterType="string" resultType="int">
+    select id from user where chat_id = #{chat_id}
+  </select>
 </mapper>

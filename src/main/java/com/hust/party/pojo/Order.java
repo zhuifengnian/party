@@ -1,5 +1,7 @@
 package com.hust.party.pojo;
 
+import org.apache.ibatis.type.Alias;
+
 public class Order {
     private Integer id;
 

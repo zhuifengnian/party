@@ -38,6 +38,8 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+
+
     <aop:config proxy-target-class="true"/>
 
     <!--Swagger相关-->

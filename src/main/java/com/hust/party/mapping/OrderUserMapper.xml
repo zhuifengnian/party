@@ -22,13 +22,13 @@
     delete from order_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.OrderUser" >
+  <insert id="insert" parameterType="com.hust.party.pojo.OrderUser" useGeneratedKeys="true" keyProperty="id">
     insert into order_user (id, order_id, user_id, 
       status)
     values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{status,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.OrderUser" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.OrderUser" useGeneratedKeys="true" keyProperty="id">
     insert into order_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -81,4 +81,10 @@
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectOrdersByUid" parameterType="int" resultType="int">
+    select order_id from order_user where user_id = #{uid}
+  </select>
+  <select id="selectUserCnt" parameterType="int" resultType="int">
+    select count(*) from order_user where order_id = #{order_id}
+  </select>
 </mapper>

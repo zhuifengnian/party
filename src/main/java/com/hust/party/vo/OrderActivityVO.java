@@ -1,10 +1,24 @@
-package com.hust.party.pojo;
+package com.hust.party.vo;
+
+import com.hust.party.common.Const;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-public class Activity {
-    private Integer id;
+/**
+ * <br/>
+ * fan 2018/5/14 14:49
+ */
+public class OrderActivityVO {
+
+    private Integer oid;
+
+    private Integer num;                //人数
+
+    private String enterpriceName;      //商家名
+
+    private Integer status = Const.ORDER_STATUS_NOT_FULL;             //订单状态（0可以支付，1拼单人数满，2拼单人数未满，3日期已过）
+
+    private Integer aid;
 
     private Integer enterpriseId;
 
@@ -26,36 +40,44 @@ public class Activity {
 
     private String address;
 
-    private Integer atleastPeople = 1;
-
-    private Date activityTime;
-
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Integer atleastPeople, Date activityTime) {
-        this.id = id;
-        this.enterpriseId = enterpriseId;
-        this.title = title;
-        this.word = word;
-        this.picture = picture;
-        this.video = video;
-        this.feature = feature;
-        this.containPeople = containPeople;
-        this.preferentialPrice = preferentialPrice;
-        this.originalPrice = originalPrice;
-        this.address = address;
-        this.atleastPeople = atleastPeople;
-        this.activityTime = activityTime;
+    public Integer getOid() {
+        return oid;
     }
 
-    public Activity() {
-        super();
+    public void setOid(Integer oid) {
+        this.oid = oid;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getNum() {
+        return num;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
+    public String getEnterpriceName() {
+        return enterpriceName;
+    }
+
+    public void setEnterpriceName(String enterpriceName) {
+        this.enterpriceName = enterpriceName;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getAid() {
+        return aid;
+    }
+
+    public void setAid(Integer aid) {
+        this.aid = aid;
     }
 
     public Integer getEnterpriseId() {
@@ -71,7 +93,7 @@ public class Activity {
     }
 
     public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
+        this.title = title;
     }
 
     public String getWord() {
@@ -79,7 +101,7 @@ public class Activity {
     }
 
     public void setWord(String word) {
-        this.word = word == null ? null : word.trim();
+        this.word = word;
     }
 
     public String getPicture() {
@@ -87,7 +109,7 @@ public class Activity {
     }
 
     public void setPicture(String picture) {
-        this.picture = picture == null ? null : picture.trim();
+        this.picture = picture;
     }
 
     public String getVideo() {
@@ -95,7 +117,7 @@ public class Activity {
     }
 
     public void setVideo(String video) {
-        this.video = video == null ? null : video.trim();
+        this.video = video;
     }
 
     public String getFeature() {
@@ -103,7 +125,7 @@ public class Activity {
     }
 
     public void setFeature(String feature) {
-        this.feature = feature == null ? null : feature.trim();
+        this.feature = feature;
     }
 
     public Integer getContainPeople() {
@@ -135,22 +157,6 @@ public class Activity {
     }
 
     public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
-    }
-
-    public Integer getAtleastPeople() {
-        return atleastPeople;
-    }
-
-    public void setAtleastPeople(Integer atleastPeople) {
-        this.atleastPeople = atleastPeople;
-    }
-
-    public Date getActivityTime() {
-        return activityTime;
-    }
-
-    public void setActivityTime(Date activityTime) {
-        this.activityTime = activityTime;
+        this.address = address;
     }
 }
