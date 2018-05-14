@@ -1,7 +1,6 @@
 package com.hust.party.serviceimpl;
 
 import com.hust.party.dao.ActivityMapper;
-import com.hust.party.dao.ActivityMapper2;
 import com.hust.party.dao.BaseMapper;
 import com.hust.party.pojo.Activity;
 import com.hust.party.service.ActivityService;
@@ -15,11 +14,6 @@ import org.springframework.stereotype.Service;
 public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> implements ActivityService {
     @Autowired
     ActivityMapper activityMapper;
-    @Autowired
-    ActivityMapper2 activityMapper2;
-
-
-
 
     @Override
     public BaseMapper<Activity> getDao() {
@@ -28,6 +22,6 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
 
     @Override
     public Activity getActivity(Integer id) {
-        return activityMapper2.getActivity(id);
+        return activityMapper.getActivity(id);
     }
 }

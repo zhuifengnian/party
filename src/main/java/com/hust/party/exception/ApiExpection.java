@@ -35,4 +35,12 @@ public class ApiExpection extends RuntimeException{
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "ApiExpection{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

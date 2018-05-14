@@ -1,6 +1,6 @@
 package com.hust.party.controller;
 
-import com.hust.party.dao.ActivityMapper2;
+import com.hust.party.exception.ApiExpection;
 import com.hust.party.pojo.Activity;
 import com.hust.party.service.ActivityService;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +23,7 @@ public class LoginController
     @ApiOperation(value = "教程", httpMethod = "POST", notes = "教程")
     public String logintest(@ApiParam(required = true, name = "name", value = "教程入参") @RequestParam(required = false)
                                     String name,@ApiParam(required = true, name = "password", value = "教程入参")  @RequestParam(required = false) String password){
-        Activity activity = activityService.getActivity(1);
-        return "test";
+        Activity activity = activityService.selectByPrimaryKey(1);
+        throw new ApiExpection(501, "测试。。。");
     }
 }

@@ -25,11 +25,9 @@ public abstract class AbstractBaseServiceImpl<T> implements BaseService<T> {
 
     public abstract BaseMapper<T> getDao();
 
-
-
     @Override
-    public int deleteByPrimaryKey(Integer code) {
-        return getDao().deleteByPrimaryKey(code);
+    public int deleteByPrimaryKey(Integer id) {
+        return getDao().deleteByPrimaryKey(id);
     }
 
     public int insertSelective(T record) {return getDao().insertSelective(record);}
@@ -49,7 +47,7 @@ public abstract class AbstractBaseServiceImpl<T> implements BaseService<T> {
         getDao().insertSelective(record);
         try {
             if(record!=null)
-                return  (Integer) ReflectUtil.getValueByName(record,"code");
+                return  (Integer) ReflectUtil.getValueByName(record,"id");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
@@ -60,19 +58,13 @@ public abstract class AbstractBaseServiceImpl<T> implements BaseService<T> {
         return 0;
     }
 
-    public T selectByPrimaryKey(Integer code) {
-        return getDao().selectByPrimaryKey(code);
+    public T selectByPrimaryKey(Integer id) {
+        return getDao().selectByPrimaryKey(id);
     }
 
     public int update(T record) {
         return getDao().updateByPrimaryKeySelective(record);
     }
-
-    //**************************************************************************************************
-
-
-
-
 
 
 

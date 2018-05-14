@@ -59,7 +59,7 @@
                         <div class='col-sm-12'>
                             <div class='text-center'>
                                 <img width="121" height="31" alt="Logo" src="/style/images/logo_new.svg" />
-                                <span class="text">图书分享系统</span>
+                                <span class="text">聚多多</span>
                             </div>
                         </div>
                     </div>

@@ -20,8 +20,6 @@
 		</property>
 	</bean>
 
-
-
 	<!-- 配置数据源 -->
 	<bean id="dataSource"
 		  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -71,6 +69,27 @@
 	<bean id="transactionManager"
 		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!--配置shiro过滤器-->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager"/>
+		<property name="loginUrl" value=""/>
+		<property name="unauthorizedUrl" value=""/>
+		<property name="filterChainDefinitions">
+			<value>
+				<!--/login.html = anon-->
+				<!--/* = authc-->
+			</value>
+		</property>
+	</bean>
+
+	<bean class="org.apache.shiro.web.mgt.DefaultWebSecurityManager" id="securityManager">
+		<property name="realm" ref="realm"/>
+	</bean>
+
+	<bean class="com.hust.party.common.CustomRealm" id="realm">
+
 	</bean>
 
 </beans>

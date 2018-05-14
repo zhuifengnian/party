@@ -1,9 +1,7 @@
 package com.hust.party.test.servicetest;
 
 import com.hust.party.dao.ActivityMapper;
-import com.hust.party.dao.ActivityMapper2;
 import com.hust.party.pojo.Activity;
-import com.hust.party.service.ActivityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration    //调用javaWEB的组件，比如自动注入ServletContext Bean等等
 public class ServiceTest {
     @Autowired
-    private ActivityMapper2 activityMapper;
+    private ActivityMapper activityMapper;
 
     @Test
     public void testActivity(){
