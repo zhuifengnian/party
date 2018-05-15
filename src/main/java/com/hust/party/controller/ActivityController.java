@@ -43,16 +43,19 @@ public class ActivityController
     @ApiOperation(value = "插入活动", notes = "插入活动到数据库")
     @ResponseBody
     @RequestMapping(value="/insertActivity", method = RequestMethod.POST)
-    public ReturnMessage insertActivity(@RequestParam("activity") Activity activity){
+    public ReturnMessage insertActivity( Activity activity,  @RequestParam(value = "coverfile", required = false) MultipartFile cofile,
+                                        @RequestParam(value = "flyfile", required = false) MultipartFile flfile){
+      String picture=manageFile(cofile);
+  String video=manageFile(flfile);
+      activity.setPicture(picture);
+    activity.setVideo(video);
         int insertNum = activityService.insert(activity);
         return new ReturnMessage(200, insertNum);
 
     }
 
-    @ApiOperation(value="上传文件", notes="可以上传图片、文件存储到数据库")
-    @ResponseBody
-    @RequestMapping(value = "/activity/manageFile", method = {RequestMethod.POST})
-    public String manageFile(@RequestParam("file") MultipartFile file) {
+
+    public String manageFile(MultipartFile file) {
         //判断是否大于5M
         if(file.getSize()<5*1048576) {
             String key = LocalDateTime.now().getNano() + file.getOriginalFilename();
