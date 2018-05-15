@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by luyue on 2018/5/12.
@@ -33,13 +34,19 @@ public class ActivityController
     private ActivityService activityService;
 
     @RequestMapping(value = "/activity/{aid}", method = RequestMethod.GET)
-    @ApiOperation(value = "教程", httpMethod = "GET", notes = "教程")
+    @ApiOperation(value = "根据活动id提取信息", httpMethod = "GET")
     @ResponseBody
     public ReturnMessage getActivity(@ApiParam(required = true, name = "aid", value = "活动id") @PathVariable Integer aid){
         Activity activity = activityService.selectByPrimaryKey(aid);
         return new ReturnMessage(200, activity);
     }
-
+    @RequestMapping(value = "/activity/enterprise/{eid}", method = RequestMethod.GET)
+    @ApiOperation(value = "根据企业id提取活动", httpMethod = "GET")
+    @ResponseBody
+    public ReturnMessage getEnterpriseActivity(@ApiParam(required = true, name = "eid", value = "企业id") @PathVariable Integer eid){
+        List<Activity> list = activityService.getEnterpriseActivity(eid);
+        return new ReturnMessage(200, list);
+    }
     @ApiOperation(value = "插入活动", notes = "插入活动到数据库")
     @ResponseBody
     @RequestMapping(value="/insertActivity", method = RequestMethod.POST)

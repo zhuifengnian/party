@@ -7,6 +7,8 @@ import com.hust.party.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by luyue on 2018/5/12.
  */
@@ -23,5 +25,10 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
     @Override
     public Activity getActivity(Integer id) {
         return activityMapper.getActivity(id);
+    }
+
+    @Override
+    public List<Activity> getEnterpriseActivity(Integer eid) {
+        return activityMapper.getEnterpriseActivity(eid);
     }
 }
