@@ -1,4 +1,4 @@
-package com.hust.party.pojo;
+package com.hust.party.common;
 import java.io.Serializable;
 import java.util.List;
 

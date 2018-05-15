@@ -3,9 +3,8 @@ package com.hust.party.controller;
 import com.google.gson.Gson;
 import com.hust.party.common.Page;
 import com.hust.party.common.ReturnMessage;
-import com.hust.party.exception.ApiExpection;
 import com.hust.party.pojo.Activity;
-import com.hust.party.pojo.PageInfo;
+import com.hust.party.common.PageInfo;
 import com.hust.party.service.ActivityService;
 
 import com.qiniu.common.QiniuException;
@@ -24,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Created by luyue on 2018/5/12.
