@@ -26,11 +26,19 @@ public class Activity {
 
     private String address;
 
-    private Integer atleastPeople = 1;
-
     private Date activityTime;
 
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Integer atleastPeople, Date activityTime) {
+    private Integer atleastPeople;
+
+    private String addressName;
+
+    private String longitude;
+
+    private String latitude;
+
+    private String favourable;
+
+    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer atleastPeople, String addressName, String longitude, String latitude, String favourable) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.title = title;
@@ -42,8 +50,12 @@ public class Activity {
         this.preferentialPrice = preferentialPrice;
         this.originalPrice = originalPrice;
         this.address = address;
-        this.atleastPeople = atleastPeople;
         this.activityTime = activityTime;
+        this.atleastPeople = atleastPeople;
+        this.addressName = addressName;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.favourable = favourable;
     }
 
     public Activity() {
@@ -138,6 +150,14 @@ public class Activity {
         this.address = address == null ? null : address.trim();
     }
 
+    public Date getActivityTime() {
+        return activityTime;
+    }
+
+    public void setActivityTime(Date activityTime) {
+        this.activityTime = activityTime;
+    }
+
     public Integer getAtleastPeople() {
         return atleastPeople;
     }
@@ -146,11 +166,35 @@ public class Activity {
         this.atleastPeople = atleastPeople;
     }
 
-    public Date getActivityTime() {
-        return activityTime;
+    public String getAddressName() {
+        return addressName;
     }
 
-    public void setActivityTime(Date activityTime) {
-        this.activityTime = activityTime;
+    public void setAddressName(String addressName) {
+        this.addressName = addressName == null ? null : addressName.trim();
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude == null ? null : longitude.trim();
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude == null ? null : latitude.trim();
+    }
+
+    public String getFavourable() {
+        return favourable;
+    }
+
+    public void setFavourable(String favourable) {
+        this.favourable = favourable == null ? null : favourable.trim();
     }
 }

@@ -1,5 +1,6 @@
 package com.hust.party.serviceimpl;
 
+import com.hust.party.common.Page;
 import com.hust.party.dao.ActivityMapper;
 import com.hust.party.dao.BaseMapper;
 import com.hust.party.pojo.Activity;
@@ -28,7 +29,9 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
     }
 
     @Override
-    public List<Activity> getEnterpriseActivity(Integer eid) {
-        return activityMapper.getEnterpriseActivity(eid);
+    public List<Activity> getEnterpriseActivity(Integer eid, Page page) {
+        return activityMapper.getEnterpriseActivity(eid,page);
     }
+
+
 }

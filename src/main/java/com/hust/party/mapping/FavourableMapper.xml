@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust.party.dao.FavourableMapper" >
+  <resultMap id="BaseResultMap" type="com.hust.party.pojo.Favourable" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="reach_price" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="favourable_price" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="context" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, reach_price, favourable_price, context
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from favourable
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from favourable
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hust.party.pojo.Favourable" >
+    insert into favourable (id, reach_price, favourable_price, 
+      context)
+    values (#{id,jdbcType=INTEGER}, #{reachPrice,jdbcType=INTEGER}, #{favourablePrice,jdbcType=INTEGER}, 
+      #{context,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Favourable" >
+    insert into favourable
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reachPrice != null" >
+        reach_price,
+      </if>
+      <if test="favourablePrice != null" >
+        favourable_price,
+      </if>
+      <if test="context != null" >
+        context,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reachPrice != null" >
+        #{reachPrice,jdbcType=INTEGER},
+      </if>
+      <if test="favourablePrice != null" >
+        #{favourablePrice,jdbcType=INTEGER},
+      </if>
+      <if test="context != null" >
+        #{context,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.Favourable" >
+    update favourable
+    <set >
+      <if test="reachPrice != null" >
+        reach_price = #{reachPrice,jdbcType=INTEGER},
+      </if>
+      <if test="favourablePrice != null" >
+        favourable_price = #{favourablePrice,jdbcType=INTEGER},
+      </if>
+      <if test="context != null" >
+        context = #{context,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.Favourable" >
+    update favourable
+    set reach_price = #{reachPrice,jdbcType=INTEGER},
+      favourable_price = #{favourablePrice,jdbcType=INTEGER},
+      context = #{context,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

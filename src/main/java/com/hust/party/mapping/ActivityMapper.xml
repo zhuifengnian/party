@@ -1,177 +1,220 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hust.party.dao.ActivityMapper">
-  <resultMap id="BaseResultMap" type="com.hust.party.pojo.Activity">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="enterprise_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="word" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="picture" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="video" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="feature" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="contain_people" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="preferential_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-      <arg column="original_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="atleast_people" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="activity_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust.party.dao.ActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.hust.party.pojo.Activity" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="enterprise_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="word" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="picture" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="video" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="feature" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="contain_people" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="preferential_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="original_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="activity_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column=" atleast_people" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="address_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="longitude" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="latitude" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="favourable" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
-  <sql id="Base_Column_List">
-    id, enterprise_id, title, word, picture, video, feature, contain_people, preferential_price,
-    original_price, address, atleast_people, activity_time
+  <sql id="Base_Column_List" >
+    id, enterprise_id, title, word, picture, video, feature, contain_people, preferential_price, 
+    original_price, address, activity_time, " atleast_people", address_name, longitude, 
+    latitude, favourable
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
-    select
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
     <include refid="Base_Column_List" />
     from activity
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from activity
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Activity" useGeneratedKeys="true" keyProperty="id">
-    insert into activity (id, enterprise_id, title,
-                          word, picture, video,
-                          feature, contain_people, preferential_price,
-                          original_price, address, atleast_people,
-                          activity_time)
-    values (#{id,jdbcType=INTEGER}, #{enterpriseId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
-                                    #{word,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{video,jdbcType=VARCHAR},
-                                    #{feature,jdbcType=VARCHAR}, #{containPeople,jdbcType=INTEGER}, #{preferentialPrice,jdbcType=DECIMAL},
-                                    #{originalPrice,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, #{atleastPeople,jdbcType=INTEGER},
-            #{activityTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.hust.party.pojo.Activity" >
+    insert into activity (id, enterprise_id, title, 
+      word, picture, video, 
+      feature, contain_people, preferential_price, 
+      original_price, address, activity_time, 
+      " atleast_people", address_name, longitude, 
+      latitude, favourable)
+    values (#{id,jdbcType=INTEGER}, #{enterpriseId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{word,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{video,jdbcType=VARCHAR}, 
+      #{feature,jdbcType=VARCHAR}, #{containPeople,jdbcType=INTEGER}, #{preferentialPrice,jdbcType=DECIMAL}, 
+      #{originalPrice,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, #{activityTime,jdbcType=TIMESTAMP}, 
+      #{atleastPeople,jdbcType=INTEGER}, #{addressName,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, 
+      #{latitude,jdbcType=VARCHAR}, #{favourable,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity" >
     insert into activity
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         id,
       </if>
-      <if test="enterpriseId != null">
+      <if test="enterpriseId != null" >
         enterprise_id,
       </if>
-      <if test="title != null">
+      <if test="title != null" >
         title,
       </if>
-      <if test="word != null">
+      <if test="word != null" >
         word,
       </if>
-      <if test="picture != null">
+      <if test="picture != null" >
         picture,
       </if>
-      <if test="video != null">
+      <if test="video != null" >
         video,
       </if>
-      <if test="feature != null">
+      <if test="feature != null" >
         feature,
       </if>
-      <if test="containPeople != null">
+      <if test="containPeople != null" >
         contain_people,
       </if>
-      <if test="preferentialPrice != null">
+      <if test="preferentialPrice != null" >
         preferential_price,
       </if>
-      <if test="originalPrice != null">
+      <if test="originalPrice != null" >
         original_price,
       </if>
-      <if test="address != null">
+      <if test="address != null" >
         address,
       </if>
-      <if test="atleastPeople != null">
-        atleast_people,
-      </if>
-      <if test="activityTime != null">
+      <if test="activityTime != null" >
         activity_time,
       </if>
+      <if test="atleastPeople != null" >
+        " atleast_people",
+      </if>
+      <if test="addressName != null" >
+        address_name,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="favourable != null" >
+        favourable,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="enterpriseId != null">
+      <if test="enterpriseId != null" >
         #{enterpriseId,jdbcType=INTEGER},
       </if>
-      <if test="title != null">
+      <if test="title != null" >
         #{title,jdbcType=VARCHAR},
       </if>
-      <if test="word != null">
+      <if test="word != null" >
         #{word,jdbcType=VARCHAR},
       </if>
-      <if test="picture != null">
+      <if test="picture != null" >
         #{picture,jdbcType=VARCHAR},
       </if>
-      <if test="video != null">
+      <if test="video != null" >
         #{video,jdbcType=VARCHAR},
       </if>
-      <if test="feature != null">
+      <if test="feature != null" >
         #{feature,jdbcType=VARCHAR},
       </if>
-      <if test="containPeople != null">
+      <if test="containPeople != null" >
         #{containPeople,jdbcType=INTEGER},
       </if>
-      <if test="preferentialPrice != null">
+      <if test="preferentialPrice != null" >
         #{preferentialPrice,jdbcType=DECIMAL},
       </if>
-      <if test="originalPrice != null">
+      <if test="originalPrice != null" >
         #{originalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="address != null">
+      <if test="address != null" >
         #{address,jdbcType=VARCHAR},
       </if>
-      <if test="atleastPeople != null">
+      <if test="activityTime != null" >
+        #{activityTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="atleastPeople != null" >
         #{atleastPeople,jdbcType=INTEGER},
       </if>
-      <if test="activityTime != null">
-        #{activityTime,jdbcType=TIMESTAMP},
+      <if test="addressName != null" >
+        #{addressName,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="favourable != null" >
+        #{favourable,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.Activity">
+  <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.Activity" >
     update activity
-    <set>
-      <if test="enterpriseId != null">
+    <set >
+      <if test="enterpriseId != null" >
         enterprise_id = #{enterpriseId,jdbcType=INTEGER},
       </if>
-      <if test="title != null">
+      <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="word != null">
+      <if test="word != null" >
         word = #{word,jdbcType=VARCHAR},
       </if>
-      <if test="picture != null">
+      <if test="picture != null" >
         picture = #{picture,jdbcType=VARCHAR},
       </if>
-      <if test="video != null">
+      <if test="video != null" >
         video = #{video,jdbcType=VARCHAR},
       </if>
-      <if test="feature != null">
+      <if test="feature != null" >
         feature = #{feature,jdbcType=VARCHAR},
       </if>
-      <if test="containPeople != null">
+      <if test="containPeople != null" >
         contain_people = #{containPeople,jdbcType=INTEGER},
       </if>
-      <if test="preferentialPrice != null">
+      <if test="preferentialPrice != null" >
         preferential_price = #{preferentialPrice,jdbcType=DECIMAL},
       </if>
-      <if test="originalPrice != null">
+      <if test="originalPrice != null" >
         original_price = #{originalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="address != null">
+      <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="atleastPeople != null">
-        atleast_people = #{atleastPeople,jdbcType=INTEGER},
-      </if>
-      <if test="activityTime != null">
+      <if test="activityTime != null" >
         activity_time = #{activityTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="atleastPeople != null" >
+        " atleast_people" = #{atleastPeople,jdbcType=INTEGER},
+      </if>
+      <if test="addressName != null" >
+        address_name = #{addressName,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="favourable != null" >
+        favourable = #{favourable,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.Activity">
+  <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.Activity" >
     update activity
     set enterprise_id = #{enterpriseId,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
@@ -183,13 +226,124 @@
       preferential_price = #{preferentialPrice,jdbcType=DECIMAL},
       original_price = #{originalPrice,jdbcType=DECIMAL},
       address = #{address,jdbcType=VARCHAR},
-      atleast_people = #{atleastPeople,jdbcType=INTEGER},
-      activity_time = #{activityTime,jdbcType=TIMESTAMP}
+      activity_time = #{activityTime,jdbcType=TIMESTAMP},
+      " atleast_people" = #{atleastPeople,jdbcType=INTEGER},
+      address_name = #{addressName,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      favourable = #{favourable,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="getEnterpriseActivity" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
-    select *
-    from activity
-    where enterprise_id = #{eid,jdbcType=INTEGER}
+  <!-- 分页查詢 -->
+  <select id="select" parameterType="Map" resultMap="BaseResultMap">
+    SELECT *
+    FROM activity
+    WHERE 1=1
+    <if test="enterpriseId != null" >
+     and enterprise_id = #{enterpriseId,jdbcType=INTEGER}
+    </if>
+    <if test="title != null" >
+    and  title = #{title,jdbcType=VARCHAR}
+    </if>
+    <if test="word != null" >
+     and word = #{word,jdbcType=VARCHAR}
+    </if>
+    <if test="picture != null" >
+    and  picture = #{picture,jdbcType=VARCHAR}
+    </if>
+    <if test="video != null" >
+     and video = #{video,jdbcType=VARCHAR}
+    </if>
+    <if test="feature != null" >
+     and feature = #{feature,jdbcType=VARCHAR}
+    </if>
+    <if test="containPeople != null" >
+     and contain_people = #{containPeople,jdbcType=INTEGER}
+    </if>
+    <if test="preferentialPrice != null" >
+    and  preferential_price = #{preferentialPrice,jdbcType=DECIMAL}
+    </if>
+    <if test="originalPrice != null" >
+     and original_price = #{originalPrice,jdbcType=DECIMAL}
+    </if>
+    <if test="address != null" >
+     and address = #{address,jdbcType=VARCHAR}
+    </if>
+    <if test="activityTime != null" >
+   and   activity_time = #{activityTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="atleastPeople != null" >
+      and atleast_people" = #{atleastPeople,jdbcType=INTEGER}
+    </if>
+    <if test="addressName != null" >
+      and address_name = #{addressName,jdbcType=VARCHAR}
+    </if>
+    <if test="longitude != null" >
+     and longitude = #{longitude,jdbcType=VARCHAR}
+    </if>
+    <if test="latitude != null" >
+     and latitude = #{latitude,jdbcType=VARCHAR}
+    </if>
+    <if test="favourable != null" >
+    and  favourable = #{favourable,jdbcType=VARCHAR}
+    </if>
+    <if test="start != null and pageSize!=null">
+      limit #{start},#{pageSize}
+    </if>
+  </select>
+  <!-- 查詢数量 -->
+  <select id="selectCount" parameterType="com.hust.party.pojo.Activity"
+          resultType="Integer">
+    SELECT count(*)
+    FROM activity
+    WHERE 1=1
+    <if test="enterpriseId != null" >
+      and enterprise_id = #{enterpriseId,jdbcType=INTEGER}
+    </if>
+    <if test="title != null" >
+      and  title = #{title,jdbcType=VARCHAR}
+    </if>
+    <if test="word != null" >
+      and word = #{word,jdbcType=VARCHAR}
+    </if>
+    <if test="picture != null" >
+      and  picture = #{picture,jdbcType=VARCHAR}
+    </if>
+    <if test="video != null" >
+      and video = #{video,jdbcType=VARCHAR}
+    </if>
+    <if test="feature != null" >
+      and feature = #{feature,jdbcType=VARCHAR}
+    </if>
+    <if test="containPeople != null" >
+      and contain_people = #{containPeople,jdbcType=INTEGER}
+    </if>
+    <if test="preferentialPrice != null" >
+      and  preferential_price = #{preferentialPrice,jdbcType=DECIMAL}
+    </if>
+    <if test="originalPrice != null" >
+      and original_price = #{originalPrice,jdbcType=DECIMAL}
+    </if>
+    <if test="address != null" >
+      and address = #{address,jdbcType=VARCHAR}
+    </if>
+    <if test="activityTime != null" >
+      and   activity_time = #{activityTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="atleastPeople != null" >
+      and atleast_people" = #{atleastPeople,jdbcType=INTEGER}
+    </if>
+    <if test="addressName != null" >
+      and address_name = #{addressName,jdbcType=VARCHAR}
+    </if>
+    <if test="longitude != null" >
+      and longitude = #{longitude,jdbcType=VARCHAR}
+    </if>
+    <if test="latitude != null" >
+      and latitude = #{latitude,jdbcType=VARCHAR}
+    </if>
+    <if test="favourable != null" >
+      and  favourable = #{favourable,jdbcType=VARCHAR}
+    </if>
   </select>
 </mapper>

@@ -11,14 +11,17 @@ public class Comment {
 
     private String context;
 
-    private Date time;
+    private Date commentTime;
 
-    public Comment(Integer id, Integer userId, Integer enterpriseId, String context, Date time) {
+    private Integer score;
+
+    public Comment(Integer id, Integer userId, Integer enterpriseId, String context, Date commentTime, Integer score) {
         this.id = id;
         this.userId = userId;
         this.enterpriseId = enterpriseId;
         this.context = context;
-        this.time = time;
+        this.commentTime = commentTime;
+        this.score = score;
     }
 
     public Comment() {
@@ -57,11 +60,19 @@ public class Comment {
         this.context = context == null ? null : context.trim();
     }
 
-    public Date getTime() {
-        return time;
+    public Date getCommentTime() {
+        return commentTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setCommentTime(Date commentTime) {
+        this.commentTime = commentTime;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }

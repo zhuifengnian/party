@@ -8,7 +8,7 @@ public interface BaseMapper<T> {
 
 //    //根据实体类不为null的字段查询总数,条件全部使用=号and条件
     int selectCount(T record);
-
+    List<T> select(Map map);
     //根据主键进行查询,必须保证结果唯一
     //单个字段做主键时,可以直接写主键的值
     //联合主键时,key可以是实体类,也可以是Map

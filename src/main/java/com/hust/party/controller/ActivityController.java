@@ -1,9 +1,11 @@
 package com.hust.party.controller;
 
 import com.google.gson.Gson;
+import com.hust.party.common.Page;
 import com.hust.party.common.ReturnMessage;
 import com.hust.party.exception.ApiExpection;
 import com.hust.party.pojo.Activity;
+import com.hust.party.pojo.PageInfo;
 import com.hust.party.service.ActivityService;
 
 import com.qiniu.common.QiniuException;
@@ -40,12 +42,22 @@ public class ActivityController
         Activity activity = activityService.selectByPrimaryKey(aid);
         return new ReturnMessage(200, activity);
     }
-    @RequestMapping(value = "/activity/enterprise/{eid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/activity/enterprise", method = RequestMethod.GET)
     @ApiOperation(value = "根据企业id提取活动", httpMethod = "GET")
     @ResponseBody
-    public ReturnMessage getEnterpriseActivity(@ApiParam(required = true, name = "eid", value = "企业id") @PathVariable Integer eid){
-        List<Activity> list = activityService.getEnterpriseActivity(eid);
-        return new ReturnMessage(200, list);
+    public ReturnMessage getEnterpriseActivity(@ModelAttribute Activity activity,@RequestParam Integer pageSize,@RequestParam Integer pageNumber){
+        activity =activity==null?new Activity():activity;
+        PageInfo<Activity> pageinfo=new PageInfo<Activity>();
+        pageinfo.setPageNum(pageNumber);
+        pageinfo.setPageSize(pageSize);
+        Page page= new Page();
+        page.setPageNumber(pageNumber);
+        page.setPageSize(pageSize);
+        pageinfo.setRows( activityService.select(activity,page));
+        int count=activityService.selectCount(activity);
+        pageinfo.setTotal(count);
+      //  List<Activity> list = activityService.getEnterpriseActivity(eid);
+        return new ReturnMessage(200, pageinfo);
     }
     @ApiOperation(value = "插入活动", notes = "插入活动到数据库")
     @ResponseBody
