@@ -346,4 +346,10 @@
       and  favourable = #{favourable,jdbcType=VARCHAR}
     </if>
   </select>
+  <!-- 查詢列表数量 -->
+  <select id="getAllActivity" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from activity
+    where activity_time >now()
+  </select>
 </mapper>

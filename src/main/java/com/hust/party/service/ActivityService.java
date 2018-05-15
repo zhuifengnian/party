@@ -9,4 +9,5 @@ import java.util.List;
 public interface ActivityService extends BaseService<Activity>{
     Activity getActivity(Integer id);
     List<Activity> getEnterpriseActivity(Integer eid,Page page);
+    List<Activity>getAllActivity(Page page);
 }

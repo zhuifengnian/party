@@ -33,5 +33,10 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
         return activityMapper.getEnterpriseActivity(eid,page);
     }
 
+    @Override
+    public List<Activity> getAllActivity(Page page) {
+        return activityMapper.getAllActivity(page);
+    }
+
 
 }
