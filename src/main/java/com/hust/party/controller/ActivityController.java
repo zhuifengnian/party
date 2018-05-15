@@ -57,6 +57,24 @@ public class ActivityController
       //  List<Activity> list = activityService.getEnterpriseActivity(eid);
         return new ReturnMessage(200, pageinfo);
     }
+    @RequestMapping(value = "/activity", method = RequestMethod.GET)
+    @ApiOperation(value = "获取所有活动", httpMethod = "GET")
+    @ResponseBody
+    public ReturnMessage getActivity(@RequestParam Integer pageSize,@RequestParam Integer pageNumber){
+
+        PageInfo<Activity> pageinfo=new PageInfo<Activity>();
+        pageinfo.setPageNum(pageNumber);
+        pageinfo.setPageSize(pageSize);
+        Page page= new Page();
+        page.setPageNumber(pageNumber);
+        page.setPageSize(pageSize);
+        List<Activity> list=activityService.getAllActivity(page);
+        pageinfo.setRows( list);
+        int count=list.size();
+        pageinfo.setTotal(count);
+        //  List<Activity> list = activityService.getEnterpriseActivity(eid);
+        return new ReturnMessage(200, pageinfo);
+    }
     @ApiOperation(value = "插入活动", notes = "插入活动到数据库")
     @ResponseBody
     @RequestMapping(value="/insertActivity", method = RequestMethod.POST)
