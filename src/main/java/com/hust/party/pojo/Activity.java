@@ -38,7 +38,9 @@ public class Activity {
 
     private String favourable;
 
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable) {
+    private Integer classify;
+
+    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.title = title;
@@ -56,6 +58,7 @@ public class Activity {
         this.longitude = longitude;
         this.latitude = latitude;
         this.favourable = favourable;
+        this.classify = classify;
     }
 
     public Activity() {
@@ -196,5 +199,13 @@ public class Activity {
 
     public void setFavourable(String favourable) {
         this.favourable = favourable == null ? null : favourable.trim();
+    }
+
+    public Integer getClassify() {
+        return classify;
+    }
+
+    public void setClassify(Integer classify) {
+        this.classify = classify;
     }
 }

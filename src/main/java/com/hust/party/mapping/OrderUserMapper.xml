@@ -29,7 +29,7 @@
     values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{status,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.OrderUser " useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.OrderUser" useGeneratedKeys="true" keyProperty="id" >
     insert into order_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

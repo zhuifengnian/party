@@ -25,7 +25,7 @@ public class PageInfo<T> implements Serializable {
         if(pageNum==null)
             pageNum=1;
         if(pageSize==null)
-            pageSize=30;
+            pageSize=10;
         return (pageNum-1)*pageSize;
     }
 
@@ -45,8 +45,8 @@ public class PageInfo<T> implements Serializable {
     }
 
     public void setPageSize(Integer pageSize) {
-        if(pageSize==null||pageSize>=30)
-            this.pageSize = 30;
+        if(pageSize==null||pageSize>=10)
+            this.pageSize = 10;
         else
             this.pageSize = pageSize;
     }
