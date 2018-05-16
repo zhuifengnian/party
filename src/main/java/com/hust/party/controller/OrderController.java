@@ -38,7 +38,7 @@ public class OrderController {
     @Autowired
     private EnterpriseService enterpriseService;
 
-    @ApiOperation(value = "插入订单", notes = "插入订单到数据库")
+    @ApiOperation(value =  "插入订单", notes = "插入订单到数据库")
     @ResponseBody
     @RequestMapping(value="/insertOrder", method = RequestMethod.POST)
     public ReturnMessage insertOrder(@RequestParam("aid")Integer aid, @RequestParam("chat_id") String chat_id){
