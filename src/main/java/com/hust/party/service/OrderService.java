@@ -9,4 +9,5 @@ import java.util.List;
  * fan 2018/5/14 13:54
  */
 public interface OrderService extends BaseService<Order>{
+    Integer getOrderId(Integer activityId);
 }

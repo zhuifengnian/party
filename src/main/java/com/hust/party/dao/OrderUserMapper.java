@@ -16,4 +16,5 @@ public interface OrderUserMapper  extends BaseMapper<OrderUser>{
      * @param oid
      */
     Integer selectUserCnt(Integer oid);
+
 }

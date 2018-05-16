@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderMapper  extends BaseMapper<Order>{
-
+         Integer getOrderId(Integer activityId);
 }

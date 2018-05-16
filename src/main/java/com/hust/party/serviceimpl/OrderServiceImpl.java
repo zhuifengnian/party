@@ -20,4 +20,9 @@ public class OrderServiceImpl extends AbstractBaseServiceImpl<Order>implements O
     public BaseMapper<Order> getDao() {
         return orderMapper;
     }
+
+    @Override
+    public Integer getOrderId(Integer activityId) {
+        return orderMapper.getOrderId(activityId);
+    }
 }

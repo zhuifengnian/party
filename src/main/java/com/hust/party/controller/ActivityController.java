@@ -5,9 +5,14 @@ import com.hust.party.common.Page;
 import com.hust.party.common.ReturnMessage;
 import com.hust.party.exception.ApiExpection;
 import com.hust.party.pojo.Activity;
+import com.hust.party.pojo.Enterprise;
 import com.hust.party.pojo.PageInfo;
 import com.hust.party.service.ActivityService;
 
+import com.hust.party.service.EnterpriseService;
+import com.hust.party.service.OrderService;
+import com.hust.party.service.OrderUserService;
+import com.hust.party.vo.PerenceActivityVO;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -17,13 +22,16 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +42,12 @@ public class ActivityController
 {
     @Autowired
     private ActivityService activityService;
-
+    @Autowired
+    private EnterpriseService enterpriseService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private OrderUserService orderUserService;
     @RequestMapping(value = "/activity/{aid}", method = RequestMethod.GET)
     @ApiOperation(value = "根据活动id提取信息", httpMethod = "GET")
     @ResponseBody
@@ -63,19 +76,38 @@ public class ActivityController
     @ApiOperation(value = "获取所有活动", httpMethod = "GET")
     @ResponseBody
     public ReturnMessage getActivity(@RequestParam Integer pageSize,@RequestParam Integer pageNumber){
-
-        PageInfo<Activity> pageinfo=new PageInfo<Activity>();
+        List<PerenceActivityVO> lists=new ArrayList<>();
+        PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
+        PageInfo<PerenceActivityVO> pageinfo=new PageInfo<PerenceActivityVO>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
         List<Activity> list=activityService.getAllActivity(page);
-        pageinfo.setRows( list);
+       for(int i=0;i<list.size();i++){
+           Activity activity=list.get(i);
+           try {
+               PropertyUtils.copyProperties(perenceActivityVO, activity);
+           } catch (IllegalAccessException e) {
+               e.printStackTrace();
+           } catch (InvocationTargetException e) {
+               e.printStackTrace();
+           } catch (NoSuchMethodException e) {
+               e.printStackTrace();
+           }
+             Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
+             perenceActivityVO.setEnterpriceName(enterprise.getName());
+             perenceActivityVO.setId(activity.getId());
+          Integer id =   orderService.getOrderId(activity.getId());
+         int count=  orderUserService.selectUserCnt(id);
+         perenceActivityVO.setSoldNumber(count);
+         lists.add(perenceActivityVO);
+       }
+        pageinfo.setRows( lists);
         int count=list.size();
         pageinfo.setTotal(count);
-        //  List<Activity> list = activityService.getEnterpriseActivity(eid);
-        return new ReturnMessage(200, pageinfo);
+      return new ReturnMessage(200, pageinfo);
     }
     @ApiOperation(value = "插入活动", notes = "插入活动到数据库")
     @ResponseBody

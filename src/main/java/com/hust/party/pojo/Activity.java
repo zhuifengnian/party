@@ -28,7 +28,7 @@ public class Activity {
 
     private Date activityTime;
 
-    private Integer atleastPeople;
+    private Integer minuPeople;
 
     private String addressName;
 
@@ -38,7 +38,7 @@ public class Activity {
 
     private String favourable;
 
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer atleastPeople, String addressName, String longitude, String latitude, String favourable) {
+    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.title = title;
@@ -51,7 +51,7 @@ public class Activity {
         this.originalPrice = originalPrice;
         this.address = address;
         this.activityTime = activityTime;
-        this.atleastPeople = atleastPeople;
+        this.minuPeople = minuPeople;
         this.addressName = addressName;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -158,12 +158,12 @@ public class Activity {
         this.activityTime = activityTime;
     }
 
-    public Integer getAtleastPeople() {
-        return atleastPeople;
+    public Integer getMinuPeople() {
+        return minuPeople;
     }
 
-    public void setAtleastPeople(Integer atleastPeople) {
-        this.atleastPeople = atleastPeople;
+    public void setMinuPeople(Integer minuPeople) {
+        this.minuPeople = minuPeople;
     }
 
     public String getAddressName() {

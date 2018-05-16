@@ -93,7 +93,7 @@ public class OrderController {
 
             //判断订单状态
             Integer containPeople = activity.getContainPeople();    //活动最大人数
-            Integer atleastPeople = activity.getAtleastPeople();    //活动最少人数
+            Integer atleastPeople = activity.getMinuPeople();    //活动最少人数
 
             //当订单还未超时时，会有三种状态，当超时时，订单状态改为超时状态
             if(userCnt < atleastPeople){

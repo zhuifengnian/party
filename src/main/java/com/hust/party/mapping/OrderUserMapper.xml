@@ -85,6 +85,7 @@
     select order_id from order_user where user_id = #{uid}
   </select>
   <select id="selectUserCnt" parameterType="int" resultType="int">
-    select count(*) from order_user where order_id = #{order_id}
+    select count(*) from order_user where order_id = #{order_id} and   status = 1
   </select>
+
 </mapper>
