@@ -24,7 +24,7 @@
     delete from comment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Comment" >
+  <insert id="insert" parameterType="com.hust.party.pojo.Comment" useGeneratedKeys="true" keyProperty="id">
     insert into comment (id, user_id, enterprise_id, 
       context, comment_time, score
       )
@@ -32,7 +32,7 @@
       #{context,jdbcType=VARCHAR}, #{commentTime,jdbcType=TIMESTAMP}, #{score,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.Comment" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Comment" useGeneratedKeys="true" keyProperty="id">
     insert into comment
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -105,4 +105,9 @@
       score = #{score,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getCommnet" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from comment
+    where   enterprise_id  = #{enterpriseId,jdbcType=INTEGER}
+  </select>
 </mapper>

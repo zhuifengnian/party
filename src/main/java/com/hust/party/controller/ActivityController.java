@@ -56,7 +56,7 @@ public class ActivityController
     @RequestMapping(value = "/activity/enterprise", method = RequestMethod.GET)
     @ApiOperation(value = "根据企业id提取活动", httpMethod = "GET")
     @ResponseBody
-    public ReturnMessage getEnterpriseActivity(@ModelAttribute Activity activity,@RequestParam Integer pageSize,@RequestParam Integer pageNumber){
+    public ReturnMessage getEnterpriseActivity(@ModelAttribute Activity activity,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         activity =activity==null?new Activity():activity;
         PageInfo<Activity> pageinfo=new PageInfo<Activity>();
         pageinfo.setPageNum(pageNumber);
@@ -73,7 +73,7 @@ public class ActivityController
     @RequestMapping(value = "/activity", method = RequestMethod.GET)
     @ApiOperation(value = "获取所有活动", httpMethod = "GET")
     @ResponseBody
-    public ReturnMessage getActivity(@RequestParam Integer pageSize,@RequestParam Integer pageNumber){
+    public ReturnMessage getActivity(@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         List<PerenceActivityVO> lists=new ArrayList<>();
         PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
         PageInfo<PerenceActivityVO> pageinfo=new PageInfo<PerenceActivityVO>();
