@@ -2,12 +2,10 @@ package com.hust.party.test.servicetest;
 
 import com.hust.party.dao.ActivityMapper;
 import com.hust.party.pojo.Activity;
+import com.hust.party.pojo.Carousel;
 import com.hust.party.pojo.Order;
 import com.hust.party.pojo.UserRole;
-import com.hust.party.service.ActivityService;
-import com.hust.party.service.OrderService;
-import com.hust.party.service.OrderUserService;
-import com.hust.party.service.UserService;
+import com.hust.party.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +34,8 @@ public class ServiceTest {
     private OrderUserService orderUserService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private CarouselService carouselService;
 
     @Test
     public void testActivity(){
@@ -82,5 +82,14 @@ public class ServiceTest {
     public void testOrderService(){
         Order order = orderService.selectByPrimaryKey(3);
         System.out.println(order);
+    }
+    
+    @Test
+    public void testCarousel(){
+        int i = carouselService.selectCount(null);
+        System.out.println(i);
+
+        List<Carousel> select = carouselService.select(null, null);
+        System.out.println(select);
     }
 }

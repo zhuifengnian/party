@@ -37,7 +37,7 @@
         delete from activity
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.hust.party.pojo.Activity">
+    <insert id="insert" parameterType="com.hust.party.pojo.Activity" useGeneratedKeys="true" keyProperty="id">
         insert into activity (id, enterprise_id, title,
         word, picture, video,
         feature, contain_people, preferential_price,
@@ -51,7 +51,7 @@
         #{minuPeople,jdbcType=INTEGER}, #{addressName,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR},
         #{latitude,jdbcType=VARCHAR}, #{favourable,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity">
+    <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity" useGeneratedKeys="true" keyProperty="id">
         insert into activity
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

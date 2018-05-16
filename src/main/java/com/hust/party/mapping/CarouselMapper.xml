@@ -70,4 +70,38 @@
       activity_id = #{activityId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 分页查詢 -->
+  <select id="select" parameterType="Map" resultMap="BaseResultMap">
+    SELECT *
+    FROM carousel
+    WHERE 1=1
+    <if test="id != null" >
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="pictureUrl != null" >
+      and  pictureUrl = #{pictureUrl,jdbcType=VARCHAR}
+    </if>
+    <if test="activityId != null" >
+      and activityId = #{activityId,jdbcType=INTEGER}
+    </if>
+    <if test="start != null and pageSize!=null">
+      limit #{start},#{pageSize}
+    </if>
+  </select>
+  <!-- 查詢数量 -->
+  <select id="selectCount" parameterType="com.hust.party.pojo.Carousel"
+          resultType="Integer">
+    SELECT count(*)
+    FROM carousel
+    WHERE 1=1
+    <if test="id != null" >
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="pictureUrl != null" >
+      and  pictureUrl = #{pictureUrl,jdbcType=VARCHAR}
+    </if>
+    <if test="activityId != null" >
+      and activityId = #{activityId,jdbcType=INTEGER}
+    </if>
+  </select>
 </mapper>

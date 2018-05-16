@@ -6,7 +6,7 @@ import com.hust.party.common.ReturnMessage;
 import com.hust.party.exception.ApiExpection;
 import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Enterprise;
-import com.hust.party.pojo.PageInfo;
+import com.hust.party.common.PageInfo;
 import com.hust.party.service.ActivityService;
 
 import com.hust.party.service.EnterpriseService;

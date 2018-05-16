@@ -1,27 +1,25 @@
 package com.hust.party.pojo;
 
-import java.util.Date;
-
-public class OrderUser {
+public class Payment {
     private Integer id;
-
-    private Integer orderId;
 
     private Integer userId;
 
+    private Integer orderId;
+
     private Integer status;
 
-    private Date creatTime;
+    private Integer price;
 
-    public OrderUser(Integer id, Integer orderId, Integer userId, Integer status, Date creatTime) {
+    public Payment(Integer id, Integer userId, Integer orderId, Integer status, Integer price) {
         this.id = id;
-        this.orderId = orderId;
         this.userId = userId;
+        this.orderId = orderId;
         this.status = status;
-        this.creatTime = creatTime;
+        this.price = price;
     }
 
-    public OrderUser() {
+    public Payment() {
         super();
     }
 
@@ -33,20 +31,20 @@ public class OrderUser {
         this.id = id;
     }
 
-    public Integer getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
-    }
-
     public Integer getUserId() {
         return userId;
     }
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
     public Integer getStatus() {
@@ -57,11 +55,11 @@ public class OrderUser {
         this.status = status;
     }
 
-    public Date getCreatTime() {
-        return creatTime;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }

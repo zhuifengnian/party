@@ -1,15 +1,16 @@
 package com.hust.party.pojo;
 
-import org.apache.ibatis.type.Alias;
-
 public class Order {
     private Integer id;
 
     private Integer activityId;
 
-    public Order(Integer id, Integer activityId) {
+    private Integer status;
+
+    public Order(Integer id, Integer activityId, Integer status) {
         this.id = id;
         this.activityId = activityId;
+        this.status = status;
     }
 
     public Order() {
@@ -30,5 +31,13 @@ public class Order {
 
     public void setActivityId(Integer activityId) {
         this.activityId = activityId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

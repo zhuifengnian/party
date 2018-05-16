@@ -42,6 +42,8 @@ public class OrderController {
     @ResponseBody
     @RequestMapping(value="/insertOrder", method = RequestMethod.POST)
     public ReturnMessage insertOrder(@RequestParam("aid")Integer aid, @RequestParam("chat_id") String chat_id){
+        //先判断当前订单活动是否已经达到最大人数，当达到最大人数时，不允许再插入
+
         Order order = new Order();
         order.setActivityId(aid);
         int oid = orderService.insert(order);
