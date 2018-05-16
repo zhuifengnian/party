@@ -9,15 +9,15 @@ public class OrderUser {
 
     private Integer userId;
 
-    private Integer status;
+    private Integer state;
 
     private Date creatTime;
 
-    public OrderUser(Integer id, Integer orderId, Integer userId, Integer status, Date creatTime) {
+    public OrderUser(Integer id, Integer orderId, Integer userId, Integer state, Date creatTime) {
         this.id = id;
         this.orderId = orderId;
         this.userId = userId;
-        this.status = status;
+        this.state = state;
         this.creatTime = creatTime;
     }
 
@@ -49,12 +49,12 @@ public class OrderUser {
         this.userId = userId;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getState() {
+        return state;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public Date getCreatTime() {

@@ -6,12 +6,12 @@
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="creat_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_id, user_id, status, creat_time
+    id, order_id, user_id, state, creat_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,11 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.hust.party.pojo.OrderUser" useGeneratedKeys="true" keyProperty="id">
     insert into order_user (id, order_id, user_id, 
-      status, creat_time)
+      state, creat_time)
     values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP})
+      #{state,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.OrderUser " useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.OrderUser" useGeneratedKeys="true" keyProperty="id">
     insert into order_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -41,8 +41,8 @@
       <if test="userId != null" >
         user_id,
       </if>
-      <if test="status != null" >
-        status,
+      <if test="state != null" >
+        state,
       </if>
       <if test="creatTime != null" >
         creat_time,
@@ -58,8 +58,8 @@
       <if test="userId != null" >
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
       </if>
       <if test="creatTime != null" >
         #{creatTime,jdbcType=TIMESTAMP},
@@ -75,8 +75,8 @@
       <if test="userId != null" >
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
       </if>
       <if test="creatTime != null" >
         creat_time = #{creatTime,jdbcType=TIMESTAMP},
@@ -88,7 +88,7 @@
     update order_user
     set order_id = #{orderId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
       creat_time = #{creatTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -96,7 +96,6 @@
     select order_id from order_user where user_id = #{uid}
   </select>
   <select id="selectUserCnt" parameterType="int" resultType="int">
-    select count(*) from order_user where order_id = #{order_id} and   status = 1
+    select count(*) from order_user where order_id = #{order_id} and   state = 1
   </select>
-
 </mapper>

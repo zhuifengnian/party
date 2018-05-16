@@ -46,7 +46,9 @@ public class CarouselController {
         }
         //获取所有轮播数据
         Page page = new Page();
+        page.setPageNumber(1);
         page.setPageSize(num);
+        page.setStart(1);
         List<Carousel> carousels = carouselService.select(null, page);
         CarouselVO carouselVO = new CarouselVO();
         carouselVO.setCarousels(carousels);

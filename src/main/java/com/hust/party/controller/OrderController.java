@@ -4,20 +4,20 @@ import com.hust.party.common.Const;
 import com.hust.party.common.ReturnMessage;
 import com.hust.party.pojo.*;
 import com.hust.party.service.*;
+import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.OrderActivityVO;
 import com.hust.party.vo.UserOrderVO;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -28,7 +28,7 @@ import java.util.List;
 @RequestMapping("/order")
 public class OrderController {
     @Autowired
-    private OrderService orderService;
+    private OrdersService mOrdersService;
     @Autowired
     private OrderUserService orderUserService;
     @Autowired
@@ -40,18 +40,19 @@ public class OrderController {
 
     @ApiOperation(value =  "插入订单", notes = "插入订单到数据库")
     @ResponseBody
+    @Transactional
     @RequestMapping(value="/insertOrder", method = RequestMethod.POST)
     public ReturnMessage insertOrder(@RequestParam("aid")Integer aid, @RequestParam("chat_id") String chat_id){
         //先判断当前订单活动是否已经达到最大人数，当达到最大人数时，不允许再插入
 
-        Order order = new Order();
+        Orders order = new Orders();
         order.setActivityId(aid);
-        int oid = orderService.insert(order);
+        int oid = mOrdersService.insert(order);
         //从user表中查出user
         Integer uid = userService.selectUserByChatId(chat_id);
         OrderUser orderUser = new OrderUser();
         orderUser.setOrderId(oid);
-        orderUser.setStatus(1);
+        orderUser.setState(1);
         orderUser.setUserId(uid);
         int insert = orderUserService.insert(orderUser);
         return new ReturnMessage(200, insert);
@@ -68,7 +69,7 @@ public class OrderController {
         List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
         //去order表找activity
         for(Integer i: integers){
-            Order order = orderService.selectByPrimaryKey(i);
+            Orders order = mOrdersService.selectByPrimaryKey(i);
             if(order == null){
                 continue;
             }
@@ -77,15 +78,7 @@ public class OrderController {
             Activity activity = activityService.selectByPrimaryKey(activityId);
             OrderActivityVO orderActivityVO = new OrderActivityVO();
 
-            try {
-                PropertyUtils.copyProperties(orderActivityVO, activity);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
+            ReflectUtil.copyProperties(orderActivityVO, activity);
 
             orderActivityVO.setAid(activity.getId());
             orderActivityVO.setOid(order.getId());
@@ -106,8 +99,14 @@ public class OrderController {
                 orderActivityVO.setStatus(Const.ORDER_STATUS_HAS_FULL);
             }
 
-            //TODO;超时的判断
-//            if(activity.getActivityTime())
+            //获取当前时间，默认超过1天算超时
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+            if(activity.getActivityTime().after(calendar.getTime())){
+                orderActivityVO.setStatus(Const.ORDER_STATUS_EXCEED_TIME);
+            }
 
             orderActivityVO.setNum(userCnt);
             //获取企业名

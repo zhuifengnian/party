@@ -3,15 +3,15 @@ package com.hust.party.controller;
 import com.google.gson.Gson;
 import com.hust.party.common.Page;
 import com.hust.party.common.ReturnMessage;
-import com.hust.party.exception.ApiExpection;
 import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Enterprise;
 import com.hust.party.common.PageInfo;
 import com.hust.party.service.ActivityService;
 
 import com.hust.party.service.EnterpriseService;
-import com.hust.party.service.OrderService;
+import com.hust.party.service.OrdersService;
 import com.hust.party.service.OrderUserService;
+import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.PerenceActivityVO;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
@@ -22,14 +22,12 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +43,7 @@ public class ActivityController
     @Autowired
     private EnterpriseService enterpriseService;
     @Autowired
-    private OrderService orderService;
+    private OrdersService mOrdersService;
     @Autowired
     private OrderUserService orderUserService;
     @RequestMapping(value = "/activity/{aid}", method = RequestMethod.GET)
@@ -87,19 +85,13 @@ public class ActivityController
         List<Activity> list=activityService.getAllActivity(page);
        for(int i=0;i<list.size();i++){
            Activity activity=list.get(i);
-           try {
-               PropertyUtils.copyProperties(perenceActivityVO, activity);
-           } catch (IllegalAccessException e) {
-               e.printStackTrace();
-           } catch (InvocationTargetException e) {
-               e.printStackTrace();
-           } catch (NoSuchMethodException e) {
-               e.printStackTrace();
-           }
+
+           ReflectUtil.copyProperties(perenceActivityVO, activity);
+
              Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
              perenceActivityVO.setEnterpriceName(enterprise.getName());
              perenceActivityVO.setId(activity.getId());
-          Integer id =   orderService.getOrderId(activity.getId());
+          Integer id =   mOrdersService.getOrderId(activity.getId());
          int count=  orderUserService.selectUserCnt(id);
          perenceActivityVO.setSoldNumber(count);
          lists.add(perenceActivityVO);

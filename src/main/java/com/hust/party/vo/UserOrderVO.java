@@ -1,7 +1,5 @@
 package com.hust.party.vo;
 
-import com.hust.party.pojo.Order;
-
 import java.util.List;
 
 /**

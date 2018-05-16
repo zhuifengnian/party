@@ -3,8 +3,6 @@ package com.hust.party.test.servicetest;
 import com.hust.party.dao.ActivityMapper;
 import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Carousel;
-import com.hust.party.pojo.Order;
-import com.hust.party.pojo.UserRole;
 import com.hust.party.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +31,7 @@ public class ServiceTest {
     @Autowired
     private OrderUserService orderUserService;
     @Autowired
-    private OrderService orderService;
+    private OrdersService mOrdersService;
     @Autowired
     private CarouselService carouselService;
 
@@ -78,12 +76,7 @@ public class ServiceTest {
         Integer qwert = userService.selectUserByChatId("qwert");
         System.out.println(qwert);
     }
-    @Test
-    public void testOrderService(){
-        Order order = orderService.selectByPrimaryKey(3);
-        System.out.println(order);
-    }
-    
+
     @Test
     public void testCarousel(){
         int i = carouselService.selectCount(null);

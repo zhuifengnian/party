@@ -8,11 +8,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Description
- * @Author:王焕
- * @Date:2017/7/10
+ * 封装反射有关的方法的类，比如参数复制，通过反射获取值与赋值，将对象的字段与值放入map中
  */
 public class ReflectUtil {
+
+    /**
+     * 封装复制参数的方法
+     * @param dest  目标赋予对象
+     * @param src   源对象
+     */
+    public static void copyProperties(Object dest, Object src){
+        try {
+            PropertyUtils.copyProperties(dest, src);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static Object getValueByName(Object obj,String name) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         return PropertyUtils.getProperty(obj,name);

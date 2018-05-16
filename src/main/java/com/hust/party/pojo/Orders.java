@@ -1,19 +1,19 @@
 package com.hust.party.pojo;
 
-public class Order {
+public class Orders {
     private Integer id;
 
     private Integer activityId;
 
-    private Integer status;
+    private Integer state;
 
-    public Order(Integer id, Integer activityId, Integer status) {
+    public Orders(Integer id, Integer activityId, Integer state) {
         this.id = id;
         this.activityId = activityId;
-        this.status = status;
+        this.state = state;
     }
 
-    public Order() {
+    public Orders() {
         super();
     }
 
@@ -33,11 +33,11 @@ public class Order {
         this.activityId = activityId;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getState() {
+        return state;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setState(Integer state) {
+        this.state = state;
     }
 }
