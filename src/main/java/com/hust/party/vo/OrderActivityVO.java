@@ -3,6 +3,7 @@ package com.hust.party.vo;
 import com.hust.party.common.Const;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <br/>
@@ -14,31 +15,39 @@ public class OrderActivityVO {
 
     private Integer num;                //人数
 
+    private Integer enid;               //商家id
+
     private String enterpriceName;      //商家名
+
+    private Integer phone;              //商家电话
 
     private Integer status = Const.ORDER_STATUS_NOT_FULL;             //订单状态（0可以支付，1拼单人数满，2拼单人数未满，3日期已过）
 
-    private Integer aid;
+    private Integer aid;            //活动id
 
     private Integer enterpriseId;
 
-    private String title;
+    private String title;       //活动标题（名称）
 
-    private String word;
+    private String word;        //描述
 
     private String picture;
 
     private String video;
 
-    private String feature;
+    private String feature;     //标签
 
     private Integer containPeople;
 
-    private BigDecimal preferentialPrice;
+    private BigDecimal preferentialPrice;   //优惠价格
 
-    private BigDecimal originalPrice;
+    private BigDecimal originalPrice;       //原价
 
     private String address;
+
+    private Date creatTime;        //下单时间
+
+    private Date activityTime;      //活动时间（消费时间）
 
     public Integer getOid() {
         return oid;

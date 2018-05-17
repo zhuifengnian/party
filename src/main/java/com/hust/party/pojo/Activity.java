@@ -10,17 +10,17 @@ public class Activity {
 
     private String title;
 
-    private String word;
+    private String word;        //描述
 
     private String picture;
 
     private String video;
 
-    private String feature;
+    private String feature;     //标签
 
     private Integer containPeople;
 
-    private BigDecimal preferentialPrice;
+    private BigDecimal preferentialPrice;   //优惠价格
 
     private BigDecimal originalPrice;
 

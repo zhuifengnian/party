@@ -11,7 +11,7 @@ public class OrderUser {
 
     private Integer state;
 
-    private Date creatTime;
+    private Date creatTime;     //用户创建订单时间
 
     public OrderUser(Integer id, Integer orderId, Integer userId, Integer state, Date creatTime) {
         this.id = id;

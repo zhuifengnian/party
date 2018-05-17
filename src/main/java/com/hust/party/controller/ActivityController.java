@@ -43,7 +43,7 @@ public class ActivityController
     @Autowired
     private EnterpriseService enterpriseService;
     @Autowired
-    private OrdersService mOrdersService;
+    private OrdersService ordersService;
     @Autowired
     private OrderUserService orderUserService;
     @RequestMapping(value = "/activity/{aid}", method = RequestMethod.GET)
@@ -91,7 +91,7 @@ public class ActivityController
              Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
              perenceActivityVO.setEnterpriceName(enterprise.getName());
              perenceActivityVO.setId(activity.getId());
-          Integer id =   mOrdersService.getOrderId(activity.getId());
+          Integer id =   ordersService.getOrderId(activity.getId());
          int count=  orderUserService.selectUserCnt(id);
          perenceActivityVO.setSoldNumber(count);
          lists.add(perenceActivityVO);
