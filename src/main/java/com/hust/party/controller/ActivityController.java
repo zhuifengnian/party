@@ -75,7 +75,7 @@ public class ActivityController
     @ResponseBody
     public ReturnMessage getActivity(@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         List<PerenceActivityVO> lists=new ArrayList<>();
-        PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
+
         PageInfo<PerenceActivityVO> pageinfo=new PageInfo<PerenceActivityVO>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
@@ -85,14 +85,16 @@ public class ActivityController
         List<Activity> list=activityService.getAllActivity(page);
        for(int i=0;i<list.size();i++){
            Activity activity=list.get(i);
-
+           PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
            ReflectUtil.copyProperties(perenceActivityVO, activity);
 
              Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
              perenceActivityVO.setEnterpriceName(enterprise.getName());
              perenceActivityVO.setId(activity.getId());
           Integer id =   ordersService.getOrderId(activity.getId());
-         int count=  orderUserService.selectUserCnt(id);
+          int count=0;
+          if(id!=null)
+              count=  orderUserService.selectUserCnt(id);
          perenceActivityVO.setSoldNumber(count);
          lists.add(perenceActivityVO);
        }

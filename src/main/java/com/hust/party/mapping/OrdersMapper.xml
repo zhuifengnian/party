@@ -74,6 +74,6 @@
   <select id="getOrderId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
     select id
     from orders
-    where activity_id = #{activityId,jdbcType=INTEGER}
+    where activity_id = #{activityId,jdbcType=INTEGER} and state=1
   </select>
 </mapper>
