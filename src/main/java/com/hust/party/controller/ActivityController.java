@@ -46,18 +46,20 @@ public class ActivityController
     private OrdersService ordersService;
     @Autowired
     private OrderUserService orderUserService;
-    @RequestMapping(value = "/activity/{aid}", method = RequestMethod.GET)
-    @ApiOperation(value = "根据活动id提取信息", httpMethod = "GET")
+    @RequestMapping(value = "/activity/{aid}", method = RequestMethod.POST)
+    @ApiOperation(value = "根据活动id提取信息", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getActivity(@ApiParam(required = true, name = "aid", value = "活动id") @PathVariable Integer aid){
         Activity activity = activityService.selectByPrimaryKey(aid);
         return new ReturnMessage(200, activity);
     }
-    @RequestMapping(value = "/activity/enterprise", method = RequestMethod.GET)
-    @ApiOperation(value = "根据企业id提取活动", httpMethod = "GET")
+    @RequestMapping(value = "/activity/enterprise", method = RequestMethod.POST)
+    @ApiOperation(value = "根据企业id提取活动", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getEnterpriseActivity(@ModelAttribute Activity activity,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-        activity =activity==null?new Activity():activity;
+
+        if(activity.getEnterpriseId()==null)
+            activity.setEnterpriseId(0);
         PageInfo<Activity> pageinfo=new PageInfo<Activity>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
@@ -70,8 +72,8 @@ public class ActivityController
       //  List<Activity> list = activityService.getEnterpriseActivity(eid);
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/activity", method = RequestMethod.GET)
-    @ApiOperation(value = "获取所有活动", httpMethod = "GET")
+    @RequestMapping(value = "/activity", method = RequestMethod.POST)
+    @ApiOperation(value = "获取所有活动", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getActivity(@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         List<PerenceActivityVO> lists=new ArrayList<>();
