@@ -3,32 +3,38 @@ package com.hust.party.pojo;
 public class User {
     private Integer id;
 
-    private String chatId;
-
-    private String name;
-
-    private String card;
-
-    private String nickname;
-
-    private Integer sex;
-
     private Integer age;
 
     private String email;
 
     private String phone;
 
-    public User(Integer id, String chatId, String name, String card, String nickname, Integer sex, Integer age, String email, String phone) {
+    private String idCard;
+
+    private String nickname;
+
+    private String avatarurl;
+
+    private Integer gender;
+
+    private String city;
+
+    private String province;
+
+    private String country;
+
+    public User(Integer id, Integer age, String email, String phone, String idCard, String nickname, String avatarurl, Integer gender, String city, String province, String country) {
         this.id = id;
-        this.chatId = chatId;
-        this.name = name;
-        this.card = card;
-        this.nickname = nickname;
-        this.sex = sex;
         this.age = age;
         this.email = email;
         this.phone = phone;
+        this.idCard = idCard;
+        this.nickname = nickname;
+        this.avatarurl = avatarurl;
+        this.gender = gender;
+        this.city = city;
+        this.province = province;
+        this.country = country;
     }
 
     public User() {
@@ -41,46 +47,6 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(String chatId) {
-        this.chatId = chatId == null ? null : chatId.trim();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getCard() {
-        return card;
-    }
-
-    public void setCard(String card) {
-        this.card = card == null ? null : card.trim();
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname == null ? null : nickname.trim();
-    }
-
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
     }
 
     public Integer getAge() {
@@ -105,5 +71,61 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard == null ? null : idCard.trim();
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
+    }
+
+    public String getAvatarurl() {
+        return avatarurl;
+    }
+
+    public void setAvatarurl(String avatarurl) {
+        this.avatarurl = avatarurl == null ? null : avatarurl.trim();
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country == null ? null : country.trim();
     }
 }

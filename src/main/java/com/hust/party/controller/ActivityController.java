@@ -85,6 +85,7 @@ public class ActivityController
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
         List<Activity> list=activityService.getAllActivity(page);
+        int counts=0;
        for(int i=0;i<list.size();i++){
            Activity activity=list.get(i);
            PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
@@ -95,14 +96,14 @@ public class ActivityController
              perenceActivityVO.setId(activity.getId());
           Integer id =   ordersService.getOrderId(activity.getId());
           int count=0;
-          if(id!=null)
-              count=  orderUserService.selectUserCnt(id);
-         perenceActivityVO.setSoldNumber(count);
-         lists.add(perenceActivityVO);
+           perenceActivityVO.setSoldNumber(count);
+          if(id==null) {
+              lists.add(perenceActivityVO);
+              counts++;
+          }
        }
         pageinfo.setRows( lists);
-        int count=list.size();
-        pageinfo.setTotal(count);
+        pageinfo.setTotal(counts);
       return new ReturnMessage(200, pageinfo);
     }
     @ApiOperation(value = "插入活动", notes = "插入活动到数据库")

@@ -4,18 +4,20 @@
   <resultMap id="BaseResultMap" type="com.hust.party.pojo.User" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="chat_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="card" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="nickname" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="sex" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="age" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="id_card" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="nickname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="avatarurl" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="gender" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="city" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="province" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="country" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, chat_id, name, card, nickname, sex, age, email, phone
+    id, age, email, phone, id_card, nickname, avatarurl, gender, city, province, country
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -28,33 +30,20 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hust.party.pojo.User" >
-    insert into user (id, chat_id, name, 
-      card, nickname, sex, 
-      age, email, phone)
-    values (#{id,jdbcType=INTEGER}, #{chatId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{card,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
-      #{age,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR})
+    insert into user (id, age, email, 
+      phone, id_card, nickname, 
+      avatarurl, gender, city, 
+      province, country)
+    values (#{id,jdbcType=INTEGER}, #{age,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{avatarurl,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{city,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hust.party.pojo.User" >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
-      </if>
-      <if test="chatId != null" >
-        chat_id,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="card != null" >
-        card,
-      </if>
-      <if test="nickname != null" >
-        nickname,
-      </if>
-      <if test="sex != null" >
-        sex,
       </if>
       <if test="age != null" >
         age,
@@ -65,25 +54,31 @@
       <if test="phone != null" >
         phone,
       </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="avatarurl != null" >
+        avatarurl,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="country != null" >
+        country,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
-      </if>
-      <if test="chatId != null" >
-        #{chatId,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="card != null" >
-        #{card,jdbcType=VARCHAR},
-      </if>
-      <if test="nickname != null" >
-        #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null" >
-        #{sex,jdbcType=INTEGER},
       </if>
       <if test="age != null" >
         #{age,jdbcType=INTEGER},
@@ -94,26 +89,32 @@
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarurl != null" >
+        #{avatarurl,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        #{country,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.User" >
     update user
     <set >
-      <if test="chatId != null" >
-        chat_id = #{chatId,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="card != null" >
-        card = #{card,jdbcType=VARCHAR},
-      </if>
-      <if test="nickname != null" >
-        nickname = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null" >
-        sex = #{sex,jdbcType=INTEGER},
-      </if>
       <if test="age != null" >
         age = #{age,jdbcType=INTEGER},
       </if>
@@ -123,22 +124,46 @@
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarurl != null" >
+        avatarurl = #{avatarurl,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        country = #{country,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.User" >
     update user
-    set chat_id = #{chatId,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      card = #{card,jdbcType=VARCHAR},
-      nickname = #{nickname,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=INTEGER},
-      age = #{age,jdbcType=INTEGER},
+    set age = #{age,jdbcType=INTEGER},
       email = #{email,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR}
+      phone = #{phone,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      avatarurl = #{avatarurl,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      city = #{city,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectUserByChatId" parameterType="string" resultType="int">
-    select id from user where chat_id = #{chat_id}
+    select id from user where       nickname = #{chat_id}
+      avatarurl
   </select>
 </mapper>

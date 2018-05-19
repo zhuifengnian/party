@@ -72,7 +72,7 @@ public class CommentController
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             }
-            commentVo.setUsername(user.getName());
+            commentVo.setUsername(user.getNickname());
             commentVo.setTime(comment.getCommentTime().toString());
             lists.add(commentVo);
         }
