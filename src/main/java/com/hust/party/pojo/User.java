@@ -3,14 +3,6 @@ package com.hust.party.pojo;
 public class User {
     private Integer id;
 
-    private Integer age;
-
-    private String email;
-
-    private String phone;
-
-    private String idCard;
-
     private String nickname;
 
     private String avatarurl;
@@ -23,18 +15,26 @@ public class User {
 
     private String country;
 
-    public User(Integer id, Integer age, String email, String phone, String idCard, String nickname, String avatarurl, Integer gender, String city, String province, String country) {
+    private Integer age;
+
+    private String email;
+
+    private String phone;
+
+    private String idCard;
+
+    public User(Integer id, String nickname, String avatarurl, Integer gender, String city, String province, String country, Integer age, String email, String phone, String idCard) {
         this.id = id;
-        this.age = age;
-        this.email = email;
-        this.phone = phone;
-        this.idCard = idCard;
         this.nickname = nickname;
         this.avatarurl = avatarurl;
         this.gender = gender;
         this.city = city;
         this.province = province;
         this.country = country;
+        this.age = age;
+        this.email = email;
+        this.phone = phone;
+        this.idCard = idCard;
     }
 
     public User() {
@@ -47,38 +47,6 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
-    }
-
-    public String getIdCard() {
-        return idCard;
-    }
-
-    public void setIdCard(String idCard) {
-        this.idCard = idCard == null ? null : idCard.trim();
     }
 
     public String getNickname() {
@@ -127,5 +95,37 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country == null ? null : country.trim();
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard == null ? null : idCard.trim();
     }
 }
