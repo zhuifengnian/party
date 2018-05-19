@@ -111,8 +111,12 @@ public class ActivityController
     @RequestMapping(value="/insertActivity", method = RequestMethod.POST)
     public ReturnMessage insertActivity( Activity activity,  @RequestParam(value = "coverfile", required = false) MultipartFile cofile,
                                         @RequestParam(value = "flyfile", required = false) MultipartFile flfile){
-      String picture=manageFile(cofile);
-  String video=manageFile(flfile);
+       String picture=null;
+       String video=null;
+        if(cofile!=null)
+        picture=manageFile(cofile);
+        if(flfile!=null)
+      video=manageFile(flfile);
       activity.setPicture(picture);
     activity.setVideo(video);
         int insertNum = activityService.insert(activity);
