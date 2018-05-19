@@ -10,17 +10,17 @@ public class Activity {
 
     private String title;
 
-    private String word;        //描述
+    private String word;
 
     private String picture;
 
     private String video;
 
-    private String feature;     //标签
+    private String feature;
 
     private Integer containPeople;
 
-    private BigDecimal preferentialPrice;   //优惠价格
+    private BigDecimal preferentialPrice;
 
     private BigDecimal originalPrice;
 
@@ -40,7 +40,9 @@ public class Activity {
 
     private Integer classify;
 
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify) {
+    private Date arriveTime;
+
+    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify, Date arriveTime) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.title = title;
@@ -59,6 +61,7 @@ public class Activity {
         this.latitude = latitude;
         this.favourable = favourable;
         this.classify = classify;
+        this.arriveTime = arriveTime;
     }
 
     public Activity() {
@@ -207,5 +210,13 @@ public class Activity {
 
     public void setClassify(Integer classify) {
         this.classify = classify;
+    }
+
+    public Date getArriveTime() {
+        return arriveTime;
+    }
+
+    public void setArriveTime(Date arriveTime) {
+        this.arriveTime = arriveTime;
     }
 }

@@ -21,12 +21,13 @@
       <arg column="latitude" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="favourable" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="classify" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="arrive_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     id, enterprise_id, title, word, picture, video, feature, contain_people, preferential_price, 
     original_price, address, activity_time, minu_people, address_name, longitude, latitude, 
-    favourable, classify
+    favourable, classify, arrive_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -38,23 +39,23 @@
     delete from activity
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Activity"  useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.hust.party.pojo.Activity" >
     insert into activity (id, enterprise_id, title, 
       word, picture, video, 
       feature, contain_people, preferential_price, 
       original_price, address, activity_time, 
       minu_people, address_name, longitude, 
-      latitude, favourable, classify
-      )
+      latitude, favourable, classify, 
+      arrive_time)
     values (#{id,jdbcType=INTEGER}, #{enterpriseId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{word,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{video,jdbcType=VARCHAR}, 
       #{feature,jdbcType=VARCHAR}, #{containPeople,jdbcType=INTEGER}, #{preferentialPrice,jdbcType=DECIMAL}, 
       #{originalPrice,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, #{activityTime,jdbcType=TIMESTAMP}, 
       #{minuPeople,jdbcType=INTEGER}, #{addressName,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, 
-      #{latitude,jdbcType=VARCHAR}, #{favourable,jdbcType=VARCHAR}, #{classify,jdbcType=INTEGER}
-      )
+      #{latitude,jdbcType=VARCHAR}, #{favourable,jdbcType=VARCHAR}, #{classify,jdbcType=INTEGER}, 
+      #{arriveTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity" >
     insert into activity
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -110,6 +111,9 @@
       </if>
       <if test="classify != null" >
         classify,
+      </if>
+      <if test="arriveTime != null" >
+        arrive_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -167,6 +171,9 @@
       <if test="classify != null" >
         #{classify,jdbcType=INTEGER},
       </if>
+      <if test="arriveTime != null" >
+        #{arriveTime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.Activity" >
@@ -223,6 +230,9 @@
       <if test="classify != null" >
         classify = #{classify,jdbcType=INTEGER},
       </if>
+      <if test="arriveTime != null" >
+        arrive_time = #{arriveTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -244,7 +254,8 @@
       longitude = #{longitude,jdbcType=VARCHAR},
       latitude = #{latitude,jdbcType=VARCHAR},
       favourable = #{favourable,jdbcType=VARCHAR},
-      classify = #{classify,jdbcType=INTEGER}
+      classify = #{classify,jdbcType=INTEGER},
+      arrive_time = #{arriveTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 分页查詢 -->
@@ -301,7 +312,10 @@
       and favourable = #{favourable,jdbcType=VARCHAR}
     </if>
     <if test="classify != null" >
-     and classify = #{classify,jdbcType=INTEGER}
+      and classify = #{classify,jdbcType=INTEGER}
+    </if>
+    <if test="arriveTime != null" >
+      and arrive_time = #{arriveTime,jdbcType=TIMESTAMP}
     </if>
     <if test="start != null and pageSize!=null">
       limit #{start},#{pageSize}
@@ -363,6 +377,9 @@
     </if>
     <if test="classify != null" >
       and classify = #{classify,jdbcType=INTEGER}
+    </if>
+    <if test="arriveTime != null" >
+    and  arrive_time = #{arriveTime,jdbcType=TIMESTAMP}
     </if>
   </select>
   <!-- 查詢列表数量 -->
