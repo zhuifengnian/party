@@ -8,13 +8,14 @@
       <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="creat_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="consume_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_id, user_id, state, creat_time
+    id, order_id, user_id, state, creat_time, consume_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from order_user
     where id = #{id,jdbcType=INTEGER}
@@ -24,10 +25,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hust.party.pojo.OrderUser" useGeneratedKeys="true" keyProperty="id">
-    insert into order_user (id, order_id, user_id, 
-      state, creat_time)
-    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
-      #{state,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP})
+    insert into order_user (id, order_id, user_id,
+    state, creat_time, consume_time
+    )
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+    #{state,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, #{consumeTime,jdbcType=TIMESTAMP}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.hust.party.pojo.OrderUser" useGeneratedKeys="true" keyProperty="id">
     insert into order_user
@@ -47,6 +50,9 @@
       <if test="creatTime != null" >
         creat_time,
       </if>
+      <if test="consumeTime != null" >
+        consume_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -63,6 +69,9 @@
       </if>
       <if test="creatTime != null" >
         #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consumeTime != null" >
+        #{consumeTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -81,19 +90,26 @@
       <if test="creatTime != null" >
         creat_time = #{creatTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="consumeTime != null" >
+        consume_time = #{consumeTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.OrderUser" >
     update order_user
     set order_id = #{orderId,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER},
-      state = #{state,jdbcType=INTEGER},
-      creat_time = #{creatTime,jdbcType=TIMESTAMP}
+    user_id = #{userId,jdbcType=INTEGER},
+    state = #{state,jdbcType=INTEGER},
+    creat_time = #{creatTime,jdbcType=TIMESTAMP},
+    consume_time = #{consumeTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOrdersByUid" parameterType="int" resultType="int">
     select order_id from order_user where user_id = #{uid}
+    <if test="page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
   </select>
   <select id="selectUserCnt" parameterType="int" resultType="int">
     select count(*) from order_user where order_id = #{order_id} and   state = 1

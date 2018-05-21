@@ -70,7 +70,7 @@
       state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
+  <!--获取活动id获取订单-->
   <select id="getOrderId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
     select id
     from orders

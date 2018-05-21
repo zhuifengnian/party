@@ -1,5 +1,6 @@
 package com.hust.party.serviceimpl;
 
+import com.hust.party.common.Page;
 import com.hust.party.dao.BaseMapper;
 import com.hust.party.dao.OrderUserMapper;
 import com.hust.party.pojo.OrderUser;
@@ -24,9 +25,9 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
     }
 
     @Override
-    public List<Integer> selectOrdersByUid(Integer uid) {
+    public List<Integer> selectOrdersByUid(Integer uid, Page page) {
 
-        return orderUserMapper.selectOrdersByUid(uid);
+        return orderUserMapper.selectOrdersByUid(uid, page);
     }
 
     @Override

@@ -20,7 +20,7 @@
       p:prefix="/WEB-INF/view/" p:suffix=".jsp"/>
    <!--<mvc:resources location="/style/" mapping="/style/**"/>-->
     <!--<mvc:resources location="/style/images/" mapping="/images/**"/>-->
-    <!--<mvc:resources location="/file/" mapping="/file/**"/>-->
+    <mvc:resources location="/file/" mapping="/file/**"/>
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- 默认编码 -->

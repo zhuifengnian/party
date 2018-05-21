@@ -8,9 +8,9 @@ package com.hust.party.common;
 
 public class Page {
 
-    Integer start;
-    Integer pageNumber;
-    Integer pageSize;
+    Integer start = 0;
+    Integer pageNumber = 1;
+    Integer pageSize = 10;
     Integer totalPageCount;
     Integer total;
 

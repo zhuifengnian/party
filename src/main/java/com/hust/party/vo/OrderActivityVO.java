@@ -29,6 +29,8 @@ public class OrderActivityVO {
 
     private String title;       //活动标题（名称）
 
+    private Date activityTime;      //活动时间（消费时间）
+
     private String word;        //描述
 
     private String picture;
@@ -47,7 +49,9 @@ public class OrderActivityVO {
 
     private Date creatTime;        //下单时间
 
-    private Date activityTime;      //活动时间（消费时间）
+    private Date consumeTime;       //用户订单消费时间
+
+    private BigDecimal realPrice;       //真实价格
 
     public Integer getOid() {
         return oid;
@@ -65,12 +69,28 @@ public class OrderActivityVO {
         this.num = num;
     }
 
+    public Integer getEnid() {
+        return enid;
+    }
+
+    public void setEnid(Integer enid) {
+        this.enid = enid;
+    }
+
     public String getEnterpriceName() {
         return enterpriceName;
     }
 
     public void setEnterpriceName(String enterpriceName) {
         this.enterpriceName = enterpriceName;
+    }
+
+    public Integer getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Integer phone) {
+        this.phone = phone;
     }
 
     public Integer getStatus() {
@@ -103,6 +123,14 @@ public class OrderActivityVO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Date getActivityTime() {
+        return activityTime;
+    }
+
+    public void setActivityTime(Date activityTime) {
+        this.activityTime = activityTime;
     }
 
     public String getWord() {
@@ -167,5 +195,29 @@ public class OrderActivityVO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
+    }
+
+    public BigDecimal getRealPrice() {
+        return realPrice;
+    }
+
+    public void setRealPrice(BigDecimal realPrice) {
+        this.realPrice = realPrice;
+    }
+
+    public Date getConsumeTime() {
+        return consumeTime;
+    }
+
+    public void setConsumeTime(Date consumeTime) {
+        this.consumeTime = consumeTime;
     }
 }

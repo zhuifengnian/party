@@ -11,14 +11,17 @@ public class OrderUser {
 
     private Integer state;
 
-    private Date creatTime;     //用户创建订单时间
+    private Date creatTime;
 
-    public OrderUser(Integer id, Integer orderId, Integer userId, Integer state, Date creatTime) {
+    private Date consumeTime;       //用户订单消费时间
+
+    public OrderUser(Integer id, Integer orderId, Integer userId, Integer state, Date creatTime, Date consumeTime) {
         this.id = id;
         this.orderId = orderId;
         this.userId = userId;
         this.state = state;
         this.creatTime = creatTime;
+        this.consumeTime = consumeTime;
     }
 
     public OrderUser() {
@@ -63,5 +66,13 @@ public class OrderUser {
 
     public void setCreatTime(Date creatTime) {
         this.creatTime = creatTime;
+    }
+
+    public Date getConsumeTime() {
+        return consumeTime;
+    }
+
+    public void setConsumeTime(Date consumeTime) {
+        this.consumeTime = consumeTime;
     }
 }

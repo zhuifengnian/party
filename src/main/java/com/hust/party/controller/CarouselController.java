@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * 图片轮播的controller<br/>
@@ -35,7 +38,7 @@ public class CarouselController {
     @RequestMapping(value = "/pictureScroller", method = RequestMethod.GET)
     @ResponseBody
     public ReturnMessage show(@ApiParam(required = false, name = "num", value = "展示数量，默认为3")
-                                  @RequestParam(required = false, defaultValue = "3") Integer num){
+                                  @RequestParam(required = false, defaultValue = "3") Integer num, HttpServletRequest request){
         //先去查询所有的轮播,并对数量做处理
         int totalNum = carouselService.selectCount(null);
         if(num < 0){
@@ -50,6 +53,14 @@ public class CarouselController {
         page.setPageSize(num);
         page.setStart(1);
         List<Carousel> carousels = carouselService.select(null, page);
+        //对图片路径做下处理
+        carousels.forEach((carousel) ->{
+            String pictureUrl = carousel.getPictureUrl();
+            if(pictureUrl != null && pictureUrl.startsWith("/")){
+                String dir = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+                carousel.setPictureUrl(dir + pictureUrl);
+            }
+        });
         CarouselVO carouselVO = new CarouselVO();
         carouselVO.setCarousels(carousels);
         return new ReturnMessage(200, carouselVO);
