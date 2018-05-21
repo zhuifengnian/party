@@ -14,10 +14,12 @@
       <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="id_card" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="open_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, nickname, avatarurl, gender, city, province, country, age, email, phone, id_card
+    id, nickname, avatarurl, gender, city, province, country, age, email, phone, id_card, 
+    open_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -33,11 +35,13 @@
     insert into user (id, nickname, avatarurl, 
       gender, city, province, 
       country, age, email, 
-      phone, id_card)
+      phone, id_card, open_id
+      )
     values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{avatarurl,jdbcType=VARCHAR}, 
       #{gender,jdbcType=INTEGER}, #{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
       #{country,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR})
+      #{phone,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{openId,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hust.party.pojo.User"  useGeneratedKeys="true" keyProperty="id">
     insert into user
@@ -75,6 +79,9 @@
       <if test="idCard != null" >
         id_card,
       </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -109,6 +116,9 @@
       </if>
       <if test="idCard != null" >
         #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -145,6 +155,9 @@
       <if test="idCard != null" >
         id_card = #{idCard,jdbcType=VARCHAR},
       </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -159,7 +172,8 @@
       age = #{age,jdbcType=INTEGER},
       email = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      id_card = #{idCard,jdbcType=VARCHAR}
+      id_card = #{idCard,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectUserByChatId" parameterType="string" resultType="int">

@@ -61,9 +61,9 @@ public class ServiceTest {
 
     @Test
     public void testOrderUser(){
-        List<Integer> integers = orderUserService.selectOrdersByUid(1);
+      //  List<Integer> integers = orderUserService.selectOrdersByUid(1);
 
-        System.out.println(integers);
+      //  System.out.println(integers);
     }
 
     @Test

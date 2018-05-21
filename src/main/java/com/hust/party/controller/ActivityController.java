@@ -72,6 +72,25 @@ public class ActivityController
       //  List<Activity> list = activityService.getEnterpriseActivity(eid);
         return new ReturnMessage(200, pageinfo);
     }
+    @RequestMapping(value = "/activity/category", method = RequestMethod.POST)
+    @ApiOperation(value = "根据分类提取信息", httpMethod = "POST")
+    @ResponseBody
+    public ReturnMessage getCategoryActivity(@ModelAttribute Activity activity,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+
+        if(activity.getCategory()==null)
+            activity.setCategory(0);
+        PageInfo<Activity> pageinfo=new PageInfo<Activity>();
+        pageinfo.setPageNum(pageNumber);
+        pageinfo.setPageSize(pageSize);
+        Page page= new Page();
+        page.setPageNumber(pageNumber);
+        page.setPageSize(pageSize);
+        pageinfo.setRows( activityService.select(activity,page));
+        int count=activityService.selectCount(activity);
+        pageinfo.setTotal(count);
+        //  List<Activity> list = activityService.getEnterpriseActivity(eid);
+        return new ReturnMessage(200, pageinfo);
+    }
     @RequestMapping(value = "/activity", method = RequestMethod.POST)
     @ApiOperation(value = "获取所有活动", httpMethod = "POST")
     @ResponseBody

@@ -42,7 +42,9 @@ public class Activity {
 
     private Date arriveTime;
 
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify, Date arriveTime) {
+    private Integer category;
+
+    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify, Date arriveTime, Integer category) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.title = title;
@@ -62,6 +64,7 @@ public class Activity {
         this.favourable = favourable;
         this.classify = classify;
         this.arriveTime = arriveTime;
+        this.category = category;
     }
 
     public Activity() {
@@ -218,5 +221,13 @@ public class Activity {
 
     public void setArriveTime(Date arriveTime) {
         this.arriveTime = arriveTime;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
     }
 }
