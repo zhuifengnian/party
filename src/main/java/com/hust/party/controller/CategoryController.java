@@ -9,6 +9,7 @@ import com.hust.party.pojo.Category;
 import com.hust.party.pojo.Enterprise;
 import com.hust.party.service.*;
 import com.hust.party.util.ReflectUtil;
+import com.hust.party.vo.CategoryActivityVO;
 import com.hust.party.vo.PerenceActivityVO;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
@@ -52,6 +53,27 @@ private CategoryService categoryService;
         pageinfo.setRows(categoryService.select(category,page));
         pageinfo.setTotal(categoryService.selectCount(category));
         return new ReturnMessage(200, pageinfo);
+    }
+
+    /**
+     * 获取指定类别下的所有活动
+     */
+    @RequestMapping(value="/category/{cid}")
+    @ApiOperation(value="获取该类别下所有的活动", httpMethod="GET")
+    @ResponseBody
+    public ReturnMessage getActivitiesByCategory(@ApiParam(value = "类别id", required = true)@PathVariable("cid") Integer cid,
+           @ApiParam(value = "当前页数", required = false, defaultValue = "1")@RequestParam(required = false, defaultValue = "1") Integer pageNumber,
+           @ApiParam(value = "每页个数", required = false, defaultValue = "10")@RequestParam(required = false, defaultValue = "10") Integer pageSize){
+        PageInfo<CategoryActivityVO> pageInfo = new PageInfo<>();
+        pageInfo.setPageSize(pageSize);
+        pageInfo.setPageNum(pageNumber);
+        Page page = new Page();
+        page.setPageSize(pageSize);
+        page.setPageNumber(pageNumber);
+        List<CategoryActivityVO> activities = categoryService.selectActivityByCategory(cid, page);
+        pageInfo.setRows(activities);
+        pageInfo.setTotal(categoryService.getActivityByCidCnt(cid));
+        return new ReturnMessage(200, pageInfo);
     }
 
 }

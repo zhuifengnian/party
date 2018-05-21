@@ -32,7 +32,7 @@ import java.util.List;
 @RequestMapping("/order")
 public class OrderController {
     @Autowired
-    private OrdersService mOrdersService;
+    private OrdersService ordersService;
     @Autowired
     private OrderUserService orderUserService;
     @Autowired
@@ -52,7 +52,8 @@ public class OrderController {
 
         Orders order = new Orders();
         order.setActivityId(aid);
-        int oid = mOrdersService.insert(order);
+        order.setState(Const.ORDER_STATUS_ENGAGING);
+        int oid = ordersService.insert(order);
         //从user表中查出user
         Integer uid = userService.selectUserByChatId(chat_id);
         if(uid == null){
@@ -62,7 +63,7 @@ public class OrderController {
         //生成订单的用户也需要记录在order_user表中
         OrderUser orderUser = new OrderUser();
         orderUser.setOrderId(oid);
-        orderUser.setState(1);
+        orderUser.setState(Const.ORDER_USER_STATUS_NOT_FULL);
         orderUser.setUserId(uid);
         int insert = orderUserService.insert(orderUser);
         return new ReturnMessage(200, insert);
@@ -75,8 +76,8 @@ public class OrderController {
     public ReturnMessage engageOrder(@RequestParam("oid")Integer oid,@ApiParam(required = true, name = "用户chat_id",
             value = "用户chat_id") @RequestParam("chat_id") String chat_id){
 
-        //先判断当前订单活动是否已经达到最大人数，当达到最大人数时，不允许再参与
-        Orders orders = mOrdersService.selectByPrimaryKey(oid);
+        //脏数据判断
+        Orders orders = ordersService.selectByPrimaryKey(oid);
         if(orders == null){
             throw new ApiExpection(201, "所给订单id不存在");
         }
@@ -84,6 +85,11 @@ public class OrderController {
         Integer uid = userService.selectUserByChatId(chat_id);
         if(uid == null){
             throw new ApiExpection(201, "用户不存在，无法生成订单");
+        }
+
+        //判断订单是否已经取消
+        if(orders.getState() != null && orders.getState() == Const.ORDER_STATUS_CANCEL){
+            return new ReturnMessage(201, "订单已经取消，无法参与");
         }
 
         //在orderuser里先判断用户是否已经参与该订单，若没有，才允许参与
@@ -95,23 +101,48 @@ public class OrderController {
             return new ReturnMessage(201, "用户已经存在在订单中，不需要再参与");
         }
 
-        //判断订单是否还可以再参与，而不是人数已满或过期等其他状态
-        Integer state = orders.getState();
-        if(state != Const.ORDER_STATUS_CAN_PAY){
-            String msg = "";
-            switch(state){
-                case Const.ORDER_STATUS_EXCEED_TIME:
-                    msg = "订单超时";
-                    break;
-                case Const.ORDER_STATUS_HAS_FULL:
-                    msg = "人数已满";
-            }
-            return new ReturnMessage(201, "该订单不能再让用户," + msg);
-        }
-        //所有插入条件以满足，可以参与订单
-        orderUser.setState(1);
+        //当有人参与时，判断订单是否已经超时
+        Integer activityId = orders.getActivityId();
+        Activity activity = activityService.selectByPrimaryKey(activityId);
 
+        //获取当前时间，默认超过1天算超时
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+        if(activity.getArriveTime().before(calendar.getTime())){    //当当前时间超过活动结束时间，不允许用户再参与拼团
+            orders.setState(Const.ORDER_STATUS_EXCEED_TIME);
+            ordersService.updateByPrimaryKey(orders);
+            return new ReturnMessage(201, "订单已经超时，不能再让用于参与");
+        }
+
+        //判断当前订单活动是否已经达到最大人数，当达到最大人数时，不允许再参与
+        if(orders.getState() == Const.ORDER_STATUS_HAS_FULL){
+            return new ReturnMessage(201, "当前订单人数已达最大人数，无法再继续参团");
+        }
+
+        //所有插入条件以满足，可以参与订单
         int insert = orderUserService.insert(orderUser);
+
+        //获取插入之后的当前订单人数
+        Integer userCnt = orderUserService.selectUserCnt(orders.getId());
+
+        Integer containPeople = activity.getContainPeople();    //活动最大人数
+        Integer atleastPeople = activity.getMinuPeople();    //活动最少人数
+
+        //判断是否达到了订单的最小人数，当达到了最小人数后，订单状态改为可以支付
+        if(userCnt >= atleastPeople){
+            orderUser.setState(Const.ORDER_USER_STATUS_CAN_PAY);
+            orderUserService.updateByPrimaryKey(orderUser);
+            //TODO:通知该订单下的其他用户的订单状态改为可以支付
+        }
+
+        //插入完成后判断订单总的状态是否达到了最大容纳人数
+        if(userCnt >= containPeople){
+            orders.setState(Const.ORDER_STATUS_HAS_FULL);//订单状态改为人数已满
+            ordersService.updateByPrimaryKey(orders);
+        }
+
         return new ReturnMessage(200, "插入成功" + insert);
     }
 
@@ -123,7 +154,7 @@ public class OrderController {
     public ReturnMessage listOrders(@RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber, @RequestParam("chat_id") String chat_id){
         //分页准备
-        PageInfo<Integer> pageInfo = new PageInfo<>();
+        PageInfo<OrderActivityVO> pageInfo = new PageInfo<>();
         pageInfo.setPageNum(pageNumber);
         pageInfo.setPageSize(pageSize);
         Page page = new Page();
@@ -135,7 +166,7 @@ public class OrderController {
         List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
         //去order表找activity
         for(Integer i: integers){
-            Orders order = mOrdersService.selectByPrimaryKey(i);
+            Orders order = ordersService.selectByPrimaryKey(i);
             if(order == null){
                 continue;
             }
@@ -162,32 +193,17 @@ public class OrderController {
             orderActivityVO.setEnid(enterpriseId);
             orderActivityVO.setPhone(enterprise.getPhone());        //商家电话
 
-            //判断订单状态
-            Integer containPeople = activity.getContainPeople();    //活动最大人数
-            Integer atleastPeople = activity.getMinuPeople();    //活动最少人数
-
-            //当订单还未超时时，会有三种状态，当超时时，订单状态改为超时状态
-            if(userCnt < atleastPeople){
-                orderActivityVO.setStatus(Const.ORDER_STATUS_NOT_FULL);
-            }else if(userCnt <= containPeople){
-                orderActivityVO.setStatus(Const.ORDER_STATUS_CAN_PAY);
-            }else{
-                orderActivityVO.setStatus(Const.ORDER_STATUS_HAS_FULL);
-            }
-
-            //获取当前时间，默认超过1天算超时
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-
-            if(activity.getActivityTime().before(calendar.getTime())){
-                orderActivityVO.setStatus(Const.ORDER_STATUS_EXCEED_TIME);
-            }
+            //获取用户在这条订单下的状态
+            //先拿到orderuser对象
+            OrderUser orderUser = orderUserService.selectOrderUserByUidAndOid(uid, order.getId());
+            orderActivityVO.setStatus(orderUser.getState());
 
             //TODO:优惠券跟实际价格暂未实现
 
             orderActivityVOs.add(orderActivityVO);
         }
+        pageInfo.setRows(orderActivityVOs);
+//        pageInfo.setTotal();
         UserOrderVO userOrderVO = new UserOrderVO();
         userOrderVO.setOrders(orderActivityVOs);
         return  new ReturnMessage(200, userOrderVO);

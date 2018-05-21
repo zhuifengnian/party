@@ -4,5 +4,6 @@
 <configuration>      
     <typeAliases>
         <package name="com.hust.party.pojo"/>
+        <package name="com.hust.party.vo"/>
     </typeAliases>
 </configuration> 

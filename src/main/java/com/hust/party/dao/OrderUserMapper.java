@@ -19,4 +19,11 @@ public interface OrderUserMapper  extends BaseMapper<OrderUser>{
      */
     Integer selectUserCnt(Integer oid);
 
+    /**
+     * 根据用户id和订单id，获取用户在那个订单下的情况
+     * @param uid
+     * @param oid
+     */
+    OrderUser selectOrderUserByUidAndOid(@Param("uid")Integer uid, @Param("oid")Integer oid);
+
 }

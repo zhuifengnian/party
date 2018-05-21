@@ -21,7 +21,7 @@ public class OrderActivityVO {
 
     private Integer phone;              //商家电话
 
-    private Integer status = Const.ORDER_STATUS_NOT_FULL;             //订单状态（0可以支付，1拼单人数满，2拼单人数未满，3日期已过）
+    private Integer status = Const.ORDER_STATUS_ENGAGING;             //订单状态（0可以支付，1拼单人数满，2拼单人数未满，3日期已过）
 
     private Integer aid;            //活动id
 
