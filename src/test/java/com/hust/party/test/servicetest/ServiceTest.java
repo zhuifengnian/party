@@ -1,10 +1,15 @@
 package com.hust.party.test.servicetest;
 
+import com.hust.party.common.Page;
+import com.hust.party.common.PageInfo;
 import com.hust.party.dao.ActivityMapper;
 import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Carousel;
+import com.hust.party.pojo.Category;
 import com.hust.party.service.*;
+import com.hust.party.vo.PerenceActivityVO;
 import org.junit.Test;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,7 +39,22 @@ public class ServiceTest {
     private OrdersService mOrdersService;
     @Autowired
     private CarouselService carouselService;
-
+    @Autowired
+    private CategoryService categoryService;
+@Test
+public void getCategory(){
+    Category category =new Category();
+    category.setName("ktv");
+    PageInfo<Category> pageinfo=new PageInfo<Category>();
+    pageinfo.setPageNum(2);
+    pageinfo.setPageSize(10);
+    Page page= new Page();
+    page.setPageNumber(2);
+    page.setPageSize(10);
+pageinfo.setRows(categoryService.select(category,page));
+pageinfo.setTotal(categoryService.selectCount(category));
+System.out.println("分页信息：" + pageinfo);
+}
     @Test
     public void testActivity(){
         Activity activity = activityService.selectByPrimaryKey(1);

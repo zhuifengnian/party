@@ -12,7 +12,9 @@ public class PerenceActivityVO {
 
 
 
+    private Integer copies;
 
+    private Integer arriveCpies;
     private String enterpriceName;      //商家名
 
     private Integer id;
@@ -112,5 +114,21 @@ private Integer soldNumber;
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getArriveCpies() {
+        return arriveCpies;
+    }
+
+    public void setArriveCpies(Integer arriveCpies) {
+        this.arriveCpies = arriveCpies;
+    }
+
+    public Integer getCopies() {
+        return copies;
+    }
+
+    public void setCopies(Integer copies) {
+        this.copies = copies;
     }
 }

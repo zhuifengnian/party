@@ -14,7 +14,7 @@
       <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="id_card" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="open_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="open_id" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
@@ -40,10 +40,10 @@
     values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{avatarurl,jdbcType=VARCHAR}, 
       #{gender,jdbcType=INTEGER}, #{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
       #{country,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{openId,jdbcType=INTEGER}
+      #{phone,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.User"  useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.User"   useGeneratedKeys="true" keyProperty="id">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -118,7 +118,7 @@
         #{idCard,jdbcType=VARCHAR},
       </if>
       <if test="openId != null" >
-        #{openId,jdbcType=INTEGER},
+        #{openId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,7 +156,7 @@
         id_card = #{idCard,jdbcType=VARCHAR},
       </if>
       <if test="openId != null" >
-        open_id = #{openId,jdbcType=INTEGER},
+        open_id = #{openId,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -173,7 +173,7 @@
       email = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       id_card = #{idCard,jdbcType=VARCHAR},
-      open_id = #{openId,jdbcType=INTEGER}
+      open_id = #{openId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectUserByChatId" parameterType="string" resultType="int">

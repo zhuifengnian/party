@@ -11,4 +11,5 @@ public interface ActivityMapper extends BaseMapper<Activity>{
     Activity getActivity(Integer id);
     List<Activity> getEnterpriseActivity(Integer eid,Page page);
     List<Activity>getAllActivity(Page page);
+
 }

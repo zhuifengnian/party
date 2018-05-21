@@ -23,9 +23,9 @@ public class User {
 
     private String idCard;
 
-    private Integer openId;
+    private String openId;
 
-    public User(Integer id, String nickname, String avatarurl, Integer gender, String city, String province, String country, Integer age, String email, String phone, String idCard, Integer openId) {
+    public User(Integer id, String nickname, String avatarurl, Integer gender, String city, String province, String country, Integer age, String email, String phone, String idCard, String openId) {
         this.id = id;
         this.nickname = nickname;
         this.avatarurl = avatarurl;
@@ -132,11 +132,11 @@ public class User {
         this.idCard = idCard == null ? null : idCard.trim();
     }
 
-    public Integer getOpenId() {
+    public String getOpenId() {
         return openId;
     }
 
-    public void setOpenId(Integer openId) {
-        this.openId = openId;
+    public void setOpenId(String openId) {
+        this.openId = openId == null ? null : openId.trim();
     }
 }

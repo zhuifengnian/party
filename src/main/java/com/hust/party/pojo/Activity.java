@@ -44,7 +44,11 @@ public class Activity {
 
     private Integer category;
 
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify, Date arriveTime, Integer category) {
+    private Integer copies;
+
+    private Integer arriveCpies;
+
+    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify, Date arriveTime, Integer category, Integer copies, Integer arriveCpies) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.title = title;
@@ -65,6 +69,8 @@ public class Activity {
         this.classify = classify;
         this.arriveTime = arriveTime;
         this.category = category;
+        this.copies = copies;
+        this.arriveCpies = arriveCpies;
     }
 
     public Activity() {
@@ -229,5 +235,21 @@ public class Activity {
 
     public void setCategory(Integer category) {
         this.category = category;
+    }
+
+    public Integer getCopies() {
+        return copies;
+    }
+
+    public void setCopies(Integer copies) {
+        this.copies = copies;
+    }
+
+    public Integer getArriveCpies() {
+        return arriveCpies;
+    }
+
+    public void setArriveCpies(Integer arriveCpies) {
+        this.arriveCpies = arriveCpies;
     }
 }

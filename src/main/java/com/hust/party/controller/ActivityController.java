@@ -6,6 +6,7 @@ import com.hust.party.common.ReturnMessage;
 import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Enterprise;
 import com.hust.party.common.PageInfo;
+import com.hust.party.pojo.Orders;
 import com.hust.party.service.ActivityService;
 
 import com.hust.party.service.EnterpriseService;
@@ -96,7 +97,7 @@ public class ActivityController
     @ResponseBody
     public ReturnMessage getActivity(@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         List<PerenceActivityVO> lists=new ArrayList<>();
-
+       pageSize=10;
         PageInfo<PerenceActivityVO> pageinfo=new PageInfo<PerenceActivityVO>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
@@ -104,6 +105,7 @@ public class ActivityController
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
         List<Activity> list=activityService.getAllActivity(page);
+
         int counts=0;
        for(int i=0;i<list.size();i++){
            Activity activity=list.get(i);
