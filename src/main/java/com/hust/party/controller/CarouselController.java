@@ -2,7 +2,7 @@ package com.hust.party.controller;
 
 import com.hust.party.common.Page;
 import com.hust.party.common.ReturnMessage;
-import com.hust.party.exception.ApiExpection;
+import com.hust.party.exception.ApiException;
 import com.hust.party.pojo.Carousel;
 import com.hust.party.service.CarouselService;
 import com.hust.party.vo.CarouselVO;
@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * 图片轮播的controller<br/>
@@ -42,7 +40,7 @@ public class CarouselController {
         //先去查询所有的轮播,并对数量做处理
         int totalNum = carouselService.selectCount(null);
         if(num < 0){
-            throw new ApiExpection(201, "图片数量需要为正数");
+            throw new ApiException(201, "图片数量需要为正数");
         }
         if(num > totalNum){
             num = totalNum;

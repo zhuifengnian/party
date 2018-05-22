@@ -4,7 +4,7 @@ import com.hust.party.common.Const;
 import com.hust.party.common.Page;
 import com.hust.party.common.PageInfo;
 import com.hust.party.common.ReturnMessage;
-import com.hust.party.exception.ApiExpection;
+import com.hust.party.exception.ApiException;
 import com.hust.party.pojo.*;
 import com.hust.party.service.*;
 import com.hust.party.util.ReflectUtil;
@@ -57,7 +57,7 @@ public class OrderController {
         //从user表中查出user
         Integer uid = userService.selectUserByChatId(chat_id);
         if(uid == null){
-            throw new ApiExpection(201, "用户不存在，无法生成订单");
+            throw new ApiException(201, "用户不存在，无法生成订单");
         }
 
         //生成订单的用户也需要记录在order_user表中
@@ -79,12 +79,12 @@ public class OrderController {
         //脏数据判断
         Orders orders = ordersService.selectByPrimaryKey(oid);
         if(orders == null){
-            throw new ApiExpection(201, "所给订单id不存在");
+            throw new ApiException(201, "所给订单id不存在");
         }
         //从user表中查出user
         Integer uid = userService.selectUserByChatId(chat_id);
         if(uid == null){
-            throw new ApiExpection(201, "用户不存在，无法生成订单");
+            throw new ApiException(201, "用户不存在，无法生成订单");
         }
 
         //判断订单是否已经取消
@@ -146,7 +146,32 @@ public class OrderController {
         return new ReturnMessage(200, "插入成功" + insert);
     }
 
+    @ApiOperation(value =  "用户取消订单", notes = "用户取消订单")
+    @ResponseBody
+    @Transactional
+    @RequestMapping(value="/cancelOrderUser", method = RequestMethod.POST)
+    public ReturnMessage cancelOrderUser(@RequestParam("oid")Integer oid, @ApiParam(required = true, name = "用户open_id",
+            value = "用户open_id") @RequestParam("open_id") String open_id){
+        //判断订单是否可用
+        Orders orders = ordersService.selectByPrimaryKey(oid);
+        if(orders == null){
+            throw new ApiException(201,"所给订单id不存在");
+        }
+        //先拿到用户id
+        Integer uid = userService.selectUserByChatId(open_id);
+        //判断该订单下是否存在该用户
+        OrderUser orderUser = orderUserService.selectOrderUserByUidAndOid(uid, oid);
+        if(orderUser == null){
+            throw new ApiException(201, "该用户不在此订单下，不能执行取消");
+        }
 
+        //满足条件，可以取消orderuser
+        int i = orderUserService.deleteByPrimaryKey(orderUser.getId());
+
+        //TODO:退款操作
+
+        return new ReturnMessage(200, "取消订单成功" + i);
+    }
 
     @ApiOperation(value = "根据用户的openid，查询该用户订单列表", notes = "根据用户的openid，查询订单列表")
     @ResponseBody

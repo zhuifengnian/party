@@ -5,7 +5,7 @@ package com.hust.party.exception;
  * @Author:王焕
  * @Date:2017/7/13
  */
-public class ApiExpection extends RuntimeException{
+public class ApiException extends RuntimeException{
     private int code;
     private String message;
 
@@ -14,7 +14,7 @@ public class ApiExpection extends RuntimeException{
      * detail message.  The cause is not initialized, and may subsequently be
      * initialized by a call to {@link #initCause}.
      */
-    public ApiExpection(int code, String message) {
+    public ApiException(int code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -38,7 +38,7 @@ public class ApiExpection extends RuntimeException{
 
     @Override
     public String toString() {
-        return "ApiExpection{" +
+        return "ApiException{" +
                 "code=" + code +
                 ", message='" + message + '\'' +
                 '}';

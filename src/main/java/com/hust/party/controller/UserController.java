@@ -14,20 +14,24 @@ import org.springframework.web.bind.annotation.*;
  * Created by luyue on 2018/5/12.
  */
 @Controller
+@RequestMapping("/user")
 public class UserController
 {
 @Autowired
 private UserService userService;
     @ApiOperation(value = "插入用户", notes = "插入用户到数据库")
     @ResponseBody
-    @RequestMapping(value="/insertUser", method = RequestMethod.POST)
-    public ReturnMessage insertActivity( @RequestBody User user){
-
-        int insertNum = userService.insert(user);
-        return new ReturnMessage(200, insertNum);
+    @RequestMapping(value="/insertAndLogin", method = RequestMethod.POST)
+    public ReturnMessage insertAndLogin( @RequestBody User user){
+        //当用户不存在时，在数据库中先记录这个用户
+        //在数据库中根据open_id查找用户是否存在
+        Integer uid = userService.selectUserByChatId(user.getOpenId());
+        if(uid == null){
+            //执行插入操作
+            uid = userService.insert(user);
+        }
+        return new ReturnMessage(200, uid);
 
     }
-
-
 
 }

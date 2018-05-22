@@ -5,13 +5,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用于接收异常信息的切面，如需返回给前台异常信息，只需throw一个ApiException对象
@@ -25,9 +19,9 @@ public class ExceptionAdvice {
      * @param e
      * @return
      */
-    @ExceptionHandler(ApiExpection.class)
+    @ExceptionHandler(ApiException.class)
     @ResponseBody
-    public ReturnMessage processApiException(ApiExpection e) {
+    public ReturnMessage processApiException(ApiException e) {
         return new ReturnMessage(e.getCode(), e.getMessage()); //返回给前台异常信息
     }
 
