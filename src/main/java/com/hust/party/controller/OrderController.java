@@ -216,7 +216,7 @@ public class OrderController {
             Enterprise enterprise = enterpriseService.selectByPrimaryKey(enterpriseId);
             orderActivityVO.setEnterpriceName(enterprise.getName());
             orderActivityVO.setEnid(enterpriseId);
-            orderActivityVO.setPhone(enterprise.getPhone());        //商家电话
+            orderActivityVO.setLeadPhone(enterprise.getLeadPhone());        //商家电话
 
             //获取用户在这条订单下的状态
             //先拿到orderuser对象

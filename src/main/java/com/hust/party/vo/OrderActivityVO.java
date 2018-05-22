@@ -19,7 +19,7 @@ public class OrderActivityVO {
 
     private String enterpriceName;      //商家名
 
-    private Integer phone;              //商家电话
+    private String leadPhone;          //商家电话
 
     private Integer status = Const.ORDER_STATUS_ENGAGING;             //订单状态（0可以支付，1拼单人数满，2拼单人数未满，3日期已过）
 
@@ -85,13 +85,7 @@ public class OrderActivityVO {
         this.enterpriceName = enterpriceName;
     }
 
-    public Integer getPhone() {
-        return phone;
-    }
 
-    public void setPhone(Integer phone) {
-        this.phone = phone;
-    }
 
     public Integer getStatus() {
         return status;
@@ -219,5 +213,13 @@ public class OrderActivityVO {
 
     public void setConsumeTime(Date consumeTime) {
         this.consumeTime = consumeTime;
+    }
+
+    public String getLeadPhone() {
+        return leadPhone;
+    }
+
+    public void setLeadPhone(String leadPhone) {
+        this.leadPhone = leadPhone;
     }
 }

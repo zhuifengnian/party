@@ -1,5 +1,7 @@
 package com.hust.party.pojo;
 
+import java.util.Date;
+
 public class Orders {
     private Integer id;
 
@@ -7,10 +9,16 @@ public class Orders {
 
     private Integer state;
 
-    public Orders(Integer id, Integer activityId, Integer state) {
+    private Date createTime;
+
+    private Date finishTime;
+
+    public Orders(Integer id, Integer activityId, Integer state, Date createTime, Date finishTime) {
         this.id = id;
         this.activityId = activityId;
         this.state = state;
+        this.createTime = createTime;
+        this.finishTime = finishTime;
     }
 
     public Orders() {
@@ -39,5 +47,21 @@ public class Orders {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(Date finishTime) {
+        this.finishTime = finishTime;
     }
 }
