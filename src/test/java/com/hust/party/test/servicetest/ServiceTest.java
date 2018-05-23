@@ -2,12 +2,15 @@ package com.hust.party.test.servicetest;
 
 import com.hust.party.common.Page;
 import com.hust.party.common.PageInfo;
+import com.hust.party.common.ReflectUtil;
 import com.hust.party.dao.ActivityMapper;
 import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Carousel;
 import com.hust.party.pojo.Category;
+import com.hust.party.pojo.Orders;
 import com.hust.party.service.*;
 import com.hust.party.vo.PerenceActivityVO;
+import org.aspectj.weaver.ast.Or;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
@@ -17,7 +20,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * 专门用来做单元测试<br/>
@@ -36,23 +40,36 @@ public class ServiceTest {
     @Autowired
     private OrderUserService orderUserService;
     @Autowired
-    private OrdersService mOrdersService;
+    private OrdersService ordersService;
     @Autowired
     private CarouselService carouselService;
     @Autowired
     private CategoryService categoryService;
 @Test
 public void getCategory(){
-    Category category =new Category();
-    category.setName("ktv");
-    PageInfo<Category> pageinfo=new PageInfo<Category>();
+
+        PageInfo<Orders> pageinfo=new PageInfo<Orders>();
     pageinfo.setPageNum(2);
     pageinfo.setPageSize(10);
     Page page= new Page();
     page.setPageNumber(2);
     page.setPageSize(10);
-pageinfo.setRows(categoryService.select(category,page));
-pageinfo.setTotal(categoryService.selectCount(category));
+    long current=System.currentTimeMillis();
+    long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
+    long twelve=zero+24*60*60*1000-1;
+
+    Timestamp t = new Timestamp(zero);
+    Date d = new Date(t.getTime());
+    Timestamp t1 = new Timestamp(twelve);
+    Date d1 = new Date(t1.getTime());
+    Orders orders =new Orders();
+    Map map= ReflectUtil.generalMap(orders,page);
+    map.put("eid",1);
+    map.put("d",t);
+    map.put("t",t1);
+
+pageinfo.setRows(ordersService.getOrders(map));
+
 System.out.println("分页信息：" + pageinfo);
 }
     @Test

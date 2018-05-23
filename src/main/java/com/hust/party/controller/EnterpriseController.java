@@ -33,10 +33,7 @@ import java.io.IOException;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Created by luyue on 2018/5/12.
@@ -50,29 +47,16 @@ public class EnterpriseController
     private EnterpriseService enterpriseService;
     @Autowired
     private OrdersService ordersService;
-    @Autowired
-    private OrderUserService orderUserService;
+
     @RequestMapping(value = "/enterprise/{eid}", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取今日消费订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getEnterpriseActivity(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+       if(pageSize==null)
+           pageSize=10;
         long current=System.currentTimeMillis();
         long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
         long twelve=zero+24*60*60*1000-1;
-        List<Activity> lists=activityService.getAllCurrentActivity(eid);
-        List <Activity> list=new ArrayList<>();
-        Timestamp t = new Timestamp(zero);
-        Date d = new Date(t.getTime());
-        Timestamp t1 = new Timestamp(twelve);
-        Date d1 = new Date(t1.getTime());
-        for(int i=0;i<lists.size();i++){
-            Activity activity=lists.get(i);
-            Date date= activity.getActivityTime();
-            if(date.getTime()>d.getTime()&&date.getTime()<d1.getTime()){
-              list.add(activity);
-            }
-
-        }
         PageInfo<EnterpriseOrderVo> pageinfo=new PageInfo<EnterpriseOrderVo>();
         List<EnterpriseOrderVo> list2=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
@@ -80,41 +64,61 @@ public class EnterpriseController
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-        for(int i=0;i<list.size();i++){
-            EnterpriseOrderVo enterpriseOrderVo = new EnterpriseOrderVo();
-            Activity activity=list.get(i);
-           List<Orders> list1=ordersService.getOrder(activity.getId());
+
+        Timestamp t = new Timestamp(zero);
+        Date d = new Date(t.getTime());
+        Timestamp t1 = new Timestamp(twelve);
+        Date d1 = new Date(t1.getTime());
+
+            Orders orders =new Orders();
+
+        Map map= com.hust.party.common.ReflectUtil.generalMap(orders,page);
+        map.put("eid",eid);
+        map.put("d",t);
+        map.put("t",t1);
+           List<Orders> list1=ordersService.getOrders(map);
+            pageinfo.setTotal(ordersService.getCount(map));
            for(int j=0;j<list1.size();j++){
-               enterpriseOrderVo.setId(list1.get(i).getId());
+
+               Orders order1 =list1.get(j);
+               Activity activity= activityService.selectByPrimaryKey(order1.getActivityId());
+               EnterpriseOrderVo enterpriseOrderVo = new EnterpriseOrderVo();
+               enterpriseOrderVo.setId(list1.get(j).getId());
 
                enterpriseOrderVo.setActivityTime(activity.getActivityTime());
                enterpriseOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
                enterpriseOrderVo.setTitle(activity.getTitle());
              list2.add(enterpriseOrderVo);
            }
-        }
+
         pageinfo.setRows(list2);
+
         return new ReturnMessage(200, pageinfo);
     }
     @RequestMapping(value = "/enterprise/getAll/{eid}", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取全部订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getActivity(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-
-        List<Activity> lists=activityService.getAllCurrentActivity(eid);
-        List<AllOrderVo> list2=new ArrayList<>();
+       if(pageSize==null)
+           pageSize=10;
         PageInfo<AllOrderVo> pageinfo=new PageInfo<AllOrderVo>();
-
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-        for(int i=0;i<lists.size();i++){
-            AllOrderVo allOrderVo =new AllOrderVo();
-            Activity activity =lists.get(i);
-            List<Orders> list1=ordersService.getOrders(activity.getId());
+
+        List<AllOrderVo> list2=new ArrayList<>();
+
+            Orders orders =new Orders();
+           orders.setEnterpriseId(eid);
+            List<Orders> list1=ordersService.select(orders,page);
+            pageinfo.setTotal(ordersService.selectCount(orders));
+
             for(int j=0;j<list1.size();j++){
+                Orders order1=list1.get(j);
+                Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
+                AllOrderVo allOrderVo =new AllOrderVo();
                 allOrderVo.setActivityTime(activity.getActivityTime());
                 allOrderVo.setCreateTime(list1.get(j).getCreateTime());
                 allOrderVo.setId(list1.get(j).getId());
@@ -124,20 +128,18 @@ public class EnterpriseController
                 allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
                 list2.add(allOrderVo);
 
-            }
         }
 
-
         pageinfo.setRows(list2);
-        pageinfo.setTotal(list2.size());
+
         return new ReturnMessage(200, pageinfo);
     }
     @RequestMapping(value = "/enterprise/getNew/{eid}", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取今日新接订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getNewOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-        List<Activity> lists=activityService.getAllCurrentActivity(eid);
-
+        if(pageSize==null)
+            pageSize=10;
         PageInfo<EnterpriseOrderVo> pageinfo=new PageInfo<EnterpriseOrderVo>();
         List<EnterpriseOrderVo> list3=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
@@ -145,43 +147,41 @@ public class EnterpriseController
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-        for(int i=0;i<lists.size();i++){
-            Activity activity =lists.get(i);
-          List<Orders> list1= ordersService.getNewOrder(activity.getId());
-            long current=System.currentTimeMillis();
-            long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
-            long twelve=zero+24*60*60*1000-1;
+        long current=System.currentTimeMillis();
+        long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
+        long twelve=zero+24*60*60*1000-1;
 
-            Timestamp t = new Timestamp(zero);
-            Date d = new Date(t.getTime());
-            Timestamp t1 = new Timestamp(twelve);
-            Date d1 = new Date(t1.getTime());
+        Timestamp t = new Timestamp(zero);
+        Timestamp t1 = new Timestamp(twelve);
+        Orders orders =new Orders();
+        Map map= com.hust.party.common.ReflectUtil.generalMap(orders,page);
+        map.put("eid",eid);
+        map.put("d",t);
+        map.put("t",t1);
 
+        List<Orders> list1=ordersService.getOrders(map);
+        pageinfo.setTotal(ordersService.getCount(map));
             for(int j=0;j<list1.size();j++){
-                Orders orders =list1.get(j);
-                Date date= orders.getCreateTime();
-                if(date.getTime()>d.getTime()&&date.getTime() <d1.getTime()){
-
+                Orders order1 =list1.get(j);
+               Activity activity= activityService.selectByPrimaryKey(order1.getActivityId());
                     EnterpriseOrderVo enterpriseOrderVo =new EnterpriseOrderVo();
                     enterpriseOrderVo.setTitle(activity.getTitle());
                     enterpriseOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
                     enterpriseOrderVo.setActivityTime(activity.getActivityTime());
-                    enterpriseOrderVo.setId(orders.getId());
+                    enterpriseOrderVo.setId(order1.getId());
                     list3.add(enterpriseOrderVo);
-                }
 
             }
-
-        }
          pageinfo.setRows(list3);
+
         return new ReturnMessage(200, pageinfo);
     }
     @RequestMapping(value = "/enterprise/getNo/{eid}", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取未消费订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getNoOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-        List<Activity> lists=activityService.getAllCurrentActivity(eid);
-
+        if(pageSize==null)
+            pageSize=10;
         PageInfo<AllOrderVo> pageinfo=new PageInfo<AllOrderVo>();
         List<AllOrderVo> list3=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
@@ -189,11 +189,15 @@ public class EnterpriseController
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-        for(int i=0;i<lists.size();i++){
-            Activity activity =lists.get(i);
-            List<Orders> list1= ordersService.getNewOrder(activity.getId());
 
+            Orders orders =new Orders();
+            orders.setState(2);
+            orders.setEnterpriseId(eid);
+            List<Orders> list1= ordersService.select(orders,page);
+            pageinfo.setTotal(ordersService.selectCount(orders));
             for(int j=0;j<list1.size();j++){
+                Orders order1=list1.get(j);
+                Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
                 AllOrderVo allOrderVo = new AllOrderVo();
                 allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
                 allOrderVo.setState(list1.get(j).getState());
@@ -205,7 +209,7 @@ public class EnterpriseController
                  list3.add(allOrderVo);
             }
 
-        }
+
         pageinfo.setRows(list3);
         return new ReturnMessage(200, pageinfo);
     }
@@ -213,8 +217,8 @@ public class EnterpriseController
     @ApiOperation(value = "根据企业id提取已消费订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getYOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-        List<Activity> lists=activityService.getAllCurrentActivity(eid);
-
+        if(pageSize==null)
+            pageSize=10;
         PageInfo<AllOrderVo> pageinfo=new PageInfo<AllOrderVo>();
         List<AllOrderVo> list3=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
@@ -222,11 +226,15 @@ public class EnterpriseController
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-        for(int i=0;i<lists.size();i++){
-            Activity activity =lists.get(i);
-            List<Orders> list1= ordersService.getYOrder(activity.getId());
 
+            Orders orders =new Orders();
+            orders.setEnterpriseId(eid);
+            orders.setState(5);
+            List<Orders> list1= ordersService.select(orders,page);
+        pageinfo.setTotal(ordersService.selectCount(orders));
             for(int j=0;j<list1.size();j++){
+                Orders order1=list1.get(j);
+                Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
                 AllOrderVo allOrderVo = new AllOrderVo();
                 allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
                 allOrderVo.setState(list1.get(j).getState());
@@ -236,7 +244,7 @@ public class EnterpriseController
                 allOrderVo.setCreateTime(list1.get(j).getCreateTime());
                 allOrderVo.setActivityTime(activity.getActivityTime());
                 list3.add(allOrderVo);
-            }
+
 
         }
         pageinfo.setRows(list3);
@@ -246,8 +254,8 @@ public class EnterpriseController
     @ApiOperation(value = "根据企业id提取已取消订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getQOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-        List<Activity> lists=activityService.getAllCurrentActivity(eid);
-
+        if(pageSize==null)
+            pageSize=10;
         PageInfo<AllOrderVo> pageinfo=new PageInfo<AllOrderVo>();
         List<AllOrderVo> list3=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
@@ -255,11 +263,16 @@ public class EnterpriseController
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-        for(int i=0;i<lists.size();i++){
-            Activity activity =lists.get(i);
-            List<Orders> list1= ordersService.getQOrder(activity.getId());
 
+
+            Orders orders =new Orders();
+            orders.setEnterpriseId(eid);
+            orders.setState(0);
+            List<Orders> list1= ordersService.select(orders,page);
+        pageinfo.setTotal(ordersService.selectCount(orders));
             for(int j=0;j<list1.size();j++){
+                Orders order1=list1.get(j);
+                Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
                 AllOrderVo allOrderVo = new AllOrderVo();
                 allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
                 allOrderVo.setState(list1.get(j).getState());
@@ -271,7 +284,7 @@ public class EnterpriseController
                 list3.add(allOrderVo);
             }
 
-        }
+
         pageinfo.setRows(list3);
         return new ReturnMessage(200, pageinfo);
     }

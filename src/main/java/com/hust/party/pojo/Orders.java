@@ -13,12 +13,18 @@ public class Orders {
 
     private Date finishTime;
 
-    public Orders(Integer id, Integer activityId, Integer state, Date createTime, Date finishTime) {
+    private Integer enterpriseId;
+
+    private Date activityTime;
+
+    public Orders(Integer id, Integer activityId, Integer state, Date createTime, Date finishTime, Integer enterpriseId, Date activityTime) {
         this.id = id;
         this.activityId = activityId;
         this.state = state;
         this.createTime = createTime;
         this.finishTime = finishTime;
+        this.enterpriseId = enterpriseId;
+        this.activityTime = activityTime;
     }
 
     public Orders() {
@@ -63,5 +69,21 @@ public class Orders {
 
     public void setFinishTime(Date finishTime) {
         this.finishTime = finishTime;
+    }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
+    }
+
+    public Date getActivityTime() {
+        return activityTime;
+    }
+
+    public void setActivityTime(Date activityTime) {
+        this.activityTime = activityTime;
     }
 }

@@ -8,10 +8,12 @@
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="finish_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="enterprise_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="activity_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, activity_id, state, create_time, finish_time
+    id, activity_id, state, create_time, finish_time, enterprise_id, activity_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -23,13 +25,15 @@
     delete from orders
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Orders" >
+  <insert id="insert" parameterType="com.hust.party.pojo.Orders"  useGeneratedKeys="true" keyProperty="id">
     insert into orders (id, activity_id, state, 
-      create_time, finish_time)
+      create_time, finish_time, enterprise_id, 
+      activity_time)
     values (#{id,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, #{enterpriseId,jdbcType=INTEGER}, 
+      #{activityTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.Orders" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Orders"  useGeneratedKeys="true" keyProperty="id">
     insert into orders
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -46,6 +50,12 @@
       </if>
       <if test="finishTime != null" >
         finish_time,
+      </if>
+      <if test="enterpriseId != null" >
+        enterprise_id,
+      </if>
+      <if test="activityTime != null" >
+        activity_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -64,6 +74,12 @@
       <if test="finishTime != null" >
         #{finishTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="enterpriseId != null" >
+        #{enterpriseId,jdbcType=INTEGER},
+      </if>
+      <if test="activityTime != null" >
+        #{activityTime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.Orders" >
@@ -81,6 +97,12 @@
       <if test="finishTime != null" >
         finish_time = #{finishTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="enterpriseId != null" >
+        enterprise_id = #{enterpriseId,jdbcType=INTEGER},
+      </if>
+      <if test="activityTime != null" >
+        activity_time = #{activityTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -89,9 +111,63 @@
     set activity_id = #{activityId,jdbcType=INTEGER},
       state = #{state,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      finish_time = #{finishTime,jdbcType=TIMESTAMP}
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      enterprise_id = #{enterpriseId,jdbcType=INTEGER},
+      activity_time = #{activityTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 分页查詢 -->
+  <select id="select" parameterType="Map" resultMap="BaseResultMap">
+    SELECT *
+    FROM orders
+    WHERE 1=1
+    <if test="activityId != null" >
+      and  activity_id = #{activityId,jdbcType=INTEGER}
+    </if>
+    <if test="state != null" >
+      and   state = #{state,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null" >
+      and  create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="finishTime != null" >
+      and   finish_time = #{finishTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="enterpriseId != null" >
+      and enterprise_id = #{enterpriseId,jdbcType=INTEGER}
+    </if>
+    <if test="activityTime != null" >
+     and activity_time = #{activityTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="start != null and pageSize!=null">
+      limit #{start},#{pageSize}
+    </if>
+  </select>
+  <!-- 查詢数量 -->
+  <select id="selectCount" parameterType="com.hust.party.pojo.Orders"
+          resultType="Integer">
+    SELECT count(*)
+    FROM orders
+    WHERE 1=1
+    <if test="activityId != null" >
+      and  activity_id = #{activityId,jdbcType=INTEGER}
+    </if>
+    <if test="state != null" >
+      and   state = #{state,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null" >
+      and  create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="finishTime != null" >
+      and   finish_time = #{finishTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="enterpriseId != null" >
+      and  enterprise_id = #{enterpriseId,jdbcType=INTEGER}
+    </if>
+    <if test="activityTime != null" >
+      and activity_time = #{activityTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
   <select id="getOrderId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
     select id
     from orders
@@ -100,31 +176,42 @@
   <select id="getOrder" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select *
     from orders
-    where activity_id = #{activityId,jdbcType=INTEGER} and state=2
+    where
+    activity_id = #{activityId,jdbcType=INTEGER}
+    and state=2
+
   </select>
-  <select id="getOrders" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+
+  <select id="getOrders" resultMap="BaseResultMap" >
     select *
     from orders
-    where activity_id = #{activityId,jdbcType=INTEGER} and (state=1 or state=2)
+    where 1=1
+    <if test="eid != null" >
+      and  enterprise_id = #{eid}
+    </if>
+    <if test="d != null" >
+      and   create_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
+    </if>
+    <if test="t != null" >
+      and   create_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
+    </if>
+    <if test="start != null and pageSize!=null">
+      limit #{start},#{pageSize}
+    </if>
   </select>
-  <select id="getNewOrder" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select *
+  <select id="getCount"  resultType="Integer" >
+    select count(*)
     from orders
-    where activity_id = #{activityId,jdbcType=INTEGER} and (state=1 or state=2)
-  </select>
-  <select id="getNoOrder" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select *
-    from orders
-    where activity_id = #{activityId,jdbcType=INTEGER} and  state=3
-  </select>
-  <select id="getYOrder" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select *
-    from orders
-    where activity_id = #{activityId,jdbcType=INTEGER} and  state=5
-  </select>
-  <select id="getQOrder" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select *
-    from orders
-    where activity_id = #{activityId,jdbcType=INTEGER} and  state=0
+    where 1=1
+    <if test="eid != null" >
+      and  enterprise_id = #{eid}
+    </if>
+    <if test="d != null" >
+      and   create_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
+    </if>
+    <if test="t != null" >
+      and   create_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
+    </if>
+
   </select>
 </mapper>

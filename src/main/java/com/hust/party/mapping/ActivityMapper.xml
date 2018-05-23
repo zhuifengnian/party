@@ -450,7 +450,8 @@
   <select id="getAllCurrentActivity"  resultMap="BaseResultMap"  parameterType="java.lang.Integer">
     select *
     from activity
-    where enterprise_id =#{eid,jdbcType=INTEGER}
+    where
+     enterprise_id =#{eid,jdbcType=INTEGER}
 
   </select>
 </mapper>
