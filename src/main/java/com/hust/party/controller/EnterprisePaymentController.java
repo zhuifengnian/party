@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -94,12 +95,12 @@ private ActivityService activityService;
         Payment payment=new Payment();
         payment.setEnterpriseId(eid);
        List<Payment> list= paymentService.select(payment,null);
-       int count=0;
+        BigDecimal aDouble =new BigDecimal(0.00);
        for(int i=0;i<list.size();i++){
             Date date=list.get(i).getCreatTime();
             if(date.getTime()<d1.getTime()&&date.getTime()>d.getTime())
-             count=count+list.get(i).getPrice();
+             aDouble=aDouble.add(list.get(i).getPrice());
        }
-        return new ReturnMessage(200,count);
+        return new ReturnMessage(200,aDouble);
     }
 }

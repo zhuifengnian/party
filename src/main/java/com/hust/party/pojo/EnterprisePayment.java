@@ -1,15 +1,17 @@
 package com.hust.party.pojo;
 
+import java.math.BigDecimal;
+
 public class EnterprisePayment {
     private Integer id;
 
     private Integer enterpriseId;
 
-    private Integer accountMoney;
+    private BigDecimal accountMoney;
 
-    private Integer totalMoney;
+    private BigDecimal totalMoney;
 
-    public EnterprisePayment(Integer id, Integer enterpriseId, Integer accountMoney, Integer totalMoney) {
+    public EnterprisePayment(Integer id, Integer enterpriseId, BigDecimal accountMoney, BigDecimal totalMoney) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.accountMoney = accountMoney;
@@ -36,19 +38,19 @@ public class EnterprisePayment {
         this.enterpriseId = enterpriseId;
     }
 
-    public Integer getAccountMoney() {
+    public BigDecimal getAccountMoney() {
         return accountMoney;
     }
 
-    public void setAccountMoney(Integer accountMoney) {
+    public void setAccountMoney(BigDecimal accountMoney) {
         this.accountMoney = accountMoney;
     }
 
-    public Integer getTotalMoney() {
+    public BigDecimal getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(Integer totalMoney) {
+    public void setTotalMoney(BigDecimal totalMoney) {
         this.totalMoney = totalMoney;
     }
 }

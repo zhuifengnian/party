@@ -5,8 +5,8 @@
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="enterprise_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="account_money" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="total_money" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="account_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="total_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
@@ -22,11 +22,11 @@
     delete from enterprisepayment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.EnterprisePayment" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.hust.party.pojo.EnterprisePayment" useGeneratedKeys="true" keyProperty="id" >
     insert into enterprisepayment (id, enterprise_id, account_money, 
       total_money)
-    values (#{id,jdbcType=INTEGER}, #{enterpriseId,jdbcType=INTEGER}, #{accountMoney,jdbcType=INTEGER}, 
-      #{totalMoney,jdbcType=INTEGER})
+    values (#{id,jdbcType=INTEGER}, #{enterpriseId,jdbcType=INTEGER}, #{accountMoney,jdbcType=DECIMAL}, 
+      #{totalMoney,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.hust.party.pojo.EnterprisePayment" useGeneratedKeys="true" keyProperty="id" >
     insert into enterprisepayment
@@ -52,10 +52,10 @@
         #{enterpriseId,jdbcType=INTEGER},
       </if>
       <if test="accountMoney != null" >
-        #{accountMoney,jdbcType=INTEGER},
+        #{accountMoney,jdbcType=DECIMAL},
       </if>
       <if test="totalMoney != null" >
-        #{totalMoney,jdbcType=INTEGER},
+        #{totalMoney,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -66,10 +66,10 @@
         enterprise_id = #{enterpriseId,jdbcType=INTEGER},
       </if>
       <if test="accountMoney != null" >
-        account_money = #{accountMoney,jdbcType=INTEGER},
+        account_money = #{accountMoney,jdbcType=DECIMAL},
       </if>
       <if test="totalMoney != null" >
-        total_money = #{totalMoney,jdbcType=INTEGER},
+        total_money = #{totalMoney,jdbcType=DECIMAL},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -77,8 +77,8 @@
   <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.EnterprisePayment" >
     update enterprisepayment
     set enterprise_id = #{enterpriseId,jdbcType=INTEGER},
-      account_money = #{accountMoney,jdbcType=INTEGER},
-      total_money = #{totalMoney,jdbcType=INTEGER}
+      account_money = #{accountMoney,jdbcType=DECIMAL},
+      total_money = #{totalMoney,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 分页查詢 -->
@@ -87,13 +87,13 @@
     FROM enterprisepayment
     WHERE 1=1
     <if test="enterpriseId != null" >
-    and  enterprise_id = #{enterpriseId,jdbcType=INTEGER}
+      and  enterprise_id = #{enterpriseId,jdbcType=INTEGER}
     </if>
     <if test="accountMoney != null" >
-     and account_money = #{accountMoney,jdbcType=INTEGER}
+    and  account_money = #{accountMoney,jdbcType=DECIMAL}
     </if>
     <if test="totalMoney != null" >
-      and total_money = #{totalMoney,jdbcType=INTEGER}
+     and total_money = #{totalMoney,jdbcType=DECIMAL}
     </if>
     <if test="start != null and pageSize!=null">
       limit #{start},#{pageSize}
@@ -109,10 +109,10 @@
       and  enterprise_id = #{enterpriseId,jdbcType=INTEGER}
     </if>
     <if test="accountMoney != null" >
-      and account_money = #{accountMoney,jdbcType=INTEGER}
+      and  account_money = #{accountMoney,jdbcType=DECIMAL}
     </if>
     <if test="totalMoney != null" >
-      and total_money = #{totalMoney,jdbcType=INTEGER}
+      and total_money = #{totalMoney,jdbcType=DECIMAL}
     </if>
   </select>
 </mapper>

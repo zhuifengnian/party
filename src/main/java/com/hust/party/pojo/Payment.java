@@ -1,5 +1,6 @@
 package com.hust.party.pojo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Payment {
@@ -11,7 +12,7 @@ public class Payment {
 
     private Integer state;
 
-    private Integer price;
+    private BigDecimal price;
 
     private Date creatTime;
 
@@ -19,7 +20,7 @@ public class Payment {
 
     private Integer activityId;
 
-    public Payment(Integer id, Integer userId, Integer orderId, Integer state, Integer price, Date creatTime, Integer enterpriseId, Integer activityId) {
+    public Payment(Integer id, Integer userId, Integer orderId, Integer state, BigDecimal price, Date creatTime, Integer enterpriseId, Integer activityId) {
         this.id = id;
         this.userId = userId;
         this.orderId = orderId;
@@ -66,11 +67,11 @@ public class Payment {
         this.state = state;
     }
 
-    public Integer getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

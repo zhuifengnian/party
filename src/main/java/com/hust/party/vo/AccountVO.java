@@ -14,8 +14,8 @@ public class AccountVO {
     private Integer orderId;
 
 private String title;
-    private Integer price;
 
+    private BigDecimal price;
     private Date creatTime;
 
 
@@ -43,13 +43,7 @@ private String title;
         this.title = title;
     }
 
-    public Integer getPrice() {
-        return price;
-    }
 
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
 
     public Date getCreatTime() {
         return creatTime;
@@ -57,5 +51,14 @@ private String title;
 
     public void setCreatTime(Date creatTime) {
         this.creatTime = creatTime;
+    }
+
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
