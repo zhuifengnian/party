@@ -43,6 +43,16 @@ public class OrdersServiceImpl extends AbstractBaseServiceImpl<Orders>implements
     }
 
     @Override
+    public List<Orders> getActivityOrder(Map map) {
+        return ordersMapper.getActivityOrder(map);
+    }
+
+    @Override
+    public int getActivityCount(Map map) {
+        return ordersMapper.getActivityCount(map);
+    }
+
+    @Override
     public int getCount(Map map) {
         return ordersMapper.getCount(map);
     }

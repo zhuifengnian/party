@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by luyue on 2018/5/16.
  */
-public class AllOrderVo {
+public class AllOrderVO {
     private Integer id;
     private String title;
     private Date activityTime;

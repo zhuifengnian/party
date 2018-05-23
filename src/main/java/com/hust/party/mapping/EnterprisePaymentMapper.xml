@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust.party.dao.EnterprisePaymentMapper" >
+  <resultMap id="BaseResultMap" type="com.hust.party.pojo.EnterprisePayment" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="enterprise_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="account_money" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="total_money" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, enterprise_id, account_money, total_money
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from enterprisepayment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from enterprisepayment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hust.party.pojo.EnterprisePayment" useGeneratedKeys="true" keyProperty="id">
+    insert into enterprisepayment (id, enterprise_id, account_money, 
+      total_money)
+    values (#{id,jdbcType=INTEGER}, #{enterpriseId,jdbcType=INTEGER}, #{accountMoney,jdbcType=INTEGER}, 
+      #{totalMoney,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.EnterprisePayment" useGeneratedKeys="true" keyProperty="id" >
+    insert into enterprisepayment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="enterpriseId != null" >
+        enterprise_id,
+      </if>
+      <if test="accountMoney != null" >
+        account_money,
+      </if>
+      <if test="totalMoney != null" >
+        total_money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="enterpriseId != null" >
+        #{enterpriseId,jdbcType=INTEGER},
+      </if>
+      <if test="accountMoney != null" >
+        #{accountMoney,jdbcType=INTEGER},
+      </if>
+      <if test="totalMoney != null" >
+        #{totalMoney,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.EnterprisePayment" >
+    update enterprisepayment
+    <set >
+      <if test="enterpriseId != null" >
+        enterprise_id = #{enterpriseId,jdbcType=INTEGER},
+      </if>
+      <if test="accountMoney != null" >
+        account_money = #{accountMoney,jdbcType=INTEGER},
+      </if>
+      <if test="totalMoney != null" >
+        total_money = #{totalMoney,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.EnterprisePayment" >
+    update enterprisepayment
+    set enterprise_id = #{enterpriseId,jdbcType=INTEGER},
+      account_money = #{accountMoney,jdbcType=INTEGER},
+      total_money = #{totalMoney,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 分页查詢 -->
+  <select id="select" parameterType="Map" resultMap="BaseResultMap">
+    SELECT *
+    FROM enterprisepayment
+    WHERE 1=1
+    <if test="enterpriseId != null" >
+    and  enterprise_id = #{enterpriseId,jdbcType=INTEGER}
+    </if>
+    <if test="accountMoney != null" >
+     and account_money = #{accountMoney,jdbcType=INTEGER}
+    </if>
+    <if test="totalMoney != null" >
+      and total_money = #{totalMoney,jdbcType=INTEGER}
+    </if>
+    <if test="start != null and pageSize!=null">
+      limit #{start},#{pageSize}
+    </if>
+  </select>
+  <!-- 查詢数量 -->
+  <select id="selectCount" parameterType="com.hust.party.pojo.EnterprisePayment"
+          resultType="Integer">
+    SELECT count(*)
+    FROM enterprisepayment
+    WHERE 1=1
+    <if test="enterpriseId != null" >
+      and  enterprise_id = #{enterpriseId,jdbcType=INTEGER}
+    </if>
+    <if test="accountMoney != null" >
+      and account_money = #{accountMoney,jdbcType=INTEGER}
+    </if>
+    <if test="totalMoney != null" >
+      and total_money = #{totalMoney,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

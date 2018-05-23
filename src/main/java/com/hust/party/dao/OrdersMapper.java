@@ -16,5 +16,6 @@ public interface OrdersMapper extends BaseMapper<Orders>{
     List<Orders> getOrders(Map map);
     int getCount(Map map);
     List<Orders> getNewOrder(Integer activityId);
-
+    List<Orders>getActivityOrder(Map map);
+    int getActivityCount(Map map);
 }

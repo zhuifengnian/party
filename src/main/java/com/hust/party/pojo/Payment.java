@@ -1,5 +1,7 @@
 package com.hust.party.pojo;
 
+import java.util.Date;
+
 public class Payment {
     private Integer id;
 
@@ -7,16 +9,25 @@ public class Payment {
 
     private Integer orderId;
 
-    private Integer status;
+    private Integer state;
 
     private Integer price;
 
-    public Payment(Integer id, Integer userId, Integer orderId, Integer status, Integer price) {
+    private Date creatTime;
+
+    private Integer enterpriseId;
+
+    private Integer activityId;
+
+    public Payment(Integer id, Integer userId, Integer orderId, Integer state, Integer price, Date creatTime, Integer enterpriseId, Integer activityId) {
         this.id = id;
         this.userId = userId;
         this.orderId = orderId;
-        this.status = status;
+        this.state = state;
         this.price = price;
+        this.creatTime = creatTime;
+        this.enterpriseId = enterpriseId;
+        this.activityId = activityId;
     }
 
     public Payment() {
@@ -47,12 +58,12 @@ public class Payment {
         this.orderId = orderId;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getState() {
+        return state;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public Integer getPrice() {
@@ -61,5 +72,29 @@ public class Payment {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
+    }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
+    }
+
+    public Integer getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
     }
 }

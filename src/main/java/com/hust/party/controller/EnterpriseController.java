@@ -9,12 +9,9 @@ import com.hust.party.pojo.Enterprise;
 import com.hust.party.pojo.Orders;
 import com.hust.party.service.ActivityService;
 import com.hust.party.service.EnterpriseService;
-import com.hust.party.service.OrderUserService;
 import com.hust.party.service.OrdersService;
-import com.hust.party.util.ReflectUtil;
-import com.hust.party.vo.AllOrderVo;
+import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.EnterpriseOrderVo;
-import com.hust.party.vo.PerenceActivityVO;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -36,7 +33,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 /**
- * Created by luyue on 2018/5/12.
+ * Created by luyue on 2018/5/23
  */
 @Controller
 public class EnterpriseController
@@ -76,8 +73,9 @@ public class EnterpriseController
         map.put("eid",eid);
         map.put("d",t);
         map.put("t",t1);
-           List<Orders> list1=ordersService.getOrders(map);
-            pageinfo.setTotal(ordersService.getCount(map));
+        map.put("state",2);
+           List<Orders> list1=ordersService.getActivityOrder(map);
+            pageinfo.setTotal(ordersService.getActivityCount(map));
            for(int j=0;j<list1.size();j++){
 
                Orders order1 =list1.get(j);
@@ -101,14 +99,14 @@ public class EnterpriseController
     public ReturnMessage getActivity(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
        if(pageSize==null)
            pageSize=10;
-        PageInfo<AllOrderVo> pageinfo=new PageInfo<AllOrderVo>();
+        PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
 
-        List<AllOrderVo> list2=new ArrayList<>();
+        List<AllOrderVO> list2=new ArrayList<>();
 
             Orders orders =new Orders();
            orders.setEnterpriseId(eid);
@@ -118,7 +116,7 @@ public class EnterpriseController
             for(int j=0;j<list1.size();j++){
                 Orders order1=list1.get(j);
                 Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
-                AllOrderVo allOrderVo =new AllOrderVo();
+                AllOrderVO allOrderVo =new AllOrderVO();
                 allOrderVo.setActivityTime(activity.getActivityTime());
                 allOrderVo.setCreateTime(list1.get(j).getCreateTime());
                 allOrderVo.setId(list1.get(j).getId());
@@ -158,7 +156,7 @@ public class EnterpriseController
         map.put("eid",eid);
         map.put("d",t);
         map.put("t",t1);
-
+        map.put("state",2);
         List<Orders> list1=ordersService.getOrders(map);
         pageinfo.setTotal(ordersService.getCount(map));
             for(int j=0;j<list1.size();j++){
@@ -182,8 +180,8 @@ public class EnterpriseController
     public ReturnMessage getNoOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
             pageSize=10;
-        PageInfo<AllOrderVo> pageinfo=new PageInfo<AllOrderVo>();
-        List<AllOrderVo> list3=new ArrayList<>();
+        PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
+        List<AllOrderVO> list3=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
@@ -198,7 +196,7 @@ public class EnterpriseController
             for(int j=0;j<list1.size();j++){
                 Orders order1=list1.get(j);
                 Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
-                AllOrderVo allOrderVo = new AllOrderVo();
+                AllOrderVO allOrderVo = new AllOrderVO();
                 allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
                 allOrderVo.setState(list1.get(j).getState());
                 allOrderVo.setTitle(activity.getTitle());
@@ -219,8 +217,8 @@ public class EnterpriseController
     public ReturnMessage getYOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
             pageSize=10;
-        PageInfo<AllOrderVo> pageinfo=new PageInfo<AllOrderVo>();
-        List<AllOrderVo> list3=new ArrayList<>();
+        PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
+        List<AllOrderVO> list3=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
@@ -235,7 +233,7 @@ public class EnterpriseController
             for(int j=0;j<list1.size();j++){
                 Orders order1=list1.get(j);
                 Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
-                AllOrderVo allOrderVo = new AllOrderVo();
+                AllOrderVO allOrderVo = new AllOrderVO();
                 allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
                 allOrderVo.setState(list1.get(j).getState());
                 allOrderVo.setTitle(activity.getTitle());
@@ -256,8 +254,8 @@ public class EnterpriseController
     public ReturnMessage getQOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
             pageSize=10;
-        PageInfo<AllOrderVo> pageinfo=new PageInfo<AllOrderVo>();
-        List<AllOrderVo> list3=new ArrayList<>();
+        PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
+        List<AllOrderVO> list3=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
@@ -273,7 +271,7 @@ public class EnterpriseController
             for(int j=0;j<list1.size();j++){
                 Orders order1=list1.get(j);
                 Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
-                AllOrderVo allOrderVo = new AllOrderVo();
+                AllOrderVO allOrderVo = new AllOrderVO();
                 allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
                 allOrderVo.setState(list1.get(j).getState());
                 allOrderVo.setTitle(activity.getTitle());
