@@ -17,7 +17,7 @@ public interface OrdersService extends BaseService<Orders>{
     Integer getOrderId(Integer activityId);
     List<Orders> getOrder(Integer activityId);
     List<Orders> getOrders(Map map);
-    List<Orders>getActivityOrder(Map map);
+    List<Orders> getActivityOrder(Map map);
     int getActivityCount(Map map);
     int getCount(Map map);
     List<Orders> getNewOrder(Integer activityId);

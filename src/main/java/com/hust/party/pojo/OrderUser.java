@@ -13,7 +13,7 @@ public class OrderUser {
 
     private Date creatTime;
 
-    private Date consumeTime;       //用户订单消费时间
+    private Date consumeTime;
 
     public OrderUser(Integer id, Integer orderId, Integer userId, Integer state, Date creatTime, Date consumeTime) {
         this.id = id;

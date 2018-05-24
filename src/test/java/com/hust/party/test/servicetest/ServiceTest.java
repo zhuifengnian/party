@@ -45,6 +45,8 @@ public class ServiceTest {
     private CarouselService carouselService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private EnterpriseService enterpriseService;
 @Test
 public void getCategory(){
 
@@ -121,5 +123,10 @@ System.out.println("分页信息：" + pageinfo);
 
         List<Carousel> select = carouselService.select(null, null);
         System.out.println(select);
+    }
+    @Test
+    public void selectUserId(){
+       int insert=   userService.selectUserByChatId("oReIb5LdIAyYRRWD76b8wic9q2NY");
+       System.out.print("+++++++++++++++++++++++++"+insert);
     }
 }
