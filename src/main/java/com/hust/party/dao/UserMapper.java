@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper  extends BaseMapper<User>{
 
-    Integer selectUserByChatId(String chat_id);
+    Integer selectUserByChatId(String openId);
 }

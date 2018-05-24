@@ -15,10 +15,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,8 +43,8 @@ public class OrderController {
     @ResponseBody
     @Transactional
     @RequestMapping(value="/insertOrder", method = RequestMethod.POST)
-    public ReturnMessage insertOrder(@RequestParam("aid")Integer aid,@ApiParam(required = true, name = "用户chat_id",
-            value = "用户chat_id") @RequestParam("chat_id") String chat_id){
+    public ReturnMessage insertOrder(@RequestParam("aid")Integer aid, @ApiParam(required = true, name = "open_id",
+            value = "open_id") @RequestParam("open_id") String open_id){
         //先判断当前订单活动是否已经达到最大人数，当达到最大人数时，不允许再插入
 
         Orders order = new Orders();
@@ -55,7 +52,7 @@ public class OrderController {
         order.setState(Const.ORDER_STATUS_ENGAGING);
         int oid = ordersService.insert(order);
         //从user表中查出user
-        Integer uid = userService.selectUserByChatId(chat_id);
+        Integer uid = userService.selectUserByChatId(open_id);
         if(uid == null){
             throw new ApiException(201, "用户不存在，无法生成订单");
         }
@@ -74,7 +71,7 @@ public class OrderController {
     @Transactional
     @RequestMapping(value="/engageOrder", method = RequestMethod.POST)
     public ReturnMessage engageOrder(@RequestParam("oid")Integer oid,@ApiParam(required = true, name = "用户chat_id",
-            value = "用户chat_id") @RequestParam("chat_id") String chat_id){
+            value = "用户chat_id") @RequestParam("open_id") String chat_id){
 
         //脏数据判断
         Orders orders = ordersService.selectByPrimaryKey(oid);
@@ -177,7 +174,7 @@ public class OrderController {
     @ResponseBody
     @RequestMapping(value="/listOrders", method = RequestMethod.GET)
     public ReturnMessage listOrders(@RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-           @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber, @RequestParam("chat_id") String chat_id){
+           @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber, @RequestParam("open_id") String chat_id){
         //分页准备
         PageInfo<OrderActivityVO> pageInfo = new PageInfo<>();
         pageInfo.setPageNum(pageNumber);
@@ -231,6 +228,6 @@ public class OrderController {
 //        pageInfo.setTotal();
         UserOrderVO userOrderVO = new UserOrderVO();
         userOrderVO.setOrders(orderActivityVOs);
-        return  new ReturnMessage(200, userOrderVO);
+        return  new ReturnMessage(200, pageInfo);
     }
 }

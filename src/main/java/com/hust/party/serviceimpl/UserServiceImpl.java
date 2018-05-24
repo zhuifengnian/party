@@ -18,9 +18,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User> implements Us
     private UserMapper userMapper;
 
     @Override
-    public Integer selectUserByChatId(String chat_id) {
+    public Integer selectUserByChatId(String open_id) {
 
-        return userMapper.selectUserByChatId(chat_id);
+        return userMapper.selectUserByChatId(open_id);
     }
 
     @Override

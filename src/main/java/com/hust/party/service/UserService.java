@@ -10,5 +10,5 @@ public interface UserService extends BaseService<User>{
     /**
      * 根据微信给的id来查找用户
      */
-    Integer selectUserByChatId(String chat_id);
+    Integer selectUserByChatId(String open_id);
 }
