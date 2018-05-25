@@ -17,7 +17,9 @@ public class Orders {
 
     private Date activityTime;
 
-    public Orders(Integer id, Integer activityId, Integer state, Date createTime, Date finishTime, Integer enterpriseId, Date activityTime) {
+    private String qrCode;
+
+    public Orders(Integer id, Integer activityId, Integer state, Date createTime, Date finishTime, Integer enterpriseId, Date activityTime, String qrCode) {
         this.id = id;
         this.activityId = activityId;
         this.state = state;
@@ -25,6 +27,7 @@ public class Orders {
         this.finishTime = finishTime;
         this.enterpriseId = enterpriseId;
         this.activityTime = activityTime;
+        this.qrCode = qrCode;
     }
 
     public Orders() {
@@ -85,5 +88,13 @@ public class Orders {
 
     public void setActivityTime(Date activityTime) {
         this.activityTime = activityTime;
+    }
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode == null ? null : qrCode.trim();
     }
 }

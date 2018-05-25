@@ -290,9 +290,9 @@ public class EnterpriseController
     @ApiOperation(value = "企业注册接口", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage insertEnterprise(Enterprise enterprise,@RequestParam(value = "flyfile", required = false) MultipartFile flfile){
-        Integer uid = enterpriseService.selectUserByChatId(enterprise.getOpenId());
+        Integer eid = enterpriseService.selectUserByChatId(enterprise.getOpenId());
         int insert=0;
-        if(uid==null) {
+        if(eid==null) {
             String license = null;
             if (flfile != null)
                 license = manageFile(flfile);
