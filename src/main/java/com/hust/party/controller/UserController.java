@@ -19,7 +19,7 @@ public class UserController
 {
 @Autowired
 private UserService userService;
-    @ApiOperation(value = "插入用户", notes = "插入用户到数据库")
+    @ApiOperation(value = "插入用户", notes = "插入用户到数据库，当用户已经存在时，不插入，会返回这个用户在数据库中的uid")
     @ResponseBody
     @RequestMapping(value="/insertAndLogin", method = RequestMethod.POST)
     public ReturnMessage insertAndLogin( @RequestBody User user){

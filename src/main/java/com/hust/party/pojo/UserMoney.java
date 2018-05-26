@@ -5,20 +5,17 @@ import java.math.BigDecimal;
 public class UserMoney {
     private Integer id;
 
-    private Integer userId;
-
-    private Integer orderId;
-
     private Integer state;
 
     private BigDecimal money;
 
-    public UserMoney(Integer id, Integer userId, Integer orderId, Integer state, BigDecimal money) {
+    private Integer userorderId;
+
+    public UserMoney(Integer id, Integer state, BigDecimal money, Integer userorderId) {
         this.id = id;
-        this.userId = userId;
-        this.orderId = orderId;
         this.state = state;
         this.money = money;
+        this.userorderId = userorderId;
     }
 
     public UserMoney() {
@@ -31,22 +28,6 @@ public class UserMoney {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
     }
 
     public Integer getState() {
@@ -63,5 +44,13 @@ public class UserMoney {
 
     public void setMoney(BigDecimal money) {
         this.money = money;
+    }
+
+    public Integer getUserorderId() {
+        return userorderId;
+    }
+
+    public void setUserorderId(Integer userorderId) {
+        this.userorderId = userorderId;
     }
 }

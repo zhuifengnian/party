@@ -20,7 +20,8 @@ public interface OrderUserService extends BaseService<OrderUser> {
      */
     Integer selectUserCnt(Integer order_id);
     /**
-     * 根据用户id和订单id，获取用户在那个订单下的情况
+     * 根据用户id和订单id，获取用户在那个订单下的情况,
+     * 注意这里只打算查出可以有效的部分，订单取消和商家取消订单是不应该被查出来的
      * @param uid
      * @param oid
      */

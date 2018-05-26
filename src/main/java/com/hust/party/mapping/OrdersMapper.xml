@@ -26,15 +26,15 @@
     delete from orders
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Orders" >
-    insert into orders (id, activity_id, state, 
-      create_time, finish_time, enterprise_id, 
+  <insert id="insert" parameterType="com.hust.party.pojo.Orders" useGeneratedKeys="true" keyProperty="id">
+    insert into orders (id, activity_id, state,
+      create_time, finish_time, enterprise_id,
       activity_time, qr_code)
-    values (#{id,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, #{enterpriseId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, #{enterpriseId,jdbcType=INTEGER},
       #{activityTime,jdbcType=TIMESTAMP}, #{qrCode,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.Orders" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Orders" useGeneratedKeys="true" keyProperty="id">
     insert into orders
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
