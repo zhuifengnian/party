@@ -314,14 +314,22 @@ public class EnterpriseController
         int insert=  enterpriseService.updateByPrimaryKey(enterprise);
         return new ReturnMessage(200, insert);
     }
-    @RequestMapping(value = "/updateActivity/{aid}", method = RequestMethod.POST)
-    @ApiOperation(value = "企业修改自己的活动", httpMethod = "POST")
+    @RequestMapping(value = "/deleteActivity/{aid}", method = RequestMethod.POST)
+    @ApiOperation(value = "企业撤销自己的活动", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage updateActivity(@ApiParam(required = true, name = "aid", value = "活动aid") @PathVariable Integer aid){
+    public ReturnMessage deleteActivity(@ApiParam(required = true, name = "aid", value = "活动aid") @PathVariable Integer aid){
       Activity activity =new Activity() ;
       activity.setState(2);
       activity.setId(aid);
        int insert=activityService.updateByPrimaryKey(activity);
+        return new ReturnMessage(200, insert);
+    }
+    @RequestMapping(value = "/updateActivity", method = RequestMethod.POST)
+    @ApiOperation(value = "企业撤销自己的活动", httpMethod = "POST")
+    @ResponseBody
+    public ReturnMessage updateActivity(@RequestBody  Activity activity){
+
+        int insert=activityService.updateByPrimaryKey(activity);
         return new ReturnMessage(200, insert);
     }
     public String manageFile(MultipartFile file) {
