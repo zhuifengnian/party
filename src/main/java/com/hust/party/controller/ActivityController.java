@@ -80,6 +80,7 @@ public class ActivityController
 
         if(activity.getCategory()==null)
             activity.setCategory(0);
+        activity.setState(1);
         PageInfo<Activity> pageinfo=new PageInfo<Activity>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);

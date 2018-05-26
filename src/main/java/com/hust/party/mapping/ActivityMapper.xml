@@ -25,12 +25,13 @@
       <arg column="category" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="copies" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="arrive_cpies" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     id, enterprise_id, title, word, picture, video, feature, contain_people, preferential_price, 
     original_price, address, activity_time, minu_people, address_name, longitude, latitude, 
-    favourable, classify, arrive_time, category, copies, arrive_cpies
+    favourable, classify, arrive_time, category, copies, arrive_cpies, state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -42,7 +43,7 @@
     delete from activity
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Activity" >
+  <insert id="insert" parameterType="com.hust.party.pojo.Activity" useGeneratedKeys="true" keyProperty="id" >
     insert into activity (id, enterprise_id, title, 
       word, picture, video, 
       feature, contain_people, preferential_price, 
@@ -50,7 +51,7 @@
       minu_people, address_name, longitude, 
       latitude, favourable, classify, 
       arrive_time, category, copies, 
-      arrive_cpies)
+      arrive_cpies, state)
     values (#{id,jdbcType=INTEGER}, #{enterpriseId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{word,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{video,jdbcType=VARCHAR}, 
       #{feature,jdbcType=VARCHAR}, #{containPeople,jdbcType=INTEGER}, #{preferentialPrice,jdbcType=DECIMAL}, 
@@ -58,9 +59,9 @@
       #{minuPeople,jdbcType=INTEGER}, #{addressName,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, 
       #{latitude,jdbcType=VARCHAR}, #{favourable,jdbcType=VARCHAR}, #{classify,jdbcType=INTEGER}, 
       #{arriveTime,jdbcType=TIMESTAMP}, #{category,jdbcType=INTEGER}, #{copies,jdbcType=INTEGER}, 
-      #{arriveCpies,jdbcType=INTEGER})
+      #{arriveCpies,jdbcType=INTEGER}, #{state,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity" useGeneratedKeys="true" keyProperty="id" >
     insert into activity
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -128,6 +129,9 @@
       </if>
       <if test="arriveCpies != null" >
         arrive_cpies,
+      </if>
+      <if test="state != null" >
+        state,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -197,6 +201,9 @@
       <if test="arriveCpies != null" >
         #{arriveCpies,jdbcType=INTEGER},
       </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.Activity" >
@@ -265,6 +272,9 @@
       <if test="arriveCpies != null" >
         arrive_cpies = #{arriveCpies,jdbcType=INTEGER},
       </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -290,7 +300,8 @@
       arrive_time = #{arriveTime,jdbcType=TIMESTAMP},
       category = #{category,jdbcType=INTEGER},
       copies = #{copies,jdbcType=INTEGER},
-      arrive_cpies = #{arriveCpies,jdbcType=INTEGER}
+      arrive_cpies = #{arriveCpies,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 分页查詢 -->
@@ -359,7 +370,10 @@
       and copies = #{copies,jdbcType=INTEGER}
     </if>
     <if test="arriveCpies != null" >
-     and arrive_cpies = #{arriveCpies,jdbcType=INTEGER}
+      and arrive_cpies = #{arriveCpies,jdbcType=INTEGER}
+    </if>
+    <if test="state != null" >
+   and   state = #{state,jdbcType=INTEGER}
     </if>
     <if test="start != null and pageSize!=null">
       limit #{start},#{pageSize}
@@ -429,10 +443,13 @@
       and category = #{category,jdbcType=INTEGER}
     </if>
     <if test="copies != null" >
-     and copies = #{copies,jdbcType=INTEGER}
+      and copies = #{copies,jdbcType=INTEGER}
     </if>
     <if test="arriveCpies != null" >
-    and  arrive_cpies = #{arriveCpies,jdbcType=INTEGER}
+      and  arrive_cpies = #{arriveCpies,jdbcType=INTEGER}
+    </if>
+    <if test="state != null" >
+      and   state = #{state,jdbcType=INTEGER}
     </if>
   </select>
   <!-- 查詢列表数量 -->
@@ -440,6 +457,7 @@
     select *
     from activity
     where 1=1
+    and state=1
 
     and activity_time >now()
 
@@ -451,7 +469,7 @@
     select *
     from activity
     where
-     enterprise_id =#{eid,jdbcType=INTEGER}
+    enterprise_id =#{eid,jdbcType=INTEGER}
 
   </select>
 </mapper>
