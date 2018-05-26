@@ -116,11 +116,10 @@ public class ActivityController
              Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
              perenceActivityVO.setEnterpriceName(enterprise.getName());
              perenceActivityVO.setId(activity.getId());
-             perenceActivityVO.setArriveCopies(activity.getArriveCpies());
 
           int count=0;
            perenceActivityVO.setSoldNumber(count);
-          if(activity.getCopies()!=activity.getArriveCpies()) {
+          if(activity.getCopies()!=activity.getArriveCopies()) {
               lists.add(perenceActivityVO);
               counts++;
           }

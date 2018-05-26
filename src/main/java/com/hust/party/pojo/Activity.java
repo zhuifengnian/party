@@ -46,11 +46,11 @@ public class Activity {
 
     private Integer copies;
 
-    private Integer arriveCpies;
+    private Integer arriveCopies;
 
     private Integer state;
 
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify, Date arriveTime, Integer category, Integer copies, Integer arriveCpies, Integer state) {
+    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify, Date arriveTime, Integer category, Integer copies, Integer arriveCopies, Integer state) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.title = title;
@@ -72,7 +72,7 @@ public class Activity {
         this.arriveTime = arriveTime;
         this.category = category;
         this.copies = copies;
-        this.arriveCpies = arriveCpies;
+        this.arriveCopies = arriveCopies;
         this.state = state;
     }
 
@@ -248,12 +248,12 @@ public class Activity {
         this.copies = copies;
     }
 
-    public Integer getArriveCpies() {
-        return arriveCpies;
+    public Integer getArriveCopies() {
+        return arriveCopies;
     }
 
-    public void setArriveCpies(Integer arriveCpies) {
-        this.arriveCpies = arriveCpies;
+    public void setArriveCopies(Integer arriveCopies) {
+        this.arriveCopies = arriveCopies;
     }
 
     public Integer getState() {

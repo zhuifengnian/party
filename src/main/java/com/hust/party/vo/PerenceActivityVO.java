@@ -13,7 +13,6 @@ public class PerenceActivityVO {
 
 
     private Integer copies;
-
     private Integer arriveCopies;
     private String enterpriceName;      //商家名
     private String longitude;
