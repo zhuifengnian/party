@@ -141,6 +141,7 @@ public class ActivityController
       video=manageFile(flfile);
       activity.setPicture(picture);
     activity.setVideo(video);
+    activity.setState(1);
         int insertNum = activityService.insert(activity);
         return new ReturnMessage(200, insertNum);
 
