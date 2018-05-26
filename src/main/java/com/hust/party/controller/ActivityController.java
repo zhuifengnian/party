@@ -60,6 +60,7 @@ public class ActivityController
         Enterprise enterprise =enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
         activityVo.setEnterpriseName(enterprise.getName());
         activityVo.setEnterprisePhone(enterprise.getLeadPhone());
+        activityVo.setAvatarurl(enterprise.getAvatarurl());
         return new ReturnMessage(200, activityVo);
     }
 

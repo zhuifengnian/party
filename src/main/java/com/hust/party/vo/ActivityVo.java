@@ -24,7 +24,7 @@ public class ActivityVo {
     private String enterpriseName;
     private String enterprisePhone;
     private List<String> pictures;
-
+    private String avatarurl;
 
 
     private String longitude;
@@ -175,5 +175,13 @@ public class ActivityVo {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public String getAvatarurl() {
+        return avatarurl;
+    }
+
+    public void setAvatarurl(String avatarurl) {
+        this.avatarurl = avatarurl;
     }
 }
