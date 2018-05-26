@@ -14,7 +14,7 @@ public class PerenceActivityVO {
 
     private Integer copies;
 
-    private Integer arriveCpies;
+    private Integer arriveCopies;
     private String enterpriceName;      //商家名
     private String longitude;
 
@@ -118,13 +118,7 @@ private Integer soldNumber;
         this.id = id;
     }
 
-    public Integer getArriveCpies() {
-        return arriveCpies;
-    }
 
-    public void setArriveCpies(Integer arriveCpies) {
-        this.arriveCpies = arriveCpies;
-    }
 
     public Integer getCopies() {
         return copies;
@@ -148,5 +142,13 @@ private Integer soldNumber;
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public Integer getArriveCopies() {
+        return arriveCopies;
+    }
+
+    public void setArriveCopies(Integer arriveCopies) {
+        this.arriveCopies = arriveCopies;
     }
 }

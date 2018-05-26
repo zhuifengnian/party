@@ -116,6 +116,7 @@ public class ActivityController
              Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
              perenceActivityVO.setEnterpriceName(enterprise.getName());
              perenceActivityVO.setId(activity.getId());
+             perenceActivityVO.setArriveCopies(activity.getArriveCpies());
 
           int count=0;
            perenceActivityVO.setSoldNumber(count);
