@@ -115,9 +115,21 @@ public class OrderController {
             return new ReturnMessage(201, "订单id不存在");
         }
 
-        //判断订单是否过期
+        //判断订单是否过期，当已经是过期的状态时，直接返回；当订单的状态还不是过期时，再拿去活动时间进行比对判断
         if(orders.getState() == Const.ORDER_STATUS_EXCEED_TIME){
             return new ReturnMessage(201, "订单已经过期");
+        }
+        Integer activityId = orders.getActivityId();
+        Activity activity = activityService.selectByPrimaryKey(activityId);
+        //获取当前时间，默认超过1天算超时
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+//        calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+        if(activity.getArriveTime().before(calendar.getTime())){    //当当前时间超过活动结束时间，不允许用户再参与拼团
+            orders.setState(Const.ORDER_STATUS_EXCEED_TIME);
+            ordersService.updateByPrimaryKey(orders);
+            return new ReturnMessage(201, "订单已经超时，不能再让用于参与");
         }
 
         //判断订单是否已经消费
@@ -135,99 +147,17 @@ public class OrderController {
             return new ReturnMessage(201, "订单人数已满，不能再参与该订单");
         }
 
-
-
-
         User user = userService.selectByPrimaryKey(uid);
         if(user == null){
             return new ReturnMessage(202, "用户id不存在");
         }
 
-        //
-
         OrderUser orderUser = orderUserService.selectOrderUserByUidAndOid(uid, oid);
-        if(orderUser == null){
-            return new ReturnMessage(200, "用户不在订单中，可以参与");
+        if(orderUser != null){
+            return new ReturnMessage(201, "用户已经在此订单中，不能重复参与");
         }
 
-        return null;
-    }
-
-    @ApiOperation(value =  "其他用户参与订单", notes = "其他用户参与订单")
-    @ResponseBody
-    @Transactional
-    @RequestMapping(value="/engageOrder2", method = RequestMethod.POST)
-    public ReturnMessage engageOrder2(@RequestParam("oid")Integer oid,@ApiParam(required = true, name = "用户chat_id",
-            value = "用户chat_id") @RequestParam("open_id") String chat_id){
-
-        //脏数据判断
-        Orders orders = ordersService.selectByPrimaryKey(oid);
-        if(orders == null){
-            throw new ApiException(201, "所给订单id不存在");
-        }
-        //从user表中查出user
-        Integer uid = userService.selectUserByChatId(chat_id);
-        if(uid == null){
-            throw new ApiException(201, "用户不存在，无法生成订单");
-        }
-
-        //判断订单是否已经取消
-        if(orders.getState() != null && orders.getState() == Const.ORDER_STATUS_CANCEL){
-            return new ReturnMessage(201, "订单已经取消，无法参与");
-        }
-
-        //在orderuser里先判断用户是否已经参与该订单，若没有，才允许参与
-        OrderUser orderUser = new OrderUser();
-        orderUser.setOrderId(oid);
-        orderUser.setUserId(uid);
-        int exist = orderUserService.selectCount(orderUser);
-        if(exist > 0){
-            return new ReturnMessage(201, "用户已经存在在订单中，不需要再参与");
-        }
-
-        //当有人参与时，判断订单是否已经超时
-        Integer activityId = orders.getActivityId();
-        Activity activity = activityService.selectByPrimaryKey(activityId);
-
-        //获取当前时间，默认超过1天算超时
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-
-        if(activity.getArriveTime().before(calendar.getTime())){    //当当前时间超过活动结束时间，不允许用户再参与拼团
-            orders.setState(Const.ORDER_STATUS_EXCEED_TIME);
-            ordersService.updateByPrimaryKey(orders);
-            return new ReturnMessage(201, "订单已经超时，不能再让用于参与");
-        }
-
-        //判断当前订单活动是否已经达到最大人数，当达到最大人数时，不允许再参与
-        if(orders.getState() == Const.ORDER_STATUS_HAS_FULL){
-            return new ReturnMessage(201, "当前订单人数已达最大人数，无法再继续参团");
-        }
-
-        //所有插入条件以满足，可以参与订单
-        int insert = orderUserService.insert(orderUser);
-
-        //获取插入之后的当前订单人数
-        Integer userCnt = orderUserService.selectUserCnt(orders.getId());
-
-        Integer containPeople = activity.getContainPeople();    //活动最大人数
-        Integer atleastPeople = activity.getMinuPeople();    //活动最少人数
-
-        //判断是否达到了订单的最小人数，当达到了最小人数后，订单状态改为可以支付
-        if(userCnt >= atleastPeople){
-            orderUser.setState(Const.ORDER_USER_STATUS_CAN_PAY);
-            orderUserService.updateByPrimaryKey(orderUser);
-            //TODO:通知该订单下的其他用户的订单状态改为可以支付
-        }
-
-        //插入完成后判断订单总的状态是否达到了最大容纳人数
-        if(userCnt >= containPeople){
-            orders.setState(Const.ORDER_STATUS_HAS_FULL);//订单状态改为人数已满
-            ordersService.updateByPrimaryKey(orders);
-        }
-
-        return new ReturnMessage(200, "插入成功" + insert);
+        return new ReturnMessage(200, "success");
     }
 
     @ApiOperation(value =  "其他用户参与订单", notes = "其他用户参与订单")
@@ -247,42 +177,26 @@ public class OrderController {
             throw new ApiException(201, "用户不存在，无法生成订单");
         }
 
-        //判断订单是否已经取消
-        if(orders.getState() != null && orders.getState() == Const.ORDER_STATUS_CANCEL){
-            return new ReturnMessage(201, "订单已经取消，无法参与");
-        }
-
         //在orderuser里判断用户是否已经参与该订单，若没有，才允许参与
         OrderUser orderUser = new OrderUser();
         orderUser.setOrderId(oid);
         orderUser.setUserId(uid);
-        int exist = orderUserService.selectCount(orderUser);
-        if(exist > 0){
-            return new ReturnMessage(201, "用户已经存在在订单中，不需要再参与");
-        }
-
-        //当有人参与时，判断订单是否已经超时
-        Integer activityId = orders.getActivityId();
-        Activity activity = activityService.selectByPrimaryKey(activityId);
-
-        //获取当前时间，默认超过1天算超时
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-
-        if(activity.getArriveTime().before(calendar.getTime())){    //当当前时间超过活动结束时间，不允许用户再参与拼团
-            orders.setState(Const.ORDER_STATUS_EXCEED_TIME);
-            ordersService.updateByPrimaryKey(orders);
-            return new ReturnMessage(201, "订单已经超时，不能再让用于参与");
-        }
-
-        //判断当前订单活动是否已经达到最大人数，当达到最大人数时，不允许再参与
-        if(orders.getState() == Const.ORDER_STATUS_HAS_FULL){
-            return new ReturnMessage(201, "当前订单人数已达最大人数，无法再继续参团");
-        }
 
         //所有插入条件以满足，可以参与订单
-        int insert = orderUserService.insert(orderUser);
+        int orderUserId = orderUserService.insert(orderUser);
+
+        Integer activityId = orders.getActivityId();
+        Activity activity = activityService.getActivity(activityId);
+
+        //记录用户支付数据,插入数据到user_money表中
+        //TODO:这里因为不涉及优惠券和优惠套餐，所以默认用户的支付价格就是活动的单价
+        BigDecimal preferentialPrice = activity.getPreferentialPrice();
+
+        UserMoney userMoney = new UserMoney();
+        userMoney.setState(Const.USER_MONEY_NOT_TRANSFER_TO_ENTRERPRISE);
+        userMoney.setMoney(preferentialPrice);
+        userMoney.setUserorderId(orderUserId);
+        userMoneyService.insert(userMoney);
 
         //获取插入之后的当前订单人数
         Integer userCnt = orderUserService.selectUserCnt(orders.getId());
@@ -292,9 +206,8 @@ public class OrderController {
 
         //判断是否达到了订单的最小人数，当达到了最小人数后，订单状态改为可以支付
         if(userCnt >= atleastPeople){
-            orderUser.setState(Const.ORDER_USER_STATUS_CAN_PAY);
-            orderUserService.updateByPrimaryKey(orderUser);
-            //TODO:通知该订单下的其他用户的订单状态改为可以支付
+            orders.setState(Const.ORDER_STATUS_REACH_LEAST_PEOPEL); //设置订单状态为达到最小人数，可以给商家付款
+            ordersService.updateByPrimaryKey(orders);
         }
 
         //插入完成后判断订单总的状态是否达到了最大容纳人数
@@ -303,34 +216,70 @@ public class OrderController {
             ordersService.updateByPrimaryKey(orders);
         }
 
-        return new ReturnMessage(200, "插入成功" + insert);
+        return new ReturnMessage(200, "插入成功" + orderUserId);
     }
 
     @ApiOperation(value =  "用户取消订单", notes = "用户取消订单")
     @ResponseBody
     @Transactional
     @RequestMapping(value="/cancelOrderUser", method = RequestMethod.POST)
-    public ReturnMessage cancelOrderUser(@RequestParam("oid")Integer oid, @ApiParam(required = true, name = "用户open_id",
-            value = "用户open_id") @RequestParam("open_id") String open_id){
+    public ReturnMessage cancelOrderUser(@RequestParam("oid")Integer oid, @ApiParam(required = true, name = "uid",
+            value = "uid") @RequestParam("uid") Integer uid){
         //判断订单是否可用
         Orders orders = ordersService.selectByPrimaryKey(oid);
         if(orders == null){
             throw new ApiException(201,"所给订单id不存在");
         }
-        //先拿到用户id
-        Integer uid = userService.selectUserByChatId(open_id);
+        //判断用户是否存在
+        User user = userService.selectByPrimaryKey(uid);
+        if(user == null){
+            throw new ApiException(201, "所给用户id不存在");
+        }
+
         //判断该订单下是否存在该用户
         OrderUser orderUser = orderUserService.selectOrderUserByUidAndOid(uid, oid);
         if(orderUser == null){
             throw new ApiException(201, "该用户不在此订单下，不能执行取消");
         }
+        //当用户已经将钱转入到商家账户时，不给退款
+        //拿到存在数据库中的usermoney对象
+        UserMoney tmpUserMoney = new UserMoney();
+        tmpUserMoney.setUserorderId(orderUser.getId());
+        tmpUserMoney.setState(Const.USER_MONEY_NOT_TRANSFER_TO_ENTRERPRISE);   //只有当用户的那笔钱还没被取出以及没消费时，才可取出
+        List<UserMoney> userMoneys = this.userMoneyService.select(tmpUserMoney, null);
+        UserMoney userMoney = userMoneys.get(0);
+        if(userMoney == null){
+            throw new ApiException(201, "数据发生错误，无法取出");
+        }
 
-        //满足条件，可以取消orderuser
-        int i = orderUserService.deleteByPrimaryKey(orderUser.getId());
+        //拿到user_money中的金额
+        BigDecimal drawbackMoney = userMoney.getMoney();
+        //将user_money中的数据的状态置为已取出
+        userMoney.setState(Const.USER_MONEY_DRAWBACK);
+        userMoneyService.updateByPrimaryKey(userMoney);
 
-        //TODO:退款操作
+        //再取消orderuser，即修改order_user的状态为cancel
+        orderUser.setState(Const.ORDER_USER_STATUS_CANSEL);
+        orderUserService.updateByPrimaryKey(orderUser);
 
-        return new ReturnMessage(200, "取消订单成功" + i);
+        //需要再修改order中的数据
+        //先判断人数是否不满足最低要求
+        Integer userCnt = orderUserService.selectUserCnt(oid);
+        Activity activity = activityService.getActivity(orders.getActivityId());
+        Integer minuPeople = activity.getMinuPeople();
+
+        if(userCnt < minuPeople){
+            orders.setState(Const.ORDER_STATUS_ENGAGING);   //当人数不满足最低时，订单状态从可支付变为正在参与
+            ordersService.updateByPrimaryKey(orders);
+        }
+
+        //判断订单是否已经取消，这种情况会在订单只剩一个人的时候取消
+        if(userCnt <= 0){
+            orders.setState(Const.ORDER_STATUS_CANCEL);
+            ordersService.updateByPrimaryKey(orders);
+        }
+
+        return new ReturnMessage(200, "取消订单成功");
     }
 
     @ApiOperation(value = "根据用户的openid，查询该用户订单列表", notes = "根据用户的openid，查询订单列表")

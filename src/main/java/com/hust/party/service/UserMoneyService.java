@@ -7,5 +7,4 @@ import com.hust.party.pojo.UserMoney;
  * fan 2018/5/24 14:21
  */
 public interface UserMoneyService extends BaseService<UserMoney> {
-
 }
