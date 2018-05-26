@@ -81,4 +81,11 @@
       picture_context = #{pictureContext,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getAllPicture"  resultType="String"  parameterType="java.lang.Integer">
+    select picture_url
+    from activity_picture
+    where
+    activity_id = #{activityId,jdbcType=INTEGER}
+
+  </select>
 </mapper>

@@ -7,12 +7,10 @@ import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Enterprise;
 import com.hust.party.common.PageInfo;
 import com.hust.party.pojo.Orders;
-import com.hust.party.service.ActivityService;
+import com.hust.party.service.*;
 
-import com.hust.party.service.EnterpriseService;
-import com.hust.party.service.OrdersService;
-import com.hust.party.service.OrderUserService;
 import com.hust.party.util.ReflectUtil;
+import com.hust.party.vo.ActivityVo;
 import com.hust.party.vo.PerenceActivityVO;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
@@ -47,32 +45,24 @@ public class ActivityController
     private OrdersService ordersService;
     @Autowired
     private OrderUserService orderUserService;
+    @Autowired
+    private ActivityPictureService activitypictureService;
     @RequestMapping(value = "/activity/{aid}", method = RequestMethod.POST)
     @ApiOperation(value = "根据活动id提取信息", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getActivity(@ApiParam(required = true, name = "aid", value = "活动id") @PathVariable Integer aid){
-        Activity activity = activityService.selectByPrimaryKey(aid);
-        return new ReturnMessage(200, activity);
-    }
-    @RequestMapping(value = "/activity/enterprise", method = RequestMethod.POST)
-    @ApiOperation(value = "根据企业id提取活动", httpMethod = "POST")
-    @ResponseBody
-    public ReturnMessage getEnterpriseActivity(@ModelAttribute Activity activity,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+        ActivityVo activityVo =new ActivityVo();
 
-        if(activity.getEnterpriseId()==null)
-            activity.setEnterpriseId(0);
-        PageInfo<Activity> pageinfo=new PageInfo<Activity>();
-        pageinfo.setPageNum(pageNumber);
-        pageinfo.setPageSize(pageSize);
-        Page page= new Page();
-        page.setPageNumber(pageNumber);
-        page.setPageSize(pageSize);
-        pageinfo.setRows( activityService.select(activity,page));
-        int count=activityService.selectCount(activity);
-        pageinfo.setTotal(count);
-      //  List<Activity> list = activityService.getEnterpriseActivity(eid);
-        return new ReturnMessage(200, pageinfo);
+        Activity activity = activityService.selectByPrimaryKey(aid);
+        List<String> list=activitypictureService.getAllPicture(activity.getId());
+        activityVo.setPictures(list);
+        ReflectUtil.copyProperties(activityVo, activity);
+        Enterprise enterprise =enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
+        activityVo.setEnterpriseName(enterprise.getName());
+        activityVo.setEnterprisePhone(enterprise.getLeadPhone());
+        return new ReturnMessage(200, activityVo);
     }
+
     @RequestMapping(value = "/activity/category", method = RequestMethod.POST)
     @ApiOperation(value = "根据分类提取信息", httpMethod = "POST")
     @ResponseBody

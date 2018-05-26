@@ -10,7 +10,9 @@ import com.hust.party.pojo.Orders;
 import com.hust.party.service.ActivityService;
 import com.hust.party.service.EnterpriseService;
 import com.hust.party.service.OrdersService;
+import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.AllOrderVO;
+import com.hust.party.vo.EnterpriseActivityVo;
 import com.hust.party.vo.EnterpriseOrderVo;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
@@ -44,11 +46,41 @@ public class EnterpriseController
     private EnterpriseService enterpriseService;
     @Autowired
     private OrdersService ordersService;
+    @RequestMapping(value = "/enterprise/activity/{eid}", method = RequestMethod.POST)
+    @ApiOperation(value = "根据企业id提取活动", httpMethod = "POST")
+    @ResponseBody
+    public ReturnMessage getEnterpriseActivity(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
 
+
+        PageInfo<EnterpriseActivityVo> pageinfo=new PageInfo<EnterpriseActivityVo>();
+        List<EnterpriseActivityVo> list1= new ArrayList<>();
+        pageinfo.setPageNum(pageNumber);
+        pageinfo.setPageSize(pageSize);
+        Page page= new Page();
+        page.setPageNumber(pageNumber);
+        page.setPageSize(pageSize);
+        Activity activity =new Activity();
+        activity.setEnterpriseId(eid);
+      List <Activity> list=  activityService.select(activity,page);
+      for(int i=0;i<list.size();i++){
+          EnterpriseActivityVo enterpriseActivityVo =new EnterpriseActivityVo();
+          ReflectUtil.copyProperties(enterpriseActivityVo, list.get(i));
+          Orders orders =new Orders();
+          orders.setActivityId(list.get(0).getId());
+          orders.setState(2);
+          enterpriseActivityVo.setSum(ordersService.selectCount(orders));
+list1.add(enterpriseActivityVo);
+      }
+        pageinfo.setRows(list1 );
+        int count=activityService.selectCount(activity);
+        pageinfo.setTotal(count);
+        //  List<Activity> list = activityService.getEnterpriseActivity(eid);
+        return new ReturnMessage(200, pageinfo);
+    }
     @RequestMapping(value = "/enterprise/{eid}", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取今日消费订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getEnterpriseActivity(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getNowEnterpriseActivity(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
        if(pageSize==null)
            pageSize=10;
         long current=System.currentTimeMillis();
