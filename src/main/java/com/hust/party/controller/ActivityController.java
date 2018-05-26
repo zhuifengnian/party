@@ -47,10 +47,10 @@ public class ActivityController
     private OrderUserService orderUserService;
     @Autowired
     private ActivityPictureService activitypictureService;
-    @RequestMapping(value = "/activity/{aid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/getactivity", method = RequestMethod.POST)
     @ApiOperation(value = "根据活动id提取信息", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getActivity(@ApiParam(required = true, name = "aid", value = "活动id") @PathVariable Integer aid){
+    public ReturnMessage getActivity(@RequestParam("aid") Integer aid){
         ActivityVo activityVo =new ActivityVo();
 
         Activity activity = activityService.selectByPrimaryKey(aid);

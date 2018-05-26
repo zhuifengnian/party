@@ -46,10 +46,10 @@ public class EnterpriseController
     private EnterpriseService enterpriseService;
     @Autowired
     private OrdersService ordersService;
-    @RequestMapping(value = "/enterprise/activity/{eid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/activity", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取活动", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getEnterpriseActivity(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getEnterpriseActivity(@RequestParam("eid") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
 
 
         PageInfo<EnterpriseActivityVo> pageinfo=new PageInfo<EnterpriseActivityVo>();
@@ -77,10 +77,10 @@ list1.add(enterpriseActivityVo);
         //  List<Activity> list = activityService.getEnterpriseActivity(eid);
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/{eid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取今日消费订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getNowEnterpriseActivity(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getNowEnterpriseActivity(@RequestParam("eid")@PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
        if(pageSize==null)
            pageSize=10;
         long current=System.currentTimeMillis();
@@ -125,10 +125,10 @@ list1.add(enterpriseActivityVo);
 
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getAll/{eid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getAll", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取全部订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getActivity(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getActivity(@RequestParam("eid") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
        if(pageSize==null)
            pageSize=10;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
@@ -164,10 +164,10 @@ list1.add(enterpriseActivityVo);
 
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getNew/{eid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getNew", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取今日新接订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getNewOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getNewOrder(@RequestParam("eid") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
             pageSize=10;
         PageInfo<EnterpriseOrderVo> pageinfo=new PageInfo<EnterpriseOrderVo>();
@@ -206,10 +206,10 @@ list1.add(enterpriseActivityVo);
 
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getNo/{eid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getNo", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取未消费订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getNoOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getNoOrder(@RequestParam("eid") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
             pageSize=10;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
@@ -243,10 +243,10 @@ list1.add(enterpriseActivityVo);
         pageinfo.setRows(list3);
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getY/{eid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getY", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取已消费订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getYOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getYOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
             pageSize=10;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
@@ -280,10 +280,10 @@ list1.add(enterpriseActivityVo);
         pageinfo.setRows(list3);
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getQ/{eid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getQ", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取已取消订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getQOrder(@ApiParam(required = true, name = "eid", value = "活动id") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getQOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
             pageSize=10;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
