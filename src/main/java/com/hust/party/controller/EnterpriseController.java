@@ -325,7 +325,7 @@ public class EnterpriseController
         return new ReturnMessage(200, insert);
     }
     @RequestMapping(value = "/updateActivity", method = RequestMethod.POST)
-    @ApiOperation(value = "企业撤销自己的活动", httpMethod = "POST")
+    @ApiOperation(value = "企业修改自己的活动", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage updateActivity(@RequestBody  Activity activity){
 
