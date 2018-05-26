@@ -50,7 +50,7 @@ public class ActivityController
     @RequestMapping(value = "/getactivity", method = RequestMethod.POST)
     @ApiOperation(value = "根据活动id提取信息", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getActivity(@RequestParam("aid") Integer aid){
+    public ReturnMessage getIdActivity(@RequestParam("aid") Integer aid){
         ActivityVo activityVo =new ActivityVo();
 
         Activity activity = activityService.selectByPrimaryKey(aid);

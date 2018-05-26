@@ -77,7 +77,7 @@ list1.add(enterpriseActivityVo);
         //  List<Activity> list = activityService.getEnterpriseActivity(eid);
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getNowEnterpriseActivity", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取今日消费订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getNowEnterpriseActivity(@RequestParam("eid")@PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
@@ -128,7 +128,7 @@ list1.add(enterpriseActivityVo);
     @RequestMapping(value = "/enterprise/getAll", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取全部订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getActivity(@RequestParam("eid") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getAllActivity(@RequestParam("eid") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
        if(pageSize==null)
            pageSize=10;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
@@ -346,10 +346,10 @@ list1.add(enterpriseActivityVo);
         int insert=  enterpriseService.updateByPrimaryKey(enterprise);
         return new ReturnMessage(200, insert);
     }
-    @RequestMapping(value = "/deleteActivity/{aid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteActivity", method = RequestMethod.POST)
     @ApiOperation(value = "企业撤销自己的活动", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage deleteActivity(@ApiParam(required = true, name = "aid", value = "活动aid") @PathVariable Integer aid){
+    public ReturnMessage deleteActivity(@RequestParam("aid") Integer aid){
       Activity activity =new Activity() ;
       activity.setState(2);
       activity.setId(aid);
