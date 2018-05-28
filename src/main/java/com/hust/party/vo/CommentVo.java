@@ -14,6 +14,12 @@ public class CommentVo {
 
     private String username;
 
+
+
+    private String avatarurl;
+
+
+
     public String getContext() {
         return context;
     }
@@ -47,5 +53,14 @@ public class CommentVo {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+
+    public String getAvatarurl() {
+        return avatarurl;
+    }
+
+    public void setAvatarurl(String avatarurl) {
+        this.avatarurl = avatarurl;
     }
 }

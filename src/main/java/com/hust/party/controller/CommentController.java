@@ -74,6 +74,7 @@ public class CommentController
             }
             commentVo.setUsername(user.getNickname());
             commentVo.setTime(comment.getCommentTime().toString());
+            commentVo.setAvatarurl(user.getAvatarurl());
             lists.add(commentVo);
         }
         pageinfo.setRows( lists);

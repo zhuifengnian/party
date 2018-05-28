@@ -20,12 +20,10 @@ public class ActivityVo {
     private String address;
     private BigDecimal preferentialPrice;
     private BigDecimal originalPrice;
-    private Integer enterpriseId;
-    private String enterpriseName;
-    private String enterprisePhone;
+    private String opentime;
     private List<String> pictures;
-    private String avatarurl;
 
+    private ActivityEnterpriseVo activityEnterpriseVo;
 
     private String longitude;
 
@@ -129,29 +127,7 @@ public class ActivityVo {
         this.originalPrice = originalPrice;
     }
 
-    public Integer getEnterpriseId() {
-        return enterpriseId;
-    }
 
-    public void setEnterpriseId(Integer enterpriseId) {
-        this.enterpriseId = enterpriseId;
-    }
-
-    public String getEnterpriseName() {
-        return enterpriseName;
-    }
-
-    public void setEnterpriseName(String enterpriseName) {
-        this.enterpriseName = enterpriseName;
-    }
-
-    public String getEnterprisePhone() {
-        return enterprisePhone;
-    }
-
-    public void setEnterprisePhone(String enterprisePhone) {
-        this.enterprisePhone = enterprisePhone;
-    }
 
     public List<String> getPictures() {
         return pictures;
@@ -177,11 +153,22 @@ public class ActivityVo {
         this.latitude = latitude;
     }
 
-    public String getAvatarurl() {
-        return avatarurl;
+
+
+    public ActivityEnterpriseVo getActivityEnterpriseVo() {
+        return activityEnterpriseVo;
     }
 
-    public void setAvatarurl(String avatarurl) {
-        this.avatarurl = avatarurl;
+    public void setActivityEnterpriseVo(ActivityEnterpriseVo activityEnterpriseVo) {
+        this.activityEnterpriseVo = activityEnterpriseVo;
+    }
+
+
+    public String getOpentime() {
+        return opentime;
+    }
+
+    public void setOpentime(String opentime) {
+        this.opentime = opentime;
     }
 }

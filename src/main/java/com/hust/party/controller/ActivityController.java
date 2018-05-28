@@ -10,6 +10,7 @@ import com.hust.party.pojo.Orders;
 import com.hust.party.service.*;
 
 import com.hust.party.util.ReflectUtil;
+import com.hust.party.vo.ActivityEnterpriseVo;
 import com.hust.party.vo.ActivityVo;
 import com.hust.party.vo.PerenceActivityVO;
 import com.qiniu.common.QiniuException;
@@ -57,10 +58,15 @@ public class ActivityController
         List<String> list=activitypictureService.getAllPicture(activity.getId());
         activityVo.setPictures(list);
         ReflectUtil.copyProperties(activityVo, activity);
+        activityVo.setOpentime(activity.getActivityTime().toString());
         Enterprise enterprise =enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
-        activityVo.setEnterpriseName(enterprise.getName());
-        activityVo.setEnterprisePhone(enterprise.getLeadPhone());
-        activityVo.setAvatarurl(enterprise.getAvatarurl());
+        ActivityEnterpriseVo activityEnterpriseVo =new ActivityEnterpriseVo();
+        activityEnterpriseVo.setEnterpriseId(enterprise.getId());
+        activityEnterpriseVo.setAvatarurl(enterprise.getAvatarurl());
+        activityEnterpriseVo.setEnterpriseName(enterprise.getName());
+        activityEnterpriseVo.setEnterprisePhone(enterprise.getLeadPhone());
+        activityVo.setActivityEnterpriseVo(activityEnterpriseVo);
+
         return new ReturnMessage(200, activityVo);
     }
 
