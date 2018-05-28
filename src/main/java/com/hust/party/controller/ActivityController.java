@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.hust.party.common.Page;
 import com.hust.party.common.ReturnMessage;
 import com.hust.party.pojo.Activity;
+import com.hust.party.pojo.ActivityTag;
 import com.hust.party.pojo.Enterprise;
 import com.hust.party.common.PageInfo;
 import com.hust.party.pojo.Orders;
@@ -42,10 +43,8 @@ public class ActivityController
     private ActivityService activityService;
     @Autowired
     private EnterpriseService enterpriseService;
-    @Autowired
-    private OrdersService ordersService;
-    @Autowired
-    private OrderUserService orderUserService;
+   @Autowired
+   private ActivityTagService activityTagService;
     @Autowired
     private ActivityPictureService activitypictureService;
     @RequestMapping(value = "/getactivity", method = RequestMethod.POST)
@@ -56,6 +55,7 @@ public class ActivityController
 
         Activity activity = activityService.selectByPrimaryKey(aid);
         List<String> list=activitypictureService.getAllPicture(activity.getId());
+        List<String>tag= activityTagService.getActivityTag(activity.getId());
         activityVo.setPictures(list);
         ReflectUtil.copyProperties(activityVo, activity);
         activityVo.setOpentime(activity.getActivityTime().toString());
@@ -66,7 +66,7 @@ public class ActivityController
         activityEnterpriseVo.setEnterpriseName(enterprise.getName());
         activityEnterpriseVo.setEnterprisePhone(enterprise.getLeadPhone());
         activityVo.setActivityEnterpriseVo(activityEnterpriseVo);
-
+        activityVo.setTag(tag);
         return new ReturnMessage(200, activityVo);
     }
 

@@ -22,7 +22,7 @@ public class ActivityVo {
     private BigDecimal originalPrice;
     private String opentime;
     private List<String> pictures;
-
+    private List<String> tag;
     private ActivityEnterpriseVo activityEnterpriseVo;
 
     private String longitude;
@@ -170,5 +170,13 @@ public class ActivityVo {
 
     public void setOpentime(String opentime) {
         this.opentime = opentime;
+    }
+
+    public List<String> getTag() {
+        return tag;
+    }
+
+    public void setTag(List<String> tag) {
+        this.tag = tag;
     }
 }

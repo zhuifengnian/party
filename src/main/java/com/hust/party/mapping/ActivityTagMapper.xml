@@ -70,4 +70,11 @@
       tag = #{tag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getActivityTag"  resultType="String" parameterType="java.lang.Integer">
+    select tag
+    from activity_tag
+    where
+     activity_id = #{activityId,jdbcType=INTEGER}
+
+  </select>
 </mapper>
