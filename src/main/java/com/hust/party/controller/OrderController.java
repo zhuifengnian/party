@@ -42,6 +42,8 @@ public class OrderController {
     private EnterpriseService enterpriseService;
     @Autowired
     private UserMoneyService userMoneyService;
+    @Autowired
+    private PaymentService paymentService;
 
     @ApiOperation(value =  "生成订单", notes = "发起人生成订单到数据库，能够调用这个接口的前提是用户已经支付了这个订单，" +
             "所以这里我们不再处理支付逻辑，只对支付和订单作记录")
@@ -88,19 +90,19 @@ public class OrderController {
         userMoney.setUserorderId(orderUserId);
         userMoneyService.insert(userMoney);
 
+        //再在payment表中记录下这笔金额（payment记录的是这笔订单需要给商家的金额，在第一个人创建订单时，会生成这样的记录
+        Payment payment = new Payment();
+        payment.setUserId(uid);     //这里目前记录的是创建者的id
+        payment.setOrderId(oid);
+        payment.setState(Const.PAYMENT_NOT_PAY);
+        payment.setPrice(preferentialPrice);
+        payment.setEnterpriseId(eid);
+        payment.setActivityId(aid);
+        paymentService.insert(payment);
+
         return new ReturnMessage(200, oid);  //成功返回订单id
     }
 
-    /**
-     * 订单支付
-     * @param activity 需要支付的订单活动,里面包含需要支付的价格
-     * @param uid 用户id
-     * @return 返回支付是否成功
-     */
-    private boolean payOrder(Activity activity, Integer uid) {
-        //TODO:这里处理支付逻辑，先默认返回支付成功
-        return true;
-    }
     @ApiOperation(value =  "判断用户是否已经存在在此订单中，并返回订单是否过期的结果", notes = "前端先根据这个接口的返回值判断，" +
             "当此订单中不存在这个用户时才可以参与订单，\n否则当用于已经存在在这个订单时，说明已经付过款了，不需要再重新付款,由前端给出提示\n" +
             "还需要判断此订单是否过期")
@@ -198,6 +200,9 @@ public class OrderController {
         userMoney.setUserorderId(orderUserId);
         userMoneyService.insert(userMoney);
 
+        //TODO:修改payment中的金额
+//        paymentService.select
+
         //获取插入之后的当前订单人数
         Integer userCnt = orderUserService.selectUserCnt(orders.getId());
 
@@ -252,7 +257,7 @@ public class OrderController {
             throw new ApiException(201, "数据发生错误，无法取出");
         }
 
-        //拿到user_money中的金额
+        //TODO:拿到user_money中的金额，将其计入payment
         BigDecimal drawbackMoney = userMoney.getMoney();
         //将user_money中的数据的状态置为已取出
         userMoney.setState(Const.USER_MONEY_DRAWBACK);
@@ -268,7 +273,7 @@ public class OrderController {
         Activity activity = activityService.getActivity(orders.getActivityId());
         Integer minuPeople = activity.getMinuPeople();
 
-        if(userCnt < minuPeople){
+        if(userCnt <= minuPeople){
             orders.setState(Const.ORDER_STATUS_ENGAGING);   //当人数不满足最低时，订单状态从可支付变为正在参与
             ordersService.updateByPrimaryKey(orders);
         }
@@ -338,8 +343,8 @@ public class OrderController {
         }
         pageInfo.setRows(orderActivityVOs);
 //        pageInfo.setTotal();
-        UserOrderVO userOrderVO = new UserOrderVO();
-        userOrderVO.setOrders(orderActivityVOs);
+//        UserOrderVO userOrderVO = new UserOrderVO();
+//        userOrderVO.setOrders(orderActivityVOs);
         return  new ReturnMessage(200, pageInfo);
     }
 }

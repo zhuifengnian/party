@@ -25,4 +25,7 @@ public class Const {
     public static final int USER_MONEY_NOT_TRANSFER_TO_ENTRERPRISE = 1;     //未转商户账户
     public static final int USER_MONEY_HAS_TRANSFER_TO_ENTRERPRISE = 2;     //已转商户账户
     public static final int USER_MONEY_DRAWBACK = 3;     //已退款
+
+    //payment表
+    public static final int PAYMENT_NOT_PAY = 0;    //未付
 }

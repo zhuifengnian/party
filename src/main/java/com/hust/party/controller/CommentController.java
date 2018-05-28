@@ -41,18 +41,18 @@ import java.util.List;
 @Controller
 public class CommentController
 {
-   @Autowired
-   private CommentService commentService;
-   @Autowired
-   private UserService userService;
-   @Autowired
-   private ActivityService activityService;
-    @RequestMapping(value = "/comment", method = RequestMethod.GET)
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ActivityService activityService;
+    @RequestMapping(value = "/getComment", method = RequestMethod.GET)
     @ApiOperation(value = "根据商家id提取信息", httpMethod = "GET")
     @ResponseBody
-    public ReturnMessage getComment(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getComment(@ApiParam(required = true, name = "aid", value = "商家id") @RequestParam("aid") Integer aid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         List<CommentVo> lists=new ArrayList<>();
-        List<Comment> list = commentService.getCommnet(eid);
+        List<Comment> list = commentService.getCommnet(aid);
         PageInfo<CommentVo> pageinfo=new PageInfo<CommentVo>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
@@ -81,11 +81,11 @@ public class CommentController
         pageinfo.setTotal(count);
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/comment/put", method = RequestMethod.POST)
+    @RequestMapping(value = "/putComment", method = RequestMethod.POST)
     @ApiOperation(value = "插入评论")
     @ResponseBody
-    public ReturnMessage setComment(Comment comment,@RequestParam("aid") Integer aid,@RequestParam("uid") Integer uid ){
-           Activity activity=activityService.selectByPrimaryKey(aid);
+    public ReturnMessage setComment(Comment comment,@ApiParam(required = true, name = "aid", value = "活动id") @RequestParam("aid") Integer aid,@ApiParam(required = true, name = "uid", value = "活动id") @RequestParam("uid") Integer uid ){
+        Activity activity=activityService.selectByPrimaryKey(aid);
         comment.setCommentTime(new Date());
         comment.setEnterpriseId(activity.getEnterpriseId());
         comment.setUserId(uid);
