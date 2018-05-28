@@ -92,7 +92,7 @@ public class OrderController {
 
         //再在payment表中记录下这笔金额（payment记录的是这笔订单需要给商家的金额，在第一个人创建订单时，会生成这样的记录
         Payment payment = new Payment();
-        payment.setUserId(uid);     //这里目前记录的是创建者的id
+    //    payment.setUserId(uid);     //这里目前记录的是创建者的id
         payment.setOrderId(oid);
         payment.setState(Const.PAYMENT_NOT_PAY);
         payment.setPrice(preferentialPrice);

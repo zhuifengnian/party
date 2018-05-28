@@ -6,8 +6,6 @@ import java.util.Date;
 public class Payment {
     private Integer id;
 
-    private Integer userId;
-
     private Integer orderId;
 
     private Integer state;
@@ -20,9 +18,8 @@ public class Payment {
 
     private Integer activityId;
 
-    public Payment(Integer id, Integer userId, Integer orderId, Integer state, BigDecimal price, Date creatTime, Integer enterpriseId, Integer activityId) {
+    public Payment(Integer id, Integer orderId, Integer state, BigDecimal price, Date creatTime, Integer enterpriseId, Integer activityId) {
         this.id = id;
-        this.userId = userId;
         this.orderId = orderId;
         this.state = state;
         this.price = price;
@@ -41,14 +38,6 @@ public class Payment {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public Integer getOrderId() {

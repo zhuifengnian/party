@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="com.hust.party.pojo.Payment" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
@@ -14,7 +13,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, order_id, state, price, creat_time, enterprise_id, activity_id
+    id, order_id, state, price, creat_time, enterprise_id, activity_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,22 +25,19 @@
     delete from payment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Payment" useGeneratedKeys="true" keyProperty="id" >
-    insert into payment (id, user_id, order_id, 
-      state, price, creat_time, 
-      enterprise_id, activity_id)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, 
-      #{state,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{creatTime,jdbcType=TIMESTAMP}, 
-      #{enterpriseId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.hust.party.pojo.Payment"  useGeneratedKeys="true" keyProperty="id">
+    insert into payment (id, order_id, state, 
+      price, creat_time, enterprise_id, 
+      activity_id)
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{creatTime,jdbcType=TIMESTAMP}, #{enterpriseId,jdbcType=INTEGER}, 
+      #{activityId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.Payment" useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Payment"  useGeneratedKeys="true" keyProperty="id">
     insert into payment
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
-      </if>
-      <if test="userId != null" >
-        user_id,
       </if>
       <if test="orderId != null" >
         order_id,
@@ -66,9 +62,6 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
-      </if>
       <if test="orderId != null" >
         #{orderId,jdbcType=INTEGER},
       </if>
@@ -92,9 +85,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.Payment" >
     update payment
     <set >
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
-      </if>
       <if test="orderId != null" >
         order_id = #{orderId,jdbcType=INTEGER},
       </if>
@@ -118,8 +108,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.Payment" >
     update payment
-    set user_id = #{userId,jdbcType=INTEGER},
-      order_id = #{orderId,jdbcType=INTEGER},
+    set order_id = #{orderId,jdbcType=INTEGER},
       state = #{state,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       creat_time = #{creatTime,jdbcType=TIMESTAMP},
@@ -132,9 +121,7 @@
     SELECT *
     FROM payment
     WHERE 1=1
-    <if test="userId != null" >
-      and  user_id = #{userId,jdbcType=INTEGER}
-    </if>
+
     <if test="orderId != null" >
       and order_id = #{orderId,jdbcType=INTEGER}
     </if>
@@ -142,7 +129,7 @@
       and   state = #{state,jdbcType=INTEGER}
     </if>
     <if test="price != null" >
-     and  price = #{price,jdbcType=DECIMAL}
+      and  price = #{price,jdbcType=DECIMAL}
     </if>
     <if test="creatTime != null" >
       and  creat_time = #{creatTime,jdbcType=TIMESTAMP}
@@ -163,9 +150,7 @@
     SELECT count(*)
     FROM payment
     WHERE 1=1
-    <if test="userId != null" >
-      and  user_id = #{userId,jdbcType=INTEGER}
-    </if>
+
     <if test="orderId != null" >
       and order_id = #{orderId,jdbcType=INTEGER}
     </if>
