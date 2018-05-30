@@ -8,6 +8,7 @@ import com.hust.party.exception.ApiException;
 import com.hust.party.pojo.*;
 import com.hust.party.service.*;
 import com.hust.party.util.ReflectUtil;
+import com.hust.party.vo.ActivityEnterpriseVo;
 import com.hust.party.vo.OrderActivityVO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -305,11 +305,16 @@ public class OrderController {
         return new ReturnMessage(200, "退出订单成功");
     }
 
-    @ApiOperation(value = "根据用户的openid，查询该用户订单列表", notes = "根据用户的openid，查询订单列表")
+    @ApiOperation(value = "查询该用户下的各种订单列表", notes = "根据用户的uid，以及订单状态，查询该用户下的订单列表，比如全部，拼单中，待消费，已完成，退款中")
     @ResponseBody
     @RequestMapping(value="/listOrders", method = RequestMethod.GET)
-    public ReturnMessage listOrders(@RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-           @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber, @RequestParam("open_id") String chat_id){
+    public ReturnMessage listOrders(@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+           @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber, @RequestParam("uid") Integer uid){
+        //判断用户是否存在
+        User user = userService.selectByPrimaryKey(uid);
+        if(user == null){
+            throw new ApiException(201, "用户id不存在");
+        }
         //分页准备
         PageInfo<OrderActivityVO> pageInfo = new PageInfo<>();
         pageInfo.setPageNum(pageNumber);
@@ -317,53 +322,72 @@ public class OrderController {
         Page page = new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
+
+        List<OrderActivityVO> orderActivityVOs = listAllOrders(uid, page);
+
+        pageInfo.setRows(orderActivityVOs);
+        return  new ReturnMessage(200, pageInfo);
+    }
+
+    /**
+     * 列出用户所有的订单
+     */
+    private List<OrderActivityVO> listAllOrders(Integer uid, Page page){
         //拿到用户id,再拿到其下所有订单
-        Integer uid = userService.selectUserByChatId(chat_id);
-        List<Integer> integers = orderUserService.selectOrdersByUid(uid, page);       //该用户下的所有订单
         List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
+        OrderUser tmpOrderUser = new OrderUser();
+        tmpOrderUser.setUserId(uid);
+        List<OrderUser> orderUsers2 = orderUserService.select(tmpOrderUser, page);
         //去order表找activity
-        for(Integer i: integers){
-            Orders order = ordersService.selectByPrimaryKey(i);
-            if(order == null){
-                continue;
-            }
-
+        for(OrderUser orderUser: orderUsers2){
             //补充订单中活动相关的数据
-            Integer activityId = order.getActivityId();
-
+            Integer orderId = orderUser.getOrderId();
+            Orders orders = ordersService.selectByPrimaryKey(orderId);
+            Integer activityId = orders.getActivityId();
             Activity activity = activityService.selectByPrimaryKey(activityId);
+
+            //将数据封装到vo类中
             OrderActivityVO orderActivityVO = new OrderActivityVO();
 
             ReflectUtil.copyProperties(orderActivityVO, activity);
 
             orderActivityVO.setAid(activity.getId());
-            orderActivityVO.setOid(order.getId());
+            orderActivityVO.setOid(orderId);
 
             //获取统计人数
-            Integer userCnt = orderUserService.selectUserCnt(order.getId());
+//            Integer userCnt = orderUserService.selectUserCnt(orderId);
+            OrderUser tmpOrderUser2 = new OrderUser();
+            tmpOrderUser2.setUserId(uid);
+            tmpOrderUser2.setOrderId(orderId);
+            int userCnt = orderUserService.selectCount(tmpOrderUser2);
             orderActivityVO.setNum(userCnt);
 
             //补充订单中商家相关的数据
             Integer enterpriseId = activity.getEnterpriseId();
             Enterprise enterprise = enterpriseService.selectByPrimaryKey(enterpriseId);
-            orderActivityVO.setEnterpriceName(enterprise.getName());
-            orderActivityVO.setEnid(enterpriseId);
-            orderActivityVO.setLeadPhone(enterprise.getLeadPhone());        //商家电话
+            ActivityEnterpriseVo activityEnterpriseVo = new ActivityEnterpriseVo();
+
+            activityEnterpriseVo.setEnterpriseName(enterprise.getNickname());
+            activityEnterpriseVo.setEnterpriseId(enterpriseId);
+            activityEnterpriseVo.setEnterprisePhone(enterprise.getLeadPhone());
+            activityEnterpriseVo.setAvatarurl(enterprise.getAvatarurl());
+
+            orderActivityVO.setActivityEnterpriseVo(activityEnterpriseVo);
+
+            //获取订单创建时间
+            orderActivityVO.setCreatTime(orderUser.getCreatTime());
+            orderActivityVO.setConsumeTime(orderUser.getConsumeTime());
+
+            //TODO:真实价格暂时
+            orderActivityVO.setRealPrice(activity.getPreferentialPrice());
 
             //获取用户在这条订单下的状态
-            //先拿到orderuser对象
-            List<OrderUser> orderUsers = orderUserService.selectOrderUserByUidAndOid(uid, order.getId());
-            OrderUser orderUser = orderUsers.get(0);
-            orderActivityVO.setStatus(orderUser.getState());
+            orderActivityVO.setStatus(orders.getState());
 
             //TODO:优惠券跟实际价格暂未实现
 
             orderActivityVOs.add(orderActivityVO);
         }
-        pageInfo.setRows(orderActivityVOs);
-//        pageInfo.setTotal();
-//        UserOrderVO userOrderVO = new UserOrderVO();
-//        userOrderVO.setOrders(orderActivityVOs);
-        return  new ReturnMessage(200, pageInfo);
+        return orderActivityVOs;
     }
 }

@@ -20,6 +20,51 @@
     from order_user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="select" parameterType="Map" resultMap="BaseResultMap">
+    SELECT *
+    FROM order_user
+    WHERE 1=1
+    <if test="orderId != null" >
+      and order_id = #{orderId,jdbcType=INTEGER}
+    </if>
+    <if test="userId != null" >
+      and user_id = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="state != null" >
+      and state = #{state,jdbcType=INTEGER}
+    </if>
+    <if test="creatTime != null" >
+      and creat_time = #{creatTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="consumeTime != null" >
+      and consume_time = #{consumeTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="start != null and pageSize!=null">
+      limit #{start},#{pageSize}
+    </if>
+  </select>
+  <!-- 查詢数量 -->
+  <select id="selectCount" parameterType="com.hust.party.pojo.OrderUser"
+          resultType="Integer">
+    SELECT count(*)
+    FROM order_user
+    WHERE 1=1
+    <if test="orderId != null" >
+      and order_id = #{orderId,jdbcType=INTEGER}
+    </if>
+    <if test="userId != null" >
+      and user_id = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="state != null" >
+      and state = #{state,jdbcType=INTEGER}
+    </if>
+    <if test="creatTime != null" >
+      and creat_time = #{creatTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="consumeTime != null" >
+      and consume_time = #{consumeTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from order_user
     where id = #{id,jdbcType=INTEGER}

@@ -10,6 +10,7 @@ import com.hust.party.pojo.Orders;
 import com.hust.party.service.ActivityService;
 import com.hust.party.service.EnterpriseService;
 import com.hust.party.service.OrdersService;
+import com.hust.party.util.QiNiuUtil;
 import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.EnterpriseActivityVo;
@@ -327,7 +328,7 @@ list1.add(enterpriseActivityVo);
         if(eid==null) {
             String license = null;
             if (flfile != null)
-                license = manageFile(flfile);
+                license = QiNiuUtil.manageFile(flfile);
             enterprise.setLicence(license);
            insert = enterpriseService.insert(enterprise);
         }
@@ -341,7 +342,7 @@ list1.add(enterpriseActivityVo);
     public ReturnMessage updateEnterprise(Enterprise enterprise,@RequestParam(value = "flyfile", required = false) MultipartFile flfile){
         String license=null;
         if(flfile!=null)
-            license=manageFile(flfile);
+            license= QiNiuUtil.manageFile(flfile);
         ;
         enterprise.setLicence(license);
         int insert=  enterpriseService.updateByPrimaryKey(enterprise);
@@ -400,41 +401,5 @@ list1.add(enterpriseActivityVo);
 
 
         return new ReturnMessage(200, text);
-    }
-    public String manageFile(MultipartFile file) {
-        //判断是否大于5M
-        if(file.getSize()<5*1048576) {
-            String key = LocalDateTime.now().getNano() + file.getOriginalFilename();
-            String keys = "http://p8p5n2pli.bkt.clouddn.com/";
-            Configuration cfg = new Configuration(Zone.zone0());
-            UploadManager uploadManager = new UploadManager(cfg);
-            //...生成上传凭证，然后准备上传
-            String accessKey = "f7S3xKlvKLRnqctORPPAth4GRw0JxtpqYUkgRhEL";
-            String secretKey = "SDvAjl6hONBXxM5CcEC4uf5ffZ-tiBCJ5-bhI6Id";
-            String bucket = "zhuifeng";
-            //默认不指定key的情况下，以文件内容的hash值作为文件名
-            Auth auth = Auth.create(accessKey, secretKey);
-            String upToken = auth.uploadToken(bucket);
-            try {
-                Response response = uploadManager.put(file.getBytes(), key, upToken);
-                //解析上传成功的结果
-                DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-                keys = keys + key;
-            } catch (QiniuException ex) {
-                Response r = ex.response;
-                System.err.println(r.toString());
-                try {
-                    System.err.println(r.bodyString());
-                } catch (QiniuException ex2) {
-                    //ignore
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return keys;
-        }
-        //大于5M返回空
-        return null;
     }
 }

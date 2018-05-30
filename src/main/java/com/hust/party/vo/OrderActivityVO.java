@@ -15,11 +15,7 @@ public class OrderActivityVO {
 
     private Integer num;                //人数
 
-    private Integer enid;               //商家id
-
-    private String enterpriceName;      //商家名
-
-    private String leadPhone;          //商家电话
+    private ActivityEnterpriseVo activityEnterpriseVo;  //封装跟订单活动有关的商家信息
 
     private Integer status = Const.ORDER_STATUS_ENGAGING;             //订单状态（0可以支付，1拼单人数满，2拼单人数未满，3日期已过）
 
@@ -69,23 +65,13 @@ public class OrderActivityVO {
         this.num = num;
     }
 
-    public Integer getEnid() {
-        return enid;
+    public ActivityEnterpriseVo getActivityEnterpriseVo() {
+        return activityEnterpriseVo;
     }
 
-    public void setEnid(Integer enid) {
-        this.enid = enid;
+    public void setActivityEnterpriseVo(ActivityEnterpriseVo activityEnterpriseVo) {
+        this.activityEnterpriseVo = activityEnterpriseVo;
     }
-
-    public String getEnterpriceName() {
-        return enterpriceName;
-    }
-
-    public void setEnterpriceName(String enterpriceName) {
-        this.enterpriceName = enterpriceName;
-    }
-
-
 
     public Integer getStatus() {
         return status;
@@ -213,13 +199,5 @@ public class OrderActivityVO {
 
     public void setConsumeTime(Date consumeTime) {
         this.consumeTime = consumeTime;
-    }
-
-    public String getLeadPhone() {
-        return leadPhone;
-    }
-
-    public void setLeadPhone(String leadPhone) {
-        this.leadPhone = leadPhone;
     }
 }
