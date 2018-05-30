@@ -12,6 +12,40 @@
   <sql id="Base_Column_List" >
     id, state, money, userorder_id
   </sql>
+  <!-- 分页查詢 -->
+  <select id="select" parameterType="Map" resultMap="BaseResultMap">
+    SELECT *
+    FROM user_money
+    WHERE 1=1
+    <if test="state != null" >
+     and state = #{state,jdbcType=INTEGER}
+    </if>
+    <if test="money != null" >
+    and  money = #{money,jdbcType=DECIMAL}
+    </if>
+    <if test="userorderId != null" >
+     and userorder_id = #{userorderId,jdbcType=INTEGER}
+    </if>
+    <if test="start != null and pageSize!=null">
+      limit #{start},#{pageSize}
+    </if>
+  </select>
+  <!-- 查詢数量 -->
+  <select id="selectCount" parameterType="com.hust.party.pojo.Activity"
+          resultType="Integer">
+    SELECT count(*)
+    FROM user_money
+    WHERE 1=1
+    <if test="state != null" >
+      and state = #{state,jdbcType=INTEGER}
+    </if>
+    <if test="money != null" >
+      and  money = #{money,jdbcType=DECIMAL}
+    </if>
+    <if test="userorderId != null" >
+      and userorder_id = #{userorderId,jdbcType=INTEGER}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

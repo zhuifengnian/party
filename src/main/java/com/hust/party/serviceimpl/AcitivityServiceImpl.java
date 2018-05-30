@@ -24,11 +24,6 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
     }
 
     @Override
-    public Activity getActivity(Integer id) {
-        return activityMapper.getActivity(id);
-    }
-
-    @Override
     public List<Activity> getEnterpriseActivity(Integer eid, Page page) {
         return activityMapper.getEnterpriseActivity(eid,page);
     }

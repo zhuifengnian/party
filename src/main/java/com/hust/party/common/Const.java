@@ -7,10 +7,7 @@ package com.hust.party.common;
 public class Const {
     //order_user表
     public static final int ORDER_USER_STATUS_CANSEL = 0;    //订单取消
-    public static final int ORDER_USER_STATUS_NOT_FULL = 1;    //订单拼单人数未达活动最小人数,也就是正在拼团的状态
-//    public static final int ORDER_USER_STATUS_SUCCESS = 2;    //拼团成功，还未消费
-    public static final int ORDER_USER_STATUS_CAN_PAY = 3;    //可以支付
-    public static final int ORDER_USER_STATUS_EXCEED_TIME = 4;    //订单超时
+    public static final int ORDER_USER_STATUS_ACTIVATE = 1;    //订单拼单人数未达活动最小人数,也就是正在拼团的状态
 
     //order表
     public static final int ORDER_STATUS_CANCEL = 0;    //订单取消

@@ -9,7 +9,6 @@ import com.hust.party.pojo.*;
 import com.hust.party.service.*;
 import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.OrderActivityVO;
-import com.hust.party.vo.UserOrderVO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * OrderController<br/>
@@ -54,7 +51,8 @@ public class OrderController {
             value = "uid") @RequestParam("uid") Integer uid){
 
         //先判断用户是否登录，只有登录获取uid后才可进行生成订单操作
-        if(uid == null){
+        User user = userService.selectByPrimaryKey(uid);
+        if(user == null){
             throw new ApiException(201, "用户id不存在，出现异常");
         }
 
@@ -75,7 +73,7 @@ public class OrderController {
         //生成订单的用户也需要记录在order_user表中
         OrderUser orderUser = new OrderUser();
         orderUser.setOrderId(oid);
-        orderUser.setState(Const.ORDER_USER_STATUS_NOT_FULL);
+        orderUser.setState(Const.ORDER_USER_STATUS_ACTIVATE);
         orderUser.setUserId(uid);
         orderUser.setCreatTime(createTime);
         int orderUserId = orderUserService.insert(orderUser);
@@ -91,14 +89,14 @@ public class OrderController {
         userMoneyService.insert(userMoney);
 
         //再在payment表中记录下这笔金额（payment记录的是这笔订单需要给商家的金额，在第一个人创建订单时，会生成这样的记录
-        Payment payment = new Payment();
-    //    payment.setUserId(uid);     //这里目前记录的是创建者的id
-        payment.setOrderId(oid);
-        payment.setState(Const.PAYMENT_NOT_PAY);
-        payment.setPrice(preferentialPrice);
-        payment.setEnterpriseId(eid);
-        payment.setActivityId(aid);
-        paymentService.insert(payment);
+//        Payment payment = new Payment();
+//    //    payment.setUserId(uid);     //这里目前记录的是创建者的id
+//        payment.setOrderId(oid);
+//        payment.setState(Const.PAYMENT_NOT_PAY);
+//        payment.setPrice(preferentialPrice);
+//        payment.setEnterpriseId(eid);
+//        payment.setActivityId(aid);
+//        paymentService.insert(payment);
 
         return new ReturnMessage(200, oid);  //成功返回订单id
     }
@@ -107,10 +105,9 @@ public class OrderController {
             "当此订单中不存在这个用户时才可以参与订单，\n否则当用于已经存在在这个订单时，说明已经付过款了，不需要再重新付款,由前端给出提示\n" +
             "还需要判断此订单是否过期")
     @ResponseBody
-    @Transactional
     @RequestMapping(value="/judgeUserInOrder", method = RequestMethod.POST)
     public ReturnMessage judgeUserInOrder(@ApiParam(required = true, name = "oid",
-            value = "oid")@RequestParam("oid")Integer oid,@ApiParam(required = true, name = "uid",
+            value = "oid")@RequestParam("oid")Integer oid, @ApiParam(required = true, name = "uid",
             value = "uid") @RequestParam("uid") Integer uid) {
         Orders orders = ordersService.selectByPrimaryKey(oid);
         if(orders == null){
@@ -128,7 +125,9 @@ public class OrderController {
         calendar.setTimeInMillis(System.currentTimeMillis());
 //        calendar.add(Calendar.DAY_OF_MONTH, 1);
 
-        if(activity.getArriveTime().before(calendar.getTime())){    //当当前时间超过活动结束时间，不允许用户再参与拼团
+        Date time = calendar.getTime();
+        Date arriveTime = activity.getArriveTime();
+        if(arriveTime.before(time)){    //当当前时间超过活动结束时间，不允许用户再参与拼团
             orders.setState(Const.ORDER_STATUS_EXCEED_TIME);
             ordersService.updateByPrimaryKey(orders);
             return new ReturnMessage(201, "订单已经超时，不能再让用于参与");
@@ -154,12 +153,16 @@ public class OrderController {
             return new ReturnMessage(202, "用户id不存在");
         }
 
-        OrderUser orderUser = orderUserService.selectOrderUserByUidAndOid(uid, oid);
-        if(orderUser != null){
+        List<OrderUser> orderUsers = orderUserService.selectOrderUserByUidAndOid(uid, oid);
+        if(orderUsers.size() > 0){
             return new ReturnMessage(201, "用户已经在此订单中，不能重复参与");
         }
 
-        return new ReturnMessage(200, "success");
+        //走到这说明检验成功，可以让该用户参与,生成随机插入口令存在session中，用于做插入校验。默认30分钟有效
+//        String token = UUID.randomUUID().toString();
+//        session.setAttribute("" + oid + uid, token);
+//        String sessionId = session.getId();
+        return new ReturnMessage(200, "用户校验通过，可以参与订单");
     }
 
     @ApiOperation(value =  "其他用户参与订单", notes = "其他用户参与订单")
@@ -175,20 +178,27 @@ public class OrderController {
             throw new ApiException(201, "所给订单id不存在");
         }
         //从user表中查出user
-        if(uid == null){
+        User user = userService.selectByPrimaryKey(uid);
+        if(user == null){
             throw new ApiException(201, "用户不存在，无法生成订单");
         }
+//        //判断用户传入口令是否正确
+//        HttpSession session1 = session.getSessionContext().getSession(sessionId);
+//        String tokenVal = (String) session1.getAttribute("" + oid + uid);
+//        if(tokenVal == null){
+//            throw new ApiException(201, "所传参与口令不正确");
+//        }
 
         //在orderuser里判断用户是否已经参与该订单，若没有，才允许参与
         OrderUser orderUser = new OrderUser();
         orderUser.setOrderId(oid);
         orderUser.setUserId(uid);
-
+        orderUser.setState(Const.ORDER_USER_STATUS_ACTIVATE);   //插入订单时，默认有效
         //所有插入条件以满足，可以参与订单
         int orderUserId = orderUserService.insert(orderUser);
 
         Integer activityId = orders.getActivityId();
-        Activity activity = activityService.getActivity(activityId);
+        Activity activity = activityService.selectByPrimaryKey(activityId);
 
         //记录用户支付数据,插入数据到user_money表中
         //TODO:这里因为不涉及优惠券和优惠套餐，所以默认用户的支付价格就是活动的单价
@@ -200,28 +210,28 @@ public class OrderController {
         userMoney.setUserorderId(orderUserId);
         userMoneyService.insert(userMoney);
 
-        //TODO:修改payment中的金额
-//        paymentService.select
-
         //获取插入之后的当前订单人数
         Integer userCnt = orderUserService.selectUserCnt(orders.getId());
 
         Integer containPeople = activity.getContainPeople();    //活动最大人数
         Integer atleastPeople = activity.getMinuPeople();    //活动最少人数
 
-        //判断是否达到了订单的最小人数，当达到了最小人数后，订单状态改为可以支付
-        if(userCnt >= atleastPeople){
-            orders.setState(Const.ORDER_STATUS_REACH_LEAST_PEOPEL); //设置订单状态为达到最小人数，可以给商家付款
-            ordersService.updateByPrimaryKey(orders);
-        }
-
-        //插入完成后判断订单总的状态是否达到了最大容纳人数
+        //插入完成后判断订单总的状态是否达到了最大容纳人数，达到后，订单状态改为人数已满
         if(userCnt >= containPeople){
             orders.setState(Const.ORDER_STATUS_HAS_FULL);//订单状态改为人数已满
             ordersService.updateByPrimaryKey(orders);
+            return new ReturnMessage(200, "插入成功，插入后的订单已达人数上限");
         }
 
-        return new ReturnMessage(200, "插入成功" + orderUserId);
+        //再判断是否达到了订单的最小人数，当达到了最小人数后，订单状态改为可以支付
+        if(userCnt >= atleastPeople){
+            orders.setState(Const.ORDER_STATUS_REACH_LEAST_PEOPEL); //设置订单状态为达到最小人数，可以给商家付款
+            ordersService.updateByPrimaryKey(orders);
+            return new ReturnMessage(200, "插入成功，插入后的订单已达最小人数，可以开始支付");
+        }
+
+        //走到最后，说明还未满足订单的最小人数
+        return new ReturnMessage(200, "插入成功");
     }
 
     @ApiOperation(value =  "用户取消订单", notes = "用户取消订单")
@@ -242,10 +252,13 @@ public class OrderController {
         }
 
         //判断该订单下是否存在该用户
-        OrderUser orderUser = orderUserService.selectOrderUserByUidAndOid(uid, oid);
-        if(orderUser == null){
+        List<OrderUser> orderUsers = orderUserService.selectOrderUserByUidAndOid(uid, oid);
+
+        if(orderUsers.size() <= 0){
             throw new ApiException(201, "该用户不在此订单下，不能执行取消");
         }
+        OrderUser orderUser = orderUsers.get(0);
+
         //当用户已经将钱转入到商家账户时，不给退款
         //拿到存在数据库中的usermoney对象
         UserMoney tmpUserMoney = new UserMoney();
@@ -257,7 +270,7 @@ public class OrderController {
             throw new ApiException(201, "数据发生错误，无法取出");
         }
 
-        //TODO:拿到user_money中的金额，将其计入payment
+        //将user_money中记录的金额退还
         BigDecimal drawbackMoney = userMoney.getMoney();
         //将user_money中的数据的状态置为已取出
         userMoney.setState(Const.USER_MONEY_DRAWBACK);
@@ -270,21 +283,26 @@ public class OrderController {
         //需要再修改order中的数据
         //先判断人数是否不满足最低要求
         Integer userCnt = orderUserService.selectUserCnt(oid);
-        Activity activity = activityService.getActivity(orders.getActivityId());
+        Activity activity = activityService.selectByPrimaryKey(orders.getActivityId());
         Integer minuPeople = activity.getMinuPeople();
+
+//        //退出时将支付口令从session中移除
+//        session.removeAttribute("" + oid + uid);
 
         if(userCnt <= minuPeople){
             orders.setState(Const.ORDER_STATUS_ENGAGING);   //当人数不满足最低时，订单状态从可支付变为正在参与
             ordersService.updateByPrimaryKey(orders);
+            return new ReturnMessage(200, "退出订单成功，本次退出后订单不再满足最小人数");
         }
 
         //判断订单是否已经取消，这种情况会在订单只剩一个人的时候取消
         if(userCnt <= 0){
             orders.setState(Const.ORDER_STATUS_CANCEL);
             ordersService.updateByPrimaryKey(orders);
+            return new ReturnMessage(200, "退出订单成功，本次退出后订单将撤销");
         }
 
-        return new ReturnMessage(200, "取消订单成功");
+        return new ReturnMessage(200, "退出订单成功");
     }
 
     @ApiOperation(value = "根据用户的openid，查询该用户订单列表", notes = "根据用户的openid，查询订单列表")
@@ -334,7 +352,8 @@ public class OrderController {
 
             //获取用户在这条订单下的状态
             //先拿到orderuser对象
-            OrderUser orderUser = orderUserService.selectOrderUserByUidAndOid(uid, order.getId());
+            List<OrderUser> orderUsers = orderUserService.selectOrderUserByUidAndOid(uid, order.getId());
+            OrderUser orderUser = orderUsers.get(0);
             orderActivityVO.setStatus(orderUser.getState());
 
             //TODO:优惠券跟实际价格暂未实现

@@ -113,11 +113,11 @@
     </if>
   </select>
   <!--根据用户id和订单id拿到用户在那个订单下的数据-->
-  <select id = "selectOrderUserByUidAndOid" parameterType="int" resultType="com.hust.party.pojo.OrderUser">
-    select * from order_user where user_id = #{uid} and order_id = #{oid} and state =
+  <select id = "selectOrderUserByUidAndOid" parameterType="int" resultMap="BaseResultMap">
+    select * from order_user where user_id = #{uid} and order_id = #{oid} and state = 1
   </select>
   <!--拿到该订单下用户的数量-->
   <select id="selectUserCnt" parameterType="int" resultType="int">
-    select count(*) from order_user where order_id = #{order_id} and   state = 1 and state = 2 and state = 3
+    select count(*) from order_user where order_id = #{order_id} and   state = 1
   </select>
 </mapper>

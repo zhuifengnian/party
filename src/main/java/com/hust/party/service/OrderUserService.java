@@ -25,6 +25,6 @@ public interface OrderUserService extends BaseService<OrderUser> {
      * @param uid
      * @param oid
      */
-    OrderUser selectOrderUserByUidAndOid(Integer uid, Integer oid);
+    List<OrderUser> selectOrderUserByUidAndOid(Integer uid, Integer oid);
 
 }

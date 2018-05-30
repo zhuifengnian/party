@@ -24,6 +24,6 @@ public interface OrderUserMapper  extends BaseMapper<OrderUser>{
      * @param uid
      * @param oid
      */
-    OrderUser selectOrderUserByUidAndOid(@Param("uid")Integer uid, @Param("oid")Integer oid);
+    List<OrderUser> selectOrderUserByUidAndOid(@Param("uid")Integer uid, @Param("oid")Integer oid);
 
 }

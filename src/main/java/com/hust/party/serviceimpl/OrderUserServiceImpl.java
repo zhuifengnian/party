@@ -37,7 +37,7 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
     }
 
     @Override
-    public OrderUser selectOrderUserByUidAndOid(Integer uid, Integer oid) {
+    public List<OrderUser> selectOrderUserByUidAndOid(Integer uid, Integer oid) {
         return orderUserMapper.selectOrderUserByUidAndOid(uid, oid);
     }
 
