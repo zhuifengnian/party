@@ -77,7 +77,7 @@ public class ActivityController
     @ApiOperation(value = "根据分类提取信息", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getCategoryActivity(@RequestParam("name") String name,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-        PageInfo<Activity> pageinfo = new PageInfo<Activity>();
+        PageInfo<PerenceActivityVO> pageinfo = new PageInfo<PerenceActivityVO>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page = new Page();
@@ -91,10 +91,19 @@ public class ActivityController
     if(list.size()!=0) {
         activity.setState(1);
         activity.setCategory(list.get(0).getId());
-
-        pageinfo.setRows(activityService.select(activity, page));
+      List <Activity> list1=  activityService.select(activity, page);
+      List<PerenceActivityVO>list2=new ArrayList<>();
         int count = activityService.selectCount(activity);
         pageinfo.setTotal(count);
+        for(int i=0;i<list1.size();i++){
+            PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
+            ReflectUtil.copyProperties(perenceActivityVO, list1.get(i));
+            perenceActivityVO.setSoldNumber(0);
+            list2.add(perenceActivityVO);
+        }
+        pageinfo.setRows(list2);
+
+
     }
 }
         //  List<Activity> list = activityService.getEnterpriseActivity(eid);
