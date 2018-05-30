@@ -3,11 +3,8 @@ package com.hust.party.controller;
 import com.google.gson.Gson;
 import com.hust.party.common.Page;
 import com.hust.party.common.ReturnMessage;
-import com.hust.party.pojo.Activity;
-import com.hust.party.pojo.ActivityTag;
-import com.hust.party.pojo.Enterprise;
+import com.hust.party.pojo.*;
 import com.hust.party.common.PageInfo;
-import com.hust.party.pojo.Orders;
 import com.hust.party.service.*;
 
 import com.hust.party.util.ReflectUtil;
@@ -47,6 +44,8 @@ public class ActivityController
    private ActivityTagService activityTagService;
     @Autowired
     private ActivityPictureService activitypictureService;
+    @Autowired
+    private CategoryService categoryService;
     @RequestMapping(value = "/getactivity", method = RequestMethod.POST)
     @ApiOperation(value = "根据活动id提取信息", httpMethod = "POST")
     @ResponseBody
@@ -76,20 +75,27 @@ public class ActivityController
     @RequestMapping(value = "/activity/category", method = RequestMethod.POST)
     @ApiOperation(value = "根据分类提取信息", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getCategoryActivity(@ModelAttribute Activity activity,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-
-        if(activity.getCategory()==null)
-            activity.setCategory(0);
-        activity.setState(1);
-        PageInfo<Activity> pageinfo=new PageInfo<Activity>();
+    public ReturnMessage getCategoryActivity(@RequestParam("name") String name,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+        PageInfo<Activity> pageinfo = new PageInfo<Activity>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
-        Page page= new Page();
+        Page page = new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-        pageinfo.setRows( activityService.select(activity,page));
-        int count=activityService.selectCount(activity);
+        if(name!=null) {
+    Activity activity = new Activity();
+    Category category = new Category();
+    category.setName(name);
+    List<Category> list = categoryService.select(category, null);
+    if(list.size()!=0) {
+        activity.setState(1);
+        activity.setCategory(list.get(0).getId());
+
+        pageinfo.setRows(activityService.select(activity, page));
+        int count = activityService.selectCount(activity);
         pageinfo.setTotal(count);
+    }
+}
         //  List<Activity> list = activityService.getEnterpriseActivity(eid);
         return new ReturnMessage(200, pageinfo);
     }
