@@ -342,6 +342,7 @@ list1.add(enterpriseActivityVo);
         String license=null;
         if(flfile!=null)
             license=manageFile(flfile);
+        ;
         enterprise.setLicence(license);
         int insert=  enterpriseService.updateByPrimaryKey(enterprise);
         return new ReturnMessage(200, insert);
@@ -350,19 +351,55 @@ list1.add(enterpriseActivityVo);
     @ApiOperation(value = "企业撤销自己的活动", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage deleteActivity(@RequestParam("aid") Integer aid){
+      String text="";
       Activity activity =new Activity() ;
       activity.setState(2);
       activity.setId(aid);
-       int insert=activityService.updateByPrimaryKey(activity);
-        return new ReturnMessage(200, insert);
+
+      Activity activity1=activityService.selectByPrimaryKey(aid);
+      if(activity1.getArriveCopies()!=0)
+         text="活动卖出，暂时无法取消,可以进行修改";
+      else {
+
+              activity.setState(2);
+          int insert = activityService.updateByPrimaryKey(activity);
+          if (insert != aid)
+               text="撤销未成功，请重新撤销";
+          else
+               text="撤销完成";
+      }
+        return new ReturnMessage(200, text);
     }
     @RequestMapping(value = "/updateActivity", method = RequestMethod.POST)
     @ApiOperation(value = "企业修改自己的活动", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage updateActivity(@RequestBody  Activity activity){
+    public ReturnMessage updateActivity(  Activity activity){
 
-        int insert=activityService.updateByPrimaryKey(activity);
-        return new ReturnMessage(200, insert);
+        String text="";
+
+            Activity activity1 = activityService.selectByPrimaryKey(activity.getId());
+            if (activity1.getState() == 1) {
+                if (activity.getCopies() != null) {
+                    if (activity.getCopies() < activity1.getArriveCopies())
+                        text = "暂时不能修改，总份数小于已拼团份数";
+                    else {
+                        int insert = activityService.updateByPrimaryKey(activity);
+                        if (insert != activity.getId())
+                            text = "修改未成功，请重新修改";
+                        else
+                            text = "修改完成";
+                    }
+                }
+                int insert = activityService.updateByPrimaryKey(activity);
+                if (insert != activity.getId())
+                    text = "修改未成功，请重新修改";
+                else
+                    text = "修改完成";
+            } else
+                text = "已撤销活动，不可以修改";
+
+
+        return new ReturnMessage(200, text);
     }
     public String manageFile(MultipartFile file) {
         //判断是否大于5M
