@@ -51,22 +51,25 @@ public class ActivityController
     @ApiOperation(value = "根据活动id提取信息", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getIdActivity(@RequestParam("aid") Integer aid){
+
         ActivityVo activityVo =new ActivityVo();
 
         Activity activity = activityService.selectByPrimaryKey(aid);
-        List<String> list=activitypictureService.getAllPicture(activity.getId());
-        List<String>tag= activityTagService.getActivityTag(activity.getId());
-        activityVo.setPictures(list);
-        ReflectUtil.copyProperties(activityVo, activity);
-        activityVo.setOpentime(activity.getActivityTime().toString());
-        Enterprise enterprise =enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
-        ActivityEnterpriseVo activityEnterpriseVo =new ActivityEnterpriseVo();
-        activityEnterpriseVo.setEnterpriseId(enterprise.getId());
-        activityEnterpriseVo.setAvatarurl(enterprise.getAvatarurl());
-        activityEnterpriseVo.setEnterpriseName(enterprise.getName());
-        activityEnterpriseVo.setEnterprisePhone(enterprise.getLeadPhone());
-        activityVo.setActivityEnterpriseVo(activityEnterpriseVo);
-        activityVo.setTag(tag);
+        if(activity!=null) {
+            List<String> list = activitypictureService.getAllPicture(activity.getId());
+            List<String> tag = activityTagService.getActivityTag(activity.getId());
+            activityVo.setPictures(list);
+            ReflectUtil.copyProperties(activityVo, activity);
+            activityVo.setOpentime(activity.getActivityTime().toString());
+            Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
+            ActivityEnterpriseVo activityEnterpriseVo = new ActivityEnterpriseVo();
+            activityEnterpriseVo.setEnterpriseId(enterprise.getId());
+            activityEnterpriseVo.setAvatarurl(enterprise.getAvatarurl());
+            activityEnterpriseVo.setEnterpriseName(enterprise.getName());
+            activityEnterpriseVo.setEnterprisePhone(enterprise.getLeadPhone());
+            activityVo.setActivityEnterpriseVo(activityEnterpriseVo);
+            activityVo.setTag(tag);
+        }
         return new ReturnMessage(200, activityVo);
     }
 
