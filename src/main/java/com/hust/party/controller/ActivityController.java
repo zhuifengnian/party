@@ -78,12 +78,61 @@ public class ActivityController
     @ResponseBody
     public ReturnMessage getCategoryActivity(@RequestParam("name") String name,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         PageInfo<PerenceActivityVO> pageinfo = new PageInfo<PerenceActivityVO>();
+        pageSize=10;
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page = new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-        if(name!=null) {
+
+        if(name.equals("推荐")){
+            List<PerenceActivityVO> lists=new ArrayList<>();
+            List<Activity> list=activityService.getAllActivity(page);
+
+            int counts=0;
+            for(int i=0;i<list.size();i++){
+                Activity activity=list.get(i);
+                PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
+                ReflectUtil.copyProperties(perenceActivityVO, activity);
+
+                Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
+                perenceActivityVO.setEnterpriceName(enterprise.getName());
+                perenceActivityVO.setId(activity.getId());
+
+                int count=0;
+                perenceActivityVO.setSoldNumber(count);
+                if(activity.getCopies()!=activity.getArriveCopies()) {
+                    lists.add(perenceActivityVO);
+                    counts++;
+                }
+            }
+            pageinfo.setRows( lists);
+            pageinfo.setTotal(counts);
+        }
+        else if(name.equals("其它")){
+            List<PerenceActivityVO> lists=new ArrayList<>();
+           List<Activity> list=  activityService.getQitaActivity(page);
+            int counts=0;
+            for(int i=0;i<list.size();i++){
+                Activity activity=list.get(i);
+                PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
+                ReflectUtil.copyProperties(perenceActivityVO, activity);
+
+                Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
+                perenceActivityVO.setEnterpriceName(enterprise.getName());
+                perenceActivityVO.setId(activity.getId());
+
+                int count=0;
+                perenceActivityVO.setSoldNumber(count);
+                if(activity.getCopies()!=activity.getArriveCopies()) {
+                    lists.add(perenceActivityVO);
+                    counts++;
+                }
+            }
+            pageinfo.setRows( lists);
+            pageinfo.setTotal(counts);
+        }
+        else if(name!=null) {
     Activity activity = new Activity();
     Category category = new Category();
     category.setName(name);
@@ -109,9 +158,7 @@ public class ActivityController
         //  List<Activity> list = activityService.getEnterpriseActivity(eid);
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/activity", method = RequestMethod.POST)
-    @ApiOperation(value = "获取所有活动", httpMethod = "POST")
-    @ResponseBody
+
     public ReturnMessage getActivity(@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         List<PerenceActivityVO> lists=new ArrayList<>();
        pageSize=10;

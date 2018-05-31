@@ -38,5 +38,10 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
         return activityMapper.getAllCurrentActivity(eid);
     }
 
+    @Override
+    public List<Activity> getQitaActivity(Page page) {
+        return activityMapper.getQitaActivity(page);
+    }
+
 
 }

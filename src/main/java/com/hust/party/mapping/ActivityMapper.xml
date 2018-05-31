@@ -465,6 +465,18 @@
       limit #{start},#{pageSize}
     </if>
   </select>
+  <select id="getQitaActivity" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select *
+    from activity
+    where 1=1
+    and state=1
+    and category>3
+    and activity_time >now()
+
+    <if test="start != null and pageSize!=null">
+      limit #{start},#{pageSize}
+    </if>
+  </select>
   <select id="getAllCurrentActivity"  resultMap="BaseResultMap"  parameterType="java.lang.Integer">
     select *
     from activity
