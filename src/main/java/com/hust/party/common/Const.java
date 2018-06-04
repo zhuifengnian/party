@@ -12,11 +12,13 @@ public class Const {
     //order表
     public static final int ORDER_STATUS_CANCEL = 0;    //订单取消
     public static final int ORDER_STATUS_ENGAGING = 1;    //订单正在拼团的状态，并且还没有达到最小人数
-    public static final int ORDER_STATUS_REACH_LEAST_PEOPEL = 2;    //订单达到最小人数，可以支付
+    public static final int ORDER_STATUS_REACH_LEAST_PEOPLE = 2;    //订单达到最小人数，可以支付
     public static final int ORDER_STATUS_EXCEED_TIME = 3;    //订单超时，并且未消费
     public static final int ORDER_STATUS_HAS_FULL = 4;    //人数已满
     public static final int ORDER_STATUS_HAS_CONSUME = 5;    //订单已消费
     public static final int ORDER_STATUS_ENTERPRISE_CANCEL = 6;    //商家取消订单
+
+    public static final int ORDER_LIST_STATUS_ALL = 100;     //列出所有状态的订单，这个状态并没有存在于数据库
     
     //user_money表1.未转商户账户 2.已转商户账户 3.已退款
     public static final int USER_MONEY_NOT_TRANSFER_TO_ENTRERPRISE = 1;     //未转商户账户

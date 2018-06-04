@@ -47,6 +47,12 @@ public class ServiceTest {
     private CategoryService categoryService;
     @Autowired
     private EnterpriseService enterpriseService;
+
+    @Test
+    public void testGetActivity(){
+        Activity activity = activityService.selectByPrimaryKey(14);
+        System.out.println(activity);
+    }
 @Test
 public void getCategory(){
 
@@ -123,6 +129,12 @@ System.out.println("分页信息：" + pageinfo);
 
         List<Carousel> select = carouselService.select(null, null);
         System.out.println(select);
+    }
+
+    @Test
+    public void testlistAllOrders(){
+        List<Integer> integers = orderUserService.selectOrdersByUid(1, new Page());
+        System.out.println(integers);
     }
     @Test
     public void selectUserId(){

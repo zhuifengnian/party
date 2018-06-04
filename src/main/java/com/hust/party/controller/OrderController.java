@@ -225,7 +225,7 @@ public class OrderController {
 
         //再判断是否达到了订单的最小人数，当达到了最小人数后，订单状态改为可以支付
         if(userCnt >= atleastPeople){
-            orders.setState(Const.ORDER_STATUS_REACH_LEAST_PEOPEL); //设置订单状态为达到最小人数，可以给商家付款
+            orders.setState(Const.ORDER_STATUS_REACH_LEAST_PEOPLE); //设置订单状态为达到最小人数，可以给商家付款
             ordersService.updateByPrimaryKey(orders);
             return new ReturnMessage(200, "插入成功，插入后的订单已达最小人数，可以开始支付");
         }
@@ -309,7 +309,7 @@ public class OrderController {
     @ResponseBody
     @RequestMapping(value="/listOrders", method = RequestMethod.GET)
     public ReturnMessage listOrders(@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-           @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber, @RequestParam("uid") Integer uid){
+           @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber, @RequestParam("uid") Integer uid, @RequestParam("order_state") Integer order_state){
         //判断用户是否存在
         User user = userService.selectByPrimaryKey(uid);
         if(user == null){
@@ -323,29 +323,85 @@ public class OrderController {
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
 
-        List<OrderActivityVO> orderActivityVOs = listAllOrders(uid, page);
+        List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
+        //全部订单
+        if(order_state == Const.ORDER_LIST_STATUS_ALL){
+            orderActivityVOs = listAllOrders(uid, page);
+        }
+        //拼单中
+        if(order_state == Const.ORDER_STATUS_ENGAGING){
+            orderActivityVOs = listEngagingOrders(uid, page);
+        }
+        //待消费
+        if(order_state == Const.ORDER_STATUS_REACH_LEAST_PEOPLE){
+            orderActivityVOs = listReachListPeopleOrders(uid, page);
+        }
+        //已完成
+        if(order_state == Const.ORDER_STATUS_HAS_CONSUME){
+            orderActivityVOs = listFinishOrders(uid, page);
+        }
+        //退款中
+        if(order_state == Const.ORDER_STATUS_ENGAGING){
+        }
 
         pageInfo.setRows(orderActivityVOs);
         return  new ReturnMessage(200, pageInfo);
     }
 
     /**
-     * 列出用户所有的订单
+     * 列出已经满足消费条件的订单
      */
-    private List<OrderActivityVO> listAllOrders(Integer uid, Page page){
+    private List<OrderActivityVO> listReachListPeopleOrders(Integer uid, Page page) {
         //拿到用户id,再拿到其下所有订单
         List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
         OrderUser tmpOrderUser = new OrderUser();
         tmpOrderUser.setUserId(uid);
+        tmpOrderUser.setState(Const.ORDER_STATUS_REACH_LEAST_PEOPLE);
         List<OrderUser> orderUsers2 = orderUserService.select(tmpOrderUser, page);
+        dealOrderActivityVO(orderActivityVOs, orderUsers2);
+
+        return orderActivityVOs;
+    }
+
+    /**
+     * 列出正在拼单的订单
+     */
+    private List<OrderActivityVO> listEngagingOrders(Integer uid, Page page) {
+        //拿到用户id,再拿到其下所有订单
+        List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
+        OrderUser tmpOrderUser = new OrderUser();
+        tmpOrderUser.setUserId(uid);
+        tmpOrderUser.setState(Const.ORDER_STATUS_ENGAGING);
+        List<OrderUser> orderUsers2 = orderUserService.select(tmpOrderUser, page);
+        dealOrderActivityVO(orderActivityVOs, orderUsers2);
+
+        return orderActivityVOs;
+    }
+
+    /**
+     * 列出已完成的订单
+     */
+    private List<OrderActivityVO> listFinishOrders(Integer uid, Page page){
+        //拿到用户id,再拿到其下所有订单
+        List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
+        OrderUser tmpOrderUser = new OrderUser();
+        tmpOrderUser.setUserId(uid);
+        tmpOrderUser.setState(Const.ORDER_STATUS_HAS_CONSUME);
+        List<OrderUser> orderUsers2 = orderUserService.select(tmpOrderUser, page);
+        dealOrderActivityVO(orderActivityVOs, orderUsers2);
+
+        return orderActivityVOs;
+    }
+
+    private void dealOrderActivityVO(List<OrderActivityVO> orderActivityVOs, List<OrderUser> orderUsers2) {
         //去order表找activity
         for(OrderUser orderUser: orderUsers2){
             //补充订单中活动相关的数据
             Integer orderId = orderUser.getOrderId();
+            Integer uid = orderUser.getUserId();
             Orders orders = ordersService.selectByPrimaryKey(orderId);
             Integer activityId = orders.getActivityId();
             Activity activity = activityService.selectByPrimaryKey(activityId);
-
             //将数据封装到vo类中
             OrderActivityVO orderActivityVO = new OrderActivityVO();
 
@@ -388,6 +444,19 @@ public class OrderController {
 
             orderActivityVOs.add(orderActivityVO);
         }
+    }
+
+    /**
+     * 列出用户所有的订单
+     */
+    private List<OrderActivityVO> listAllOrders(Integer uid, Page page){
+        //拿到用户id,再拿到其下所有订单
+        List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
+        OrderUser tmpOrderUser = new OrderUser();
+        tmpOrderUser.setUserId(uid);
+        List<OrderUser> orderUsers2 = orderUserService.select(tmpOrderUser, page);
+        //去order表找activity
+        dealOrderActivityVO(orderActivityVOs, orderUsers2);
         return orderActivityVOs;
     }
 }
