@@ -18,7 +18,13 @@ public class Const {
     public static final int ORDER_STATUS_HAS_CONSUME = 5;    //订单已消费
     public static final int ORDER_STATUS_ENTERPRISE_CANCEL = 6;    //商家取消订单
 
-    public static final int ORDER_LIST_STATUS_ALL = 100;     //列出所有状态的订单，这个状态并没有存在于数据库
+    //订单列表相关，只用于标记，不是数据库中的值（全部，拼单中，待消费，已完成，退款中）
+    public static final int ORDER_LIST_STATUS_ALL = 100;     //列出所有状态的订单
+    public static final int ORDER_LIST_STATUS_ENGAGING = 101;     //列出拼单中的订单
+    public static final int ORDER_LIST_STATUS_WAIT_CONSUME = 102;     //列出等待消费的订单
+    public static final int ORDER_LIST_STATUS_FINISH = 103;     //列出已完成的订单
+    public static final int ORDER_LIST_STATUS_DRAWBACKING = 104;     //列出退款中的订单
+
     
     //user_money表1.未转商户账户 2.已转商户账户 3.已退款
     public static final int USER_MONEY_NOT_TRANSFER_TO_ENTRERPRISE = 1;     //未转商户账户

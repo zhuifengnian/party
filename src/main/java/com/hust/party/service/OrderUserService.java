@@ -2,6 +2,8 @@ package com.hust.party.service;
 
 import com.hust.party.common.Page;
 import com.hust.party.pojo.OrderUser;
+import com.hust.party.pojo.Orders;
+import com.hust.party.vo.OrderActivityVO;
 
 import java.util.List;
 
@@ -27,4 +29,12 @@ public interface OrderUserService extends BaseService<OrderUser> {
      */
     List<OrderUser> selectOrderUserByUidAndOid(Integer uid, Integer oid);
 
+    /**
+     * 根据状态返回订单列表的门面方法
+     * @param uid
+     * @param orderStatus
+     * @param page
+     * @return
+     */
+    List<OrderActivityVO> selectOrders(Integer uid, Integer orderStatus, Page page);
 }

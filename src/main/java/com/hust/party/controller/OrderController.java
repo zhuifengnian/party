@@ -326,137 +326,27 @@ public class OrderController {
         List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
         //全部订单
         if(order_state == Const.ORDER_LIST_STATUS_ALL){
-            orderActivityVOs = listAllOrders(uid, page);
+            orderActivityVOs = orderUserService.selectOrders(uid, Const.ORDER_LIST_STATUS_ALL, page);
         }
         //拼单中
-        if(order_state == Const.ORDER_STATUS_ENGAGING){
-            orderActivityVOs = listEngagingOrders(uid, page);
+        if(order_state == Const.ORDER_LIST_STATUS_ENGAGING){
+            orderActivityVOs = orderUserService.selectOrders(uid,Const.ORDER_LIST_STATUS_ENGAGING, page);
         }
         //待消费
-        if(order_state == Const.ORDER_STATUS_REACH_LEAST_PEOPLE){
-            orderActivityVOs = listReachListPeopleOrders(uid, page);
+        if(order_state == Const.ORDER_LIST_STATUS_WAIT_CONSUME){
+            orderActivityVOs = orderUserService.selectOrders(uid,Const.ORDER_LIST_STATUS_WAIT_CONSUME, page);
         }
         //已完成
-        if(order_state == Const.ORDER_STATUS_HAS_CONSUME){
-            orderActivityVOs = listFinishOrders(uid, page);
+        if(order_state == Const.ORDER_LIST_STATUS_FINISH){
+            orderActivityVOs = orderUserService.selectOrders(uid, Const.ORDER_LIST_STATUS_FINISH, page);
         }
         //退款中
-        if(order_state == Const.ORDER_STATUS_ENGAGING){
+        if(order_state == Const.ORDER_LIST_STATUS_DRAWBACKING){
+            orderActivityVOs = orderUserService.selectOrders(uid, Const.ORDER_LIST_STATUS_DRAWBACKING, page);
         }
 
         pageInfo.setRows(orderActivityVOs);
         return  new ReturnMessage(200, pageInfo);
     }
 
-    /**
-     * 列出已经满足消费条件的订单
-     */
-    private List<OrderActivityVO> listReachListPeopleOrders(Integer uid, Page page) {
-        //拿到用户id,再拿到其下所有订单
-        List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
-        OrderUser tmpOrderUser = new OrderUser();
-        tmpOrderUser.setUserId(uid);
-        tmpOrderUser.setState(Const.ORDER_STATUS_REACH_LEAST_PEOPLE);
-        List<OrderUser> orderUsers2 = orderUserService.select(tmpOrderUser, page);
-        dealOrderActivityVO(orderActivityVOs, orderUsers2);
-
-        return orderActivityVOs;
-    }
-
-    /**
-     * 列出正在拼单的订单
-     */
-    private List<OrderActivityVO> listEngagingOrders(Integer uid, Page page) {
-        //拿到用户id,再拿到其下所有订单
-        List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
-        OrderUser tmpOrderUser = new OrderUser();
-        tmpOrderUser.setUserId(uid);
-        tmpOrderUser.setState(Const.ORDER_STATUS_ENGAGING);
-        List<OrderUser> orderUsers2 = orderUserService.select(tmpOrderUser, page);
-        dealOrderActivityVO(orderActivityVOs, orderUsers2);
-
-        return orderActivityVOs;
-    }
-
-    /**
-     * 列出已完成的订单
-     */
-    private List<OrderActivityVO> listFinishOrders(Integer uid, Page page){
-        //拿到用户id,再拿到其下所有订单
-        List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
-        OrderUser tmpOrderUser = new OrderUser();
-        tmpOrderUser.setUserId(uid);
-        tmpOrderUser.setState(Const.ORDER_STATUS_HAS_CONSUME);
-        List<OrderUser> orderUsers2 = orderUserService.select(tmpOrderUser, page);
-        dealOrderActivityVO(orderActivityVOs, orderUsers2);
-
-        return orderActivityVOs;
-    }
-
-    private void dealOrderActivityVO(List<OrderActivityVO> orderActivityVOs, List<OrderUser> orderUsers2) {
-        //去order表找activity
-        for(OrderUser orderUser: orderUsers2){
-            //补充订单中活动相关的数据
-            Integer orderId = orderUser.getOrderId();
-            Integer uid = orderUser.getUserId();
-            Orders orders = ordersService.selectByPrimaryKey(orderId);
-            Integer activityId = orders.getActivityId();
-            Activity activity = activityService.selectByPrimaryKey(activityId);
-            //将数据封装到vo类中
-            OrderActivityVO orderActivityVO = new OrderActivityVO();
-
-            ReflectUtil.copyProperties(orderActivityVO, activity);
-
-            orderActivityVO.setAid(activity.getId());
-            orderActivityVO.setOid(orderId);
-
-            //获取统计人数
-//            Integer userCnt = orderUserService.selectUserCnt(orderId);
-            OrderUser tmpOrderUser2 = new OrderUser();
-            tmpOrderUser2.setUserId(uid);
-            tmpOrderUser2.setOrderId(orderId);
-            int userCnt = orderUserService.selectCount(tmpOrderUser2);
-            orderActivityVO.setNum(userCnt);
-
-            //补充订单中商家相关的数据
-            Integer enterpriseId = activity.getEnterpriseId();
-            Enterprise enterprise = enterpriseService.selectByPrimaryKey(enterpriseId);
-            ActivityEnterpriseVo activityEnterpriseVo = new ActivityEnterpriseVo();
-
-            activityEnterpriseVo.setEnterpriseName(enterprise.getNickname());
-            activityEnterpriseVo.setEnterpriseId(enterpriseId);
-            activityEnterpriseVo.setEnterprisePhone(enterprise.getLeadPhone());
-            activityEnterpriseVo.setAvatarurl(enterprise.getAvatarurl());
-
-            orderActivityVO.setActivityEnterpriseVo(activityEnterpriseVo);
-
-            //获取订单创建时间
-            orderActivityVO.setCreatTime(orderUser.getCreatTime());
-            orderActivityVO.setConsumeTime(orderUser.getConsumeTime());
-
-            //TODO:真实价格暂时
-            orderActivityVO.setRealPrice(activity.getPreferentialPrice());
-
-            //获取用户在这条订单下的状态
-            orderActivityVO.setStatus(orders.getState());
-
-            //TODO:优惠券跟实际价格暂未实现
-
-            orderActivityVOs.add(orderActivityVO);
-        }
-    }
-
-    /**
-     * 列出用户所有的订单
-     */
-    private List<OrderActivityVO> listAllOrders(Integer uid, Page page){
-        //拿到用户id,再拿到其下所有订单
-        List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
-        OrderUser tmpOrderUser = new OrderUser();
-        tmpOrderUser.setUserId(uid);
-        List<OrderUser> orderUsers2 = orderUserService.select(tmpOrderUser, page);
-        //去order表找activity
-        dealOrderActivityVO(orderActivityVOs, orderUsers2);
-        return orderActivityVOs;
-    }
 }

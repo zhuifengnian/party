@@ -1,5 +1,6 @@
 package com.hust.party.test.servicetest;
 
+import com.hust.party.common.Const;
 import com.hust.party.common.Page;
 import com.hust.party.common.PageInfo;
 import com.hust.party.common.ReflectUtil;
@@ -9,6 +10,7 @@ import com.hust.party.pojo.Carousel;
 import com.hust.party.pojo.Category;
 import com.hust.party.pojo.Orders;
 import com.hust.party.service.*;
+import com.hust.party.vo.OrderActivityVO;
 import com.hust.party.vo.PerenceActivityVO;
 import org.aspectj.weaver.ast.Or;
 import org.junit.Test;
@@ -135,6 +137,11 @@ System.out.println("分页信息：" + pageinfo);
     public void testlistAllOrders(){
         List<Integer> integers = orderUserService.selectOrdersByUid(1, new Page());
         System.out.println(integers);
+    }
+    @Test
+    public void testListOrders(){
+        List<OrderActivityVO> orderActivityVOS = orderUserService.selectOrders(14, Const.ORDER_LIST_STATUS_DRAWBACKING,null);
+        System.out.println(orderActivityVOS);
     }
     @Test
     public void selectUserId(){

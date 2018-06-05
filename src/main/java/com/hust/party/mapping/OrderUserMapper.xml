@@ -165,4 +165,47 @@
   <select id="selectUserCnt" parameterType="int" resultType="int">
     select count(*) from order_user where order_id = #{order_id} and   state = 1
   </select>
+  <!--根据用户id及订单状态，返回订单列表-->
+  <select id="selectOrders" resultType="com.hust.party.vo.OrderActivityVO">
+    select o.id as oid, o.state as status, ou.creat_time as creatTime, ou.consume_time as consumeTime
+    from orders o left join order_user ou on o.id = ou.order_id where 1=1
+    <if test="uid != null">
+      and ou.user_id = #{uid}
+    </if>
+    <if test="orderStatus != null">
+      and o.state = #{orderStatus}
+    </if>
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <!--列出等待消费的订单，包括达到最小人数和人数已满的情况，是selectOrders的特殊情况-->
+  <select id="selectWaitConsumeOrders" resultType="com.hust.party.vo.OrderActivityVO">
+    select o.id as oid, o.state as status, ou.creat_time as creatTime, ou.consume_time as consumeTime
+    from orders o left join order_user ou on o.id = ou.order_id where 1=1
+    <if test="uid != null">
+      and ou.user_id = #{uid}
+    </if>
+    <if test="orderStatusReachLeastPeople != null or orderStatusHasFull != null">
+      and o.state = #{orderStatusReachLeastPeople} or o.state = #{orderStatusHasFull}
+    </if>
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <!--列出正在退款的订单，需要订单处于取消的状态，并且user_money还处于未转移到商户的状态，是selectOrders的特殊情况-->
+  <select id="selectDrwabackingOrders" resultType="com.hust.party.vo.OrderActivityVO">
+    select o.id as oid, o.state as status, ou.creat_time as creatTime, ou.consume_time as consumeTime
+    from orders o left join order_user ou on o.id = ou.order_id left join user_money um on um.userorder_id = ou.id
+    where 1=1
+    <if test="uid != null">
+      and ou.user_id = #{uid}
+    </if>
+    <if test="orderStatusCancel != null and userMoneyNotTransferToEntrerprise != null">
+      and o.state = #{orderStatusCancel} and um.state = #{userMoneyNotTransferToEntrerprise}
+    </if>
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
 </mapper>
