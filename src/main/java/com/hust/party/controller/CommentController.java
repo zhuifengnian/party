@@ -73,7 +73,7 @@ public class CommentController
                 e.printStackTrace();
             }
             commentVo.setUsername(user.getNickname());
-            commentVo.setTime(comment.getCommentTime().toString());
+
             commentVo.setAvatarurl(user.getAvatarurl());
             lists.add(commentVo);
         }

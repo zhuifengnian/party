@@ -8,7 +8,7 @@ import java.util.Date;
 public class CommentVo {
     private String context;
 
-    private String time;
+    private Date commentTime;
 
     private Integer score;
 
@@ -47,13 +47,7 @@ public class CommentVo {
     }
 
 
-    public String getTime() {
-        return time;
-    }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
 
 
     public String getAvatarurl() {
@@ -62,5 +56,13 @@ public class CommentVo {
 
     public void setAvatarurl(String avatarurl) {
         this.avatarurl = avatarurl;
+    }
+
+    public Date getCommentTime() {
+        return commentTime;
+    }
+
+    public void setCommentTime(Date commentTime) {
+        this.commentTime = commentTime;
     }
 }

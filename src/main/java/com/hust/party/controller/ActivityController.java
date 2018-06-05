@@ -163,42 +163,12 @@ public class ActivityController
         return new ReturnMessage(200, pageinfo);
     }
 
-    public ReturnMessage getActivity(@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-        List<PerenceActivityVO> lists=new ArrayList<>();
-       pageSize=10;
-        PageInfo<PerenceActivityVO> pageinfo=new PageInfo<PerenceActivityVO>();
-        pageinfo.setPageNum(pageNumber);
-        pageinfo.setPageSize(pageSize);
-        Page page= new Page();
-        page.setPageNumber(pageNumber);
-        page.setPageSize(pageSize);
-        List<Activity> list=activityService.getAllActivity(page);
 
-        int counts=0;
-       for(int i=0;i<list.size();i++){
-           Activity activity=list.get(i);
-           PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
-           ReflectUtil.copyProperties(perenceActivityVO, activity);
 
-             Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
-             perenceActivityVO.setEnterpriceName(enterprise.getName());
-             perenceActivityVO.setId(activity.getId());
-
-          int count=0;
-           perenceActivityVO.setSoldNumber(count);
-          if(activity.getCopies()!=activity.getArriveCopies()) {
-              lists.add(perenceActivityVO);
-              counts++;
-          }
-       }
-        pageinfo.setRows( lists);
-        pageinfo.setTotal(counts);
-      return new ReturnMessage(200, pageinfo);
-    }
     @ApiOperation(value = "插入活动", notes = "插入活动到数据库")
     @ResponseBody
     @RequestMapping(value="/insertActivity", method = RequestMethod.POST)
-    public ReturnMessage insertActivity( Activity activity,  @RequestParam(value = "coverfile", required = false) MultipartFile cofile,
+    public ReturnMessage insertActivity( Activity activity, Integer enterprise_id, @RequestParam(value = "coverfile", required = false) MultipartFile cofile,
                                         @RequestParam(value = "flyfile", required = false) MultipartFile flfile){
        String picture=null;
        String video=null;
@@ -206,6 +176,9 @@ public class ActivityController
         picture=QiNiuUtil.manageFile(cofile);
         if(flfile!=null)
       video=QiNiuUtil.manageFile(flfile);
+
+      activity.setEnterpriseId(enterprise_id);
+
       activity.setPicture(picture);
     activity.setVideo(video);
     activity.setState(1);
