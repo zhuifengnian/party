@@ -25,15 +25,11 @@ public class Enterprise {
 
     private String avatarurl;
 
-    private String city;
-
-    private String province;
-
-    private String country;
-
     private Integer state;
 
-    public Enterprise(Integer id, String nickname, String licence, String leadName, String leadCard, String leadPhone, String leadEmail, Integer categoryId, String leadPosition, String name, String openId, String avatarurl, String city, String province, String country, Integer state) {
+    private String address;
+
+    public Enterprise(Integer id, String nickname, String licence, String leadName, String leadCard, String leadPhone, String leadEmail, Integer categoryId, String leadPosition, String name, String openId, String avatarurl, Integer state, String address) {
         this.id = id;
         this.nickname = nickname;
         this.licence = licence;
@@ -46,10 +42,8 @@ public class Enterprise {
         this.name = name;
         this.openId = openId;
         this.avatarurl = avatarurl;
-        this.city = city;
-        this.province = province;
-        this.country = country;
         this.state = state;
+        this.address = address;
     }
 
     public Enterprise() {
@@ -152,35 +146,19 @@ public class Enterprise {
         this.avatarurl = avatarurl == null ? null : avatarurl.trim();
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province == null ? null : province.trim();
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country == null ? null : country.trim();
-    }
-
     public Integer getState() {
         return state;
     }
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
     }
 }
