@@ -64,7 +64,7 @@ public class ActivityController
             List<String> tag = activityTagService.getActivityTag(activity.getId());
             activityVo.setPictures(list);
             ReflectUtil.copyProperties(activityVo, activity);
-            activityVo.setOpentime(activity.getActivityTime().toString());
+
             Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
             ActivityEnterpriseVo activityEnterpriseVo = new ActivityEnterpriseVo();
             activityEnterpriseVo.setEnterpriseId(enterprise.getId());

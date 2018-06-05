@@ -20,7 +20,7 @@ public class ActivityVo {
     private String address;
     private BigDecimal preferentialPrice;
     private BigDecimal originalPrice;
-    private String opentime;
+    private Date activityTime;
     private List<String> pictures;
     private List<String> tag;
     private ActivityEnterpriseVo activityEnterpriseVo;
@@ -164,13 +164,7 @@ public class ActivityVo {
     }
 
 
-    public String getOpentime() {
-        return opentime;
-    }
 
-    public void setOpentime(String opentime) {
-        this.opentime = opentime;
-    }
 
     public List<String> getTag() {
         return tag;
@@ -178,5 +172,13 @@ public class ActivityVo {
 
     public void setTag(List<String> tag) {
         this.tag = tag;
+    }
+
+    public Date getActivityTime() {
+        return activityTime;
+    }
+
+    public void setActivityTime(Date activityTime) {
+        this.activityTime = activityTime;
     }
 }
