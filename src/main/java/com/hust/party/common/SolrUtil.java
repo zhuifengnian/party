@@ -69,6 +69,7 @@ public class SolrUtil {
         input.addField("copies",activity.getCopies());
         input.addField("arrive_copies",activity.getArriveCopies());
         input.addField("state",activity.getState());
+        input.addField("title",activity.getTitle());
         server.add(input);
         server.commit();
         server.close();
