@@ -3,6 +3,7 @@ package com.hust.party.controller;
 import com.google.gson.Gson;
 import com.hust.party.common.Page;
 import com.hust.party.common.ReturnMessage;
+import com.hust.party.common.SolrUtil;
 import com.hust.party.pojo.*;
 import com.hust.party.common.PageInfo;
 import com.hust.party.service.*;
@@ -21,12 +22,15 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -205,10 +209,95 @@ public class ActivityController
       activity.setPicture(picture);
     activity.setVideo(video);
     activity.setState(1);
-        int insertNum = activityService.insert(activity);
+        Integer insertNum = activityService.insert(activity);
+        if(insertNum!=null) {
+            SolrUtil solrUtil = new SolrUtil();
+            try {
+                solrUtil.insertActivitySolr(insertNum, activity);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SolrServerException e) {
+                e.printStackTrace();
+            }
+        }
         return new ReturnMessage(200, insertNum);
 
     }
 
+    @ApiOperation(value = "搜索活动", notes = "搜索活动")
+    @ResponseBody
+    @RequestMapping(value="/searchActivity", method = RequestMethod.POST)
+    public ReturnMessage searchActivity( @RequestParam("name") String name,@RequestParam("start") Integer start){
+        SolrDocumentList list = null;
+        SolrUtil solrUtil=new SolrUtil();
+        try {
+       list  = solrUtil.getActivitySolr(name,start);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        }
+        List<PerenceActivityVO> list1=fenYe(list);
+        return new ReturnMessage(200, list1);
+
+    }
+    public List<PerenceActivityVO> fenYe(SolrDocumentList list) {
+
+        List<PerenceActivityVO> lists=new ArrayList<>();
+        for(int i=0;i<list.size();i++){
+
+            PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
+            if( list.get(i).containsKey("enterprise_id")) {
+                Integer enterprise_id = Integer.parseInt(list.get(i).getFieldValue("enterprise_id").toString());
+                Enterprise enterprise = enterpriseService.selectByPrimaryKey(enterprise_id);
+                perenceActivityVO.setEnterpriceName(enterprise.getName());
+            }
+            Integer id=Integer.parseInt(list.get(i).getFieldValue("id").toString());
+            perenceActivityVO.setId(id);
+            if( list.get(i).containsKey("title")) {
+                String title = list.get(i).getFieldValue("title").toString();
+                perenceActivityVO.setTitle(title);
+            }
+            if( list.get(i).containsKey("picture")) {
+                String picture = list.get(i).getFieldValue("picture").toString();
+                perenceActivityVO.setPicture(picture);
+            }
+            perenceActivityVO.setSoldNumber(0);
+            if( list.get(i).containsKey("contain_people")) {
+                Integer containPeople = Integer.parseInt(list.get(i).getFieldValue("contain_people").toString());
+                perenceActivityVO.setContainPeople(containPeople);
+            }
+            if( list.get(i).containsKey("preferential_price")) {
+                BigDecimal preferentialPrice = new BigDecimal(list.get(i).getFieldValue("preferential_price").toString());
+                perenceActivityVO.setPreferentialPrice(preferentialPrice);
+            }
+            if( list.get(i).containsKey("original_price")) {
+                BigDecimal originalPrice = new BigDecimal(list.get(i).getFieldValue("original_price").toString());
+                perenceActivityVO.setOriginalPrice(originalPrice);
+            }
+            if( list.get(i).containsKey("address")) {
+                String address = list.get(i).getFieldValue("address").toString();
+                perenceActivityVO.setAddress(address);
+            }
+           if( list.get(i).containsKey("longitude")) {
+               String longitude = list.get(i).getFieldValue("longitude").toString();
+               perenceActivityVO.setLongitude(longitude);
+           }
+            if( list.get(i).containsKey("latitude")) {
+                String latitude = list.get(i).getFieldValue("latitude").toString();
+                perenceActivityVO.setLatitude(latitude);
+            }
+            if( list.get(i).containsKey("copies")) {
+                Integer copies = Integer.parseInt(list.get(i).getFieldValue("copies").toString());
+                perenceActivityVO.setCopies(copies);
+            }
+            if(list.get(i).containsKey("arrive_copies")) {
+                Integer arriveCopies = Integer.parseInt(list.get(i).getFieldValue("arrive_copies").toString());
+                perenceActivityVO.setArriveCopies(arriveCopies);
+            }
+            lists.add(perenceActivityVO);
+        }
+        return lists;
+    }
 }

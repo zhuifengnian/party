@@ -2,12 +2,14 @@ package com.hust.party.controller;
 
 import com.hust.party.common.Page;
 import com.hust.party.common.ReturnMessage;
+import com.hust.party.common.SolrUtil;
 import com.hust.party.exception.ApiException;
 import com.hust.party.pojo.Carousel;
 import com.hust.party.service.CarouselService;
 import com.hust.party.vo.CarouselVO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -63,4 +66,5 @@ public class CarouselController {
         carouselVO.setCarousels(carousels);
         return new ReturnMessage(200, carouselVO);
     }
+
 }

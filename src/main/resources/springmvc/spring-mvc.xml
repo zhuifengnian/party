@@ -9,7 +9,8 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
-
+    <!--&lt;!&ndash;扫描solr&ndash;&gt;-->
+    <!--<context:property-placeholder location="classpath:properties/solr.properties"></context:property-placeholder>-->
     <!--为controller添加事务管理-->
     <tx:annotation-driven/>
     <!-- 扫描controller（controller层注入） -->
@@ -31,6 +32,19 @@
         <property name="maxInMemorySize" value="40960" />
     </bean>
     <mvc:default-servlet-handler />
+    <!--&lt;!&ndash;solr&ndash;&gt;-->
+    <!--&lt;!&ndash;定义solr的server&ndash;&gt;-->
+    <!--<bean id="httpSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer">-->
+        <!--<constructor-arg index="0" value="${solr.Url}"/>-->
+        <!--&lt;!&ndash; 设置响应解析器 &ndash;&gt;-->
+        <!--<property name="parser">-->
+            <!--<bean class="org.apache.solr.client.solrj.impl.XMLResponseParser"/>-->
+        <!--</property>-->
+        <!--&lt;!&ndash; 设置重试次数&ndash;&gt;-->
+        <!--<property name="maxRetries" value="${solr.maxRetries}"/>-->
+        <!--&lt;!&ndash; 建立连接的最长时间 &ndash;&gt;-->
+        <!--<property name="connectionTimeout" value="${solr.connectionTimeout}"/>-->
+    <!--</bean>-->
     <!-- 拦截器 -->
     <mvc:interceptors>
         <!-- 多个拦截器，顺序执行 -->

@@ -58,6 +58,8 @@
 
 	<!-- 自动扫描注解的bean -->
 	<context:component-scan base-package="com.hust.party" />
+	<!--&lt;!&ndash;&lt;!&ndash;扫描solr&ndash;&gt;&ndash;&gt;-->
+	<!--<context:property-placeholder location="classpath:properties/solr.properties"></context:property-placeholder>-->
 	<!-- 配置事务  -->
 	<tx:annotation-driven transaction-manager="transactionManager" ></tx:annotation-driven>
 	<!--事务模板 -->

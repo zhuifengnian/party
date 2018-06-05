@@ -21,13 +21,13 @@
     delete from carousel
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Carousel" >
+  <insert id="insert" parameterType="com.hust.party.pojo.Carousel"  useGeneratedKeys="true" keyProperty="id">
     insert into carousel (id, picture_url, activity_id
       )
     values (#{id,jdbcType=INTEGER}, #{pictureUrl,jdbcType=VARCHAR}, #{activityId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.Carousel" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Carousel"  useGeneratedKeys="true" keyProperty="id">
     insert into carousel
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
