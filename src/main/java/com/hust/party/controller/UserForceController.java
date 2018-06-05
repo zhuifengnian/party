@@ -78,7 +78,7 @@ public class UserForceController
            else if( userForce.getGold()>200)
                userForce.setUserMedal("银牌团长");
            else if( userForce.getGold()>500)
-               userForce.setUserMedal("金石团长");
+               userForce.setUserMedal("金牌团长");
            userForce.setId(userForces.get(0).getId());
            userForce.setUpdateTime(new Date());
           insertNum= userForceService.updateByPrimaryKeySelective(userForce);
