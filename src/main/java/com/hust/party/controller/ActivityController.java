@@ -92,17 +92,17 @@ public class ActivityController
         if(name.equals("推荐")){
             List<PerenceActivityVO>  list=activityService.getAllActivity(page);
             pageinfo.setRows( list);
-            pageinfo.setTotal(list.size());
+            pageinfo.setTotal(activityService.getAllActivityCount());
         }
         else if(name.equals("其它")){
             List<PerenceActivityVO> lists=  activityService.getQitaActivity(page);
             pageinfo.setRows( lists);
-            pageinfo.setTotal(lists.size());
+            pageinfo.setTotal(activityService.getQitaActivityCount());
         }
         else if(name!=null) {
         List<PerenceActivityVO>list2=activityService.getNameActivity(name,page);
         pageinfo.setRows(list2);
-        pageinfo.setTotal(list2.size());
+        pageinfo.setTotal(activityService.getNameActivityCount(name));
 }
         //  List<Activity> list = activityService.getEnterpriseActivity(eid);
         return new ReturnMessage(200, pageinfo);

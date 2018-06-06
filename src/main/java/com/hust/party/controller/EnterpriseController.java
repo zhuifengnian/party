@@ -70,7 +70,7 @@ public class EnterpriseController
           orders.setActivityId(list.get(0).getId());
           orders.setState(2);
           enterpriseActivityVo.setSum(ordersService.selectCount(orders));
-list1.add(enterpriseActivityVo);
+            list1.add(enterpriseActivityVo);
       }
         pageinfo.setRows(list1 );
         int count=activityService.selectCount(activity);
@@ -129,7 +129,7 @@ list1.add(enterpriseActivityVo);
     @RequestMapping(value = "/enterprise/getAll", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取全部订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getAllActivity(@RequestParam("eid") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getAllActivity(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
        if(pageSize==null)
            pageSize=10;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
@@ -139,27 +139,8 @@ list1.add(enterpriseActivityVo);
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
 
-        List<AllOrderVO> list2=new ArrayList<>();
+        List<AllOrderVO> list2=enterpriseService.getAllOrder(eid,page);
 
-            Orders orders =new Orders();
-           orders.setEnterpriseId(eid);
-            List<Orders> list1=ordersService.select(orders,page);
-            pageinfo.setTotal(ordersService.selectCount(orders));
-
-            for(int j=0;j<list1.size();j++){
-                Orders order1=list1.get(j);
-                Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
-                AllOrderVO allOrderVo =new AllOrderVO();
-                allOrderVo.setActivityTime(activity.getActivityTime());
-                allOrderVo.setCreateTime(list1.get(j).getCreateTime());
-                allOrderVo.setId(list1.get(j).getId());
-                allOrderVo.setMinuPeople(activity.getMinuPeople());
-                allOrderVo.setTitle(activity.getTitle());
-                allOrderVo.setState(list1.get(j).getState());
-                allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
-                list2.add(allOrderVo);
-
-        }
 
         pageinfo.setRows(list2);
 
@@ -168,7 +149,7 @@ list1.add(enterpriseActivityVo);
     @RequestMapping(value = "/enterprise/getNew", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取今日新接订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getNewOrder(@RequestParam("eid") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getNewOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
             pageSize=10;
         PageInfo<EnterpriseOrderVo> pageinfo=new PageInfo<EnterpriseOrderVo>();
@@ -210,37 +191,18 @@ list1.add(enterpriseActivityVo);
     @RequestMapping(value = "/enterprise/getNo", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取未消费订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getNoOrder(@RequestParam("eid") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getNoOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
             pageSize=10;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
-        List<AllOrderVO> list3=new ArrayList<>();
+
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
 
-            Orders orders =new Orders();
-            orders.setState(2);
-            orders.setEnterpriseId(eid);
-            List<Orders> list1= ordersService.select(orders,page);
-            pageinfo.setTotal(ordersService.selectCount(orders));
-            for(int j=0;j<list1.size();j++){
-                Orders order1=list1.get(j);
-                Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
-                AllOrderVO allOrderVo = new AllOrderVO();
-                allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
-                allOrderVo.setState(list1.get(j).getState());
-                allOrderVo.setTitle(activity.getTitle());
-                allOrderVo.setMinuPeople(activity.getMinuPeople());
-                allOrderVo.setId(list1.get(j).getId());
-                allOrderVo.setCreateTime(list1.get(j).getCreateTime());
-                allOrderVo.setActivityTime(activity.getActivityTime());
-                 list3.add(allOrderVo);
-            }
-
-
+        List<AllOrderVO> list3=enterpriseService.getNoOrder(eid,page);
         pageinfo.setRows(list3);
         return new ReturnMessage(200, pageinfo);
     }
@@ -251,33 +213,12 @@ list1.add(enterpriseActivityVo);
         if(pageSize==null)
             pageSize=10;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
-        List<AllOrderVO> list3=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-
-            Orders orders =new Orders();
-            orders.setEnterpriseId(eid);
-            orders.setState(5);
-            List<Orders> list1= ordersService.select(orders,page);
-        pageinfo.setTotal(ordersService.selectCount(orders));
-            for(int j=0;j<list1.size();j++){
-                Orders order1=list1.get(j);
-                Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
-                AllOrderVO allOrderVo = new AllOrderVO();
-                allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
-                allOrderVo.setState(list1.get(j).getState());
-                allOrderVo.setTitle(activity.getTitle());
-                allOrderVo.setMinuPeople(activity.getMinuPeople());
-                allOrderVo.setId(list1.get(j).getId());
-                allOrderVo.setCreateTime(list1.get(j).getCreateTime());
-                allOrderVo.setActivityTime(activity.getActivityTime());
-                list3.add(allOrderVo);
-
-
-        }
+        List<AllOrderVO> list3=enterpriseService.getYOrder(eid,page);
         pageinfo.setRows(list3);
         return new ReturnMessage(200, pageinfo);
     }
@@ -288,34 +229,12 @@ list1.add(enterpriseActivityVo);
         if(pageSize==null)
             pageSize=10;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
-        List<AllOrderVO> list3=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-
-
-            Orders orders =new Orders();
-            orders.setEnterpriseId(eid);
-            orders.setState(0);
-            List<Orders> list1= ordersService.select(orders,page);
-        pageinfo.setTotal(ordersService.selectCount(orders));
-            for(int j=0;j<list1.size();j++){
-                Orders order1=list1.get(j);
-                Activity activity =activityService.selectByPrimaryKey(order1.getActivityId());
-                AllOrderVO allOrderVo = new AllOrderVO();
-                allOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
-                allOrderVo.setState(list1.get(j).getState());
-                allOrderVo.setTitle(activity.getTitle());
-                allOrderVo.setMinuPeople(activity.getMinuPeople());
-                allOrderVo.setId(list1.get(j).getId());
-                allOrderVo.setCreateTime(list1.get(j).getCreateTime());
-                allOrderVo.setActivityTime(activity.getActivityTime());
-                list3.add(allOrderVo);
-            }
-
-
+        List<AllOrderVO> list3=enterpriseService.getQOrder(eid,page);
         pageinfo.setRows(list3);
         return new ReturnMessage(200, pageinfo);
     }

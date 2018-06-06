@@ -11,8 +11,10 @@ import java.util.List;
 public interface ActivityService extends BaseService<Activity>{
     List<Activity> getEnterpriseActivity(Integer eid,Page page);
     List<PerenceActivityVO> getAllActivity(Page page);
+    Integer getAllActivityCount();
     List<Activity> getAllCurrentActivity(Integer eid);
     List<PerenceActivityVO>  getQitaActivity(Page page);
+    Integer getQitaActivityCount();
     List<PerenceActivityVO> getNameActivity(@Param("name") String name, @Param("page")  Page page);
-
+    Integer getNameActivityCount(String name);
 }

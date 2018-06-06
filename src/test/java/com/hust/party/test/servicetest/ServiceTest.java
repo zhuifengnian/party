@@ -10,6 +10,7 @@ import com.hust.party.pojo.Carousel;
 import com.hust.party.pojo.Category;
 import com.hust.party.pojo.Orders;
 import com.hust.party.service.*;
+import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.OrderActivityVO;
 import com.hust.party.vo.PerenceActivityVO;
 import org.aspectj.weaver.ast.Or;
@@ -51,10 +52,12 @@ public class ServiceTest {
     private EnterpriseService enterpriseService;
 @Test
 public void testGetAcitivity(){
-  //  List<Activity> list = activityService.getQitaActivity(null);
-  //  System.out.println("+++++++++++++++++"+list);
-    List<PerenceActivityVO> list =activityService.getNameActivity("轰趴馆",null);
-    System.out.println("+++++++++++++++++"+list);
+    Integer list = activityService.getNameActivityCount("轰趴馆");
+  System.out.println("+++++++++++++++++"+list);
+   // List<PerenceActivityVO> list =activityService.getNameActivity("轰趴馆",null);
+   // System.out.println("+++++++++++++++++"+list);
+ //  List<AllOrderVO> list =enterpriseService.getYOrder(1,null);
+   // System.out.println("+++++++++++++++++"+list);
 }
     @Test
     public void testGetActivity(){

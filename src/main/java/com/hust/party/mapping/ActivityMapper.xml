@@ -520,6 +520,15 @@
       limit #{start},#{pageSize}
     </if>
   </select>
+  <select id="getAllActivityCount" resultType="Integer">
+    select count(*)
+    from activity a left join enterprise e on a.enterprise_id = e.id
+    where 1=1
+    and a.state=1
+    and a.activity_time >now()
+    and a.copies != a.arrive_copies
+
+  </select>
   <select id="getQitaActivity" resultType="com.hust.party.vo.PerenceActivityVO">
     select a.id ,a.copies,a.arrive_copies as arriveCopies,a.longitude,a.latitude,a.title,a.picture,a.contain_people as containPeople,a.preferential_price as preferentialPrice,a.original_price as originalPrice,a.address , e.name as enterpriceName
     from activity a left join enterprise e on a.enterprise_id = e.id
@@ -531,6 +540,16 @@
     <if test="start != null and pageSize!=null">
       limit #{start},#{pageSize}
     </if>
+  </select>
+  <select id="getQitaActivityCount" resultType="Integer">
+    select count(*)
+    from activity a left join enterprise e on a.enterprise_id = e.id
+    where 1=1
+    and category>3
+    and a.state=1
+    and a.activity_time >now()
+    and a.copies != a.arrive_copies
+
   </select>
   <select id="getAllCurrentActivity"  resultMap="ResultMapWithBLOBs"  parameterType="java.lang.Integer">
     select *
@@ -550,5 +569,15 @@
     <if test="page != null and page.start != null and page.pageSize!=null">
       limit #{page.start},#{page.pageSize}
     </if>
+  </select>
+  <select id="getNameActivityCount" resultType="Integer">
+    select count(*)
+    from activity a left join category c on a.category=c.id left join enterprise e on a.enterprise_id = e.id
+    where 1=1
+     and  c.name=#{name}
+    and a.state=1
+    and a.activity_time >now()
+    and a.copies != a.arrive_copies
+
   </select>
 </mapper>

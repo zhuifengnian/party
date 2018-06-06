@@ -36,6 +36,11 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
     }
 
     @Override
+    public Integer getAllActivityCount() {
+        return activityMapper.getAllActivityCount();
+    }
+
+    @Override
     public List<Activity> getAllCurrentActivity(Integer eid) {
         return activityMapper.getAllCurrentActivity(eid);
     }
@@ -46,8 +51,18 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
     }
 
     @Override
+    public Integer getQitaActivityCount() {
+        return activityMapper.getQitaActivityCount();
+    }
+
+    @Override
     public List<PerenceActivityVO> getNameActivity(String name, Page page) {
         return activityMapper.getNameActivity(name,page);
+    }
+
+    @Override
+    public Integer getNameActivityCount(String name) {
+        return activityMapper.getNameActivityCount(name);
     }
 
 
