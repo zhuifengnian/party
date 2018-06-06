@@ -41,7 +41,7 @@ public class UserForceController
     @ApiOperation(value = "插入团力值", notes = "插入团力值到数据库")
     @ResponseBody
     @RequestMapping(value="/insertUserForce", method = RequestMethod.POST)
-    public ReturnMessage insertActivity( @RequestParam("user_id") Integer user_id ){
+    public ReturnMessage insertUserForce( @RequestParam("user_id") Integer user_id ){
         int insertNum=0;
         UserForce userForce =new UserForce();
         userForce.setUserId(user_id);
@@ -60,16 +60,18 @@ public class UserForceController
            userForce.setGold(gold);
 
             userForceService.updateByPrimaryKey(userForce);
-           Date date1 =userForces.get(0).getCreateTime();
+           Date date1 =new Date();
            Date date2 = userForces.get(0).getUpdateTime();
-           long  between = date2.getTime() - date1.getTime();
+           long  between = date1.getTime() - date2.getTime();
            if(between <(24* 3600000)){
-            if(userForces.get(0).getTimeState()!=5)
-                userForce.setTimeState(userForces.get(0).getTimeState()+1);
+            if(userForces.get(0).getTimeState()!=5) {
+                userForce.setTimeState(userForces.get(0).getTimeState() + 1);
+                userForce.setUserMedal(userForces.get(0).getUserMedal()+1);
+            }
             else
             {
                 userForce.setGold(gold+30);
-                userForce.setUserMedal(userForces.get(0).getUserMedal()+1);
+
                 userForce.setTimeState(0);
             }
            }
@@ -83,9 +85,38 @@ public class UserForceController
            userForce.setUpdateTime(new Date());
           insertNum= userForceService.updateByPrimaryKeySelective(userForce);
        }
-
-
         return new ReturnMessage(200, insertNum);
 
+    }
+    public boolean insertForce(int []num){
+        boolean insertNum=false;
+        UserForce userForce =new UserForce();
+
+        for(int i=0;i<num.length;i++){
+            userForce.setUserId(num[i]);
+            List<UserForce> userForces= userForceService.select(userForce,null);
+            if(userForces.size()==0){
+                if(i==0) {
+                    userForce.setUserForce(10);
+                }else
+                    userForce.setUserForce(2);
+             userForce.setCreateTime(new Date());
+             userForce.setUpdateTime(new Date());
+             Integer insert=userForceService.updateByPrimaryKeySelective(userForce);
+               if(insert!=null)
+                   insertNum=true;
+            }
+            else{
+                if(i==0)
+                userForce.setUserForce(userForces.get(0).getUserForce()+10);
+                else
+                    userForce.setUserForce(userForces.get(0).getUserForce()+2);
+                userForce.setUpdateTime(new Date());
+                Integer insert=userForceService.updateByPrimaryKeySelective(userForce);
+                if(insert!=null)
+                    insertNum=true;
+            }
+        }
+        return insertNum;
     }
 }
