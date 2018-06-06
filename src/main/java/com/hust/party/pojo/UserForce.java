@@ -13,21 +13,18 @@ public class UserForce {
 
     private String userMedal;
 
-    private Integer state;
-
     private Date createTime;
 
     private Integer timeState;
 
     private Date updateTime;
 
-    public UserForce(Integer id, Integer userId, Integer gold, Integer userForce, String userMedal, Integer state, Date createTime, Integer timeState, Date updateTime) {
+    public UserForce(Integer id, Integer userId, Integer gold, Integer userForce, String userMedal, Date createTime, Integer timeState, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.gold = gold;
         this.userForce = userForce;
         this.userMedal = userMedal;
-        this.state = state;
         this.createTime = createTime;
         this.timeState = timeState;
         this.updateTime = updateTime;
@@ -75,14 +72,6 @@ public class UserForce {
 
     public void setUserMedal(String userMedal) {
         this.userMedal = userMedal == null ? null : userMedal.trim();
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
     }
 
     public Date getCreateTime() {

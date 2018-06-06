@@ -48,7 +48,6 @@ public class UserForceController
        List<UserForce> userForces= userForceService.select(userForce,null);
        if(userForces.size()==0){
            userForce.setGold(10);
-           userForce.setState(1);
            userForce.setUserMedal("小兵");
            userForce.setCreateTime(new Date());
            userForce.setUpdateTime(new Date());
