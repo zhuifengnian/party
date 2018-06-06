@@ -6,6 +6,7 @@ import com.hust.party.pojo.Orders;
 import com.hust.party.pojo.User;
 import com.hust.party.service.ActivityService;
 import com.hust.party.service.OrdersService;
+import com.hust.party.service.TenPayService;
 import com.hust.party.service.UserService;
 import com.hust.party.wxpay.*;
 import io.swagger.annotations.ApiOperation;
@@ -42,9 +43,9 @@ public class TenPayController {
     private ActivityService activityService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TenPayService tenpayService;
 
-    private String out_trade_no = "";
-    
 //    /**
 //     * 生成预支付订单，获取prepayId
 //     * @param request
@@ -116,17 +117,12 @@ public class TenPayController {
 //        return map;
 //    }
     /**
-     * 生成预支付订单，获取prepayId
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
+     * 用户发起订单的支付接口，返回prepayId
      */
-
-    @RequestMapping(value = "/app/tenpay/prepay", method = RequestMethod.POST)
-    @ApiOperation(value = "获取prepayid", httpMethod = "POST")
+    @RequestMapping(value = "/app/tenpay/generatorPrepay", method = RequestMethod.POST)
+    @ApiOperation(value = "发起订单者获取支付的prepayid", httpMethod = "POST")
     public @ResponseBody
-    Map<String, Object> getOrder(@RequestParam("uid") Integer uid, @RequestParam("oid") Integer oid, HttpServletRequest request, HttpServletResponse response)
+    Map<String, Object> generatorPrepay(@RequestParam("uid") Integer uid, @RequestParam("aid") Integer aid, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         //拿到用户数据
         User user = userService.selectByPrimaryKey(uid);
@@ -135,68 +131,46 @@ public class TenPayController {
         }
         String openid = user.getOpenId();
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        //拿到所传订单
+        Activity activity = activityService.selectByPrimaryKey(aid);
+        if(activity == null){
+            throw new ApiException(201, "所给活动id不存在");
+        }
+
+        Map<String, Object> map = tenpayService.getPrepayId(openid, aid, true, request, response);
+        return map;
+    }
+
+    /**
+     * 生成预支付订单，获取prepayId
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/app/tenpay/engagerPrepay", method = RequestMethod.POST)
+    @ApiOperation(value = "参与订单者获取支付的prepayid", httpMethod = "POST")
+    public @ResponseBody
+    Map<String, Object> engagerPrepay(@RequestParam("uid") Integer uid, @RequestParam("oid") Integer oid, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        //拿到用户数据
+        User user = userService.selectByPrimaryKey(uid);
+        if(user == null){
+            throw new ApiException(201, "所给用户id不存在");
+        }
+        String openid = user.getOpenId();
+
         // 获取生成预支付订单的请求类
         PrepayIdRequestHandler prepayReqHandler = new PrepayIdRequestHandler(request, response);
         //拿到所传订单
         Orders orders = ordersService.selectByPrimaryKey(oid);
         if(orders == null){
-            map.put("code", 1);
-            map.put("info", "所传订单id不正确");
-            return map;
+            throw new ApiException(201, "所给订单id不存在");
         }
-        prepayReqHandler.setParameter("appid", ConstantUtil.APP_ID);
-        prepayReqHandler.setParameter("body", ConstantUtil.BODY);
-        prepayReqHandler.setParameter("mch_id", ConstantUtil.MCH_ID);
-        String nonce_str = WXUtil.getNonceStr();
-        prepayReqHandler.setParameter("nonce_str", nonce_str);
-        prepayReqHandler.setParameter("notify_url", ConstantUtil.NOTIFY_URL);
-        out_trade_no = oid + "";
-        prepayReqHandler.setParameter("out_trade_no", out_trade_no);
-        prepayReqHandler.setParameter("spbill_create_ip", request.getRemoteAddr());
-        String timestamp = WXUtil.getTimeStamp();
-        prepayReqHandler.setParameter("time_start", timestamp);
-        prepayReqHandler.setParameter("openid", openid);
+        Integer aid = orders.getActivityId();
 
-        //拿到订单所应支付的金额
-        //TODO:不考虑优惠券
-        Integer activityId = orders.getActivityId();
-        Activity activity = activityService.selectByPrimaryKey(activityId);
-        BigDecimal preferentialPrice = activity.getPreferentialPrice();
-        long tmpPreferentialPrice = preferentialPrice.multiply(new BigDecimal(100)).longValue();
-        prepayReqHandler.setParameter("total_fee", String.valueOf(tmpPreferentialPrice));
+        Map<String, Object> map = tenpayService.getPrepayId(openid, aid, false, request, response);
 
-//        prepayReqHandler.setParameter("trade_type", "APP");
-        prepayReqHandler.setParameter("trade_type", "JSAPI");
-        /**
-         * 注意签名（sign）的生成方式，具体见官方文档（传参都要参与生成签名，且参数名按照字典序排序，最后接上APP_KEY,转化成大写）
-         */
-        prepayReqHandler.setParameter("sign", prepayReqHandler.createMD5Sign());
-        prepayReqHandler.setGateUrl(ConstantUtil.GATEURL);
-        String prepayid = prepayReqHandler.sendPrepay();
-        // 若获取prepayid成功，将相关信息返回客户端
-        if (prepayid != null && !prepayid.equals("")) {
-//            String signs = "appid=" + ConstantUtil.APP_ID + "&noncestr=" + nonce_str + "&package=Sign=WXPay&partnerid="
-//                    + ConstantUtil.PARTNER_ID + "&prepayid=" + prepayid + "&timestamp=" + timestamp + "&key="
-//                    + ConstantUtil.APP_KEY;
-            String signs = "appId=" + ConstantUtil.APP_ID + "&nonceStr=" + nonce_str + "&package=prepay_id=" + prepayid +"&signType=MD5"
-                     + "&timeStamp=" + timestamp + "&key=" + ConstantUtil.APP_KEY;
-            map.put("code", 0);
-            map.put("info", "success");
-            map.put("prepayid", prepayid);
-            /**
-             * 签名方式与上面类似
-             */
-            map.put("paySign", MD5Util.MD5Encode(signs, "utf8").toUpperCase());
-//            map.put("appid", ConstantUtil.APP_ID);
-            map.put("nonceStr", nonce_str);   //与请求prepayId时值一致
-            map.put("package", "prepay_id=" + prepayid);
-            map.put("signType", "MD5");
-            map.put("timeStamp", timestamp);  //等于请求prepayId时的time_start
-        } else {
-            map.put("code", 1);
-            map.put("info", "获取prepayid失败");
-        }
         return map;
     }
 
