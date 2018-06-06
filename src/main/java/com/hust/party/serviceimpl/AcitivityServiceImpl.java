@@ -5,9 +5,11 @@ import com.hust.party.dao.ActivityMapper;
 import com.hust.party.dao.BaseMapper;
 import com.hust.party.pojo.Activity;
 import com.hust.party.service.ActivityService;
+import com.hust.party.vo.PerenceActivityVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +31,7 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
     }
 
     @Override
-    public List<Activity> getAllActivity(Page page) {
+    public List<PerenceActivityVO> getAllActivity(Page page) {
         return activityMapper.getAllActivity(page);
     }
 
@@ -39,8 +41,13 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
     }
 
     @Override
-    public List<Activity> getQitaActivity(Page page) {
+    public   List<PerenceActivityVO>  getQitaActivity(Page page) {
         return activityMapper.getQitaActivity(page);
+    }
+
+    @Override
+    public List<PerenceActivityVO> getNameActivity(String name, Page page) {
+        return activityMapper.getNameActivity(name,page);
     }
 
 

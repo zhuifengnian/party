@@ -90,74 +90,19 @@ public class ActivityController
         page.setPageSize(pageSize);
 
         if(name.equals("推荐")){
-            List<PerenceActivityVO> lists=new ArrayList<>();
-            List<Activity> list=activityService.getAllActivity(page);
-
-            int counts=0;
-            for(int i=0;i<list.size();i++){
-                Activity activity=list.get(i);
-                PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
-                ReflectUtil.copyProperties(perenceActivityVO, activity);
-
-                Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
-                perenceActivityVO.setEnterpriceName(enterprise.getName());
-                perenceActivityVO.setId(activity.getId());
-
-                int count=0;
-                perenceActivityVO.setSoldNumber(count);
-                if(activity.getCopies()!=activity.getArriveCopies()) {
-                    lists.add(perenceActivityVO);
-                    counts++;
-                }
-            }
-            pageinfo.setRows( lists);
-            pageinfo.setTotal(counts);
+            List<PerenceActivityVO>  list=activityService.getAllActivity(page);
+            pageinfo.setRows( list);
+            pageinfo.setTotal(list.size());
         }
         else if(name.equals("其它")){
-            List<PerenceActivityVO> lists=new ArrayList<>();
-           List<Activity> list=  activityService.getQitaActivity(page);
-            int counts=0;
-            for(int i=0;i<list.size();i++){
-                Activity activity=list.get(i);
-                PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
-                ReflectUtil.copyProperties(perenceActivityVO, activity);
-
-                Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
-                perenceActivityVO.setEnterpriceName(enterprise.getName());
-                perenceActivityVO.setId(activity.getId());
-
-                int count=0;
-                perenceActivityVO.setSoldNumber(count);
-                if(activity.getCopies()!=activity.getArriveCopies()) {
-                    lists.add(perenceActivityVO);
-                    counts++;
-                }
-            }
+            List<PerenceActivityVO> lists=  activityService.getQitaActivity(page);
             pageinfo.setRows( lists);
-            pageinfo.setTotal(counts);
+            pageinfo.setTotal(lists.size());
         }
         else if(name!=null) {
-    Activity activity = new Activity();
-    Category category = new Category();
-    category.setName(name);
-    List<Category> list = categoryService.select(category, null);
-    if(list.size()!=0) {
-        activity.setState(1);
-        activity.setCategory(list.get(0).getId());
-      List <Activity> list1=  activityService.select(activity, page);
-      List<PerenceActivityVO>list2=new ArrayList<>();
-        int count = activityService.selectCount(activity);
-        pageinfo.setTotal(count);
-        for(int i=0;i<list1.size();i++){
-            PerenceActivityVO perenceActivityVO=new PerenceActivityVO();
-            ReflectUtil.copyProperties(perenceActivityVO, list1.get(i));
-            perenceActivityVO.setSoldNumber(0);
-            list2.add(perenceActivityVO);
-        }
+        List<PerenceActivityVO>list2=activityService.getNameActivity(name,page);
         pageinfo.setRows(list2);
-
-
-    }
+        pageinfo.setTotal(list2.size());
 }
         //  List<Activity> list = activityService.getEnterpriseActivity(eid);
         return new ReturnMessage(200, pageinfo);

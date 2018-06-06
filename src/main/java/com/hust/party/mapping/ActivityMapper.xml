@@ -509,24 +509,25 @@
     </if>
   </select>
   <!-- 查詢列表数量 -->
-  <select id="getAllActivity" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
-    select *
-    from activity
+  <select id="getAllActivity" resultType="com.hust.party.vo.PerenceActivityVO">
+    select a.id ,a.copies,a.arrive_copies as arriveCopies,a.longitude,a.latitude,a.title,a.picture,a.contain_people as containPeople,a.preferential_price as preferentialPrice,a.original_price as originalPrice,a.address , e.name as enterpriceName
+    from activity a left join enterprise e on a.enterprise_id = e.id
     where 1=1
-    and state=1
-    and activity_time >now()
+    and a.state=1
+    and a.activity_time >now()
+    and a.copies != a.arrive_copies
     <if test="start != null and pageSize!=null">
       limit #{start},#{pageSize}
     </if>
   </select>
-  <select id="getQitaActivity" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
-    select *
-    from activity
+  <select id="getQitaActivity" resultType="com.hust.party.vo.PerenceActivityVO">
+    select a.id ,a.copies,a.arrive_copies as arriveCopies,a.longitude,a.latitude,a.title,a.picture,a.contain_people as containPeople,a.preferential_price as preferentialPrice,a.original_price as originalPrice,a.address , e.name as enterpriceName
+    from activity a left join enterprise e on a.enterprise_id = e.id
     where 1=1
-    and state=1
     and category>3
-    and activity_time >now()
-
+    and a.state=1
+    and a.activity_time >now()
+    and a.copies != a.arrive_copies
     <if test="start != null and pageSize!=null">
       limit #{start},#{pageSize}
     </if>
@@ -537,5 +538,17 @@
     where
     enterprise_id =#{eid,jdbcType=INTEGER}
 
+  </select>
+  <select id="getNameActivity" resultType="com.hust.party.vo.PerenceActivityVO">
+    select a.id ,a.copies,a.arrive_copies as arriveCopies,a.longitude,a.latitude,a.title,a.picture,a.contain_people as containPeople,a.preferential_price as preferentialPrice,a.original_price as originalPrice,a.address , e.name as enterpriceName
+    from activity a left join category c on a.category=c.id left join enterprise e on a.enterprise_id = e.id
+    where 1=1
+     and  c.name=#{name}
+    and a.state=1
+    and a.activity_time >now()
+    and a.copies != a.arrive_copies
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
   </select>
 </mapper>

@@ -51,7 +51,9 @@ public class ServiceTest {
     private EnterpriseService enterpriseService;
 @Test
 public void testGetAcitivity(){
-    List<Activity> list = activityService.getQitaActivity(null);
+  //  List<Activity> list = activityService.getQitaActivity(null);
+  //  System.out.println("+++++++++++++++++"+list);
+    List<PerenceActivityVO> list =activityService.getNameActivity("轰趴馆",null);
     System.out.println("+++++++++++++++++"+list);
 }
     @Test
@@ -88,8 +90,8 @@ System.out.println("分页信息：" + pageinfo);
 }
     @Test
     public void testActivity(){
-        Activity activity = activityService.selectByPrimaryKey(1);
-        System.out.println(activity);
+        List<PerenceActivityVO> activity = activityService.getAllActivity(null);
+        System.out.println("++++++++++++++++++++"+activity);
     }
 
     @Test

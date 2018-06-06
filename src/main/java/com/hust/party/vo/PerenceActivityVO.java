@@ -20,7 +20,7 @@ public class PerenceActivityVO {
     private String latitude;
     private Integer id;
 
-private Integer soldNumber;
+private Integer soldNumber=0;
 
     private String title;
 
