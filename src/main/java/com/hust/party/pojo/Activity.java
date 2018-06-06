@@ -10,8 +10,6 @@ public class Activity {
 
     private String title;
 
-    private String word;
-
     private String picture;
 
     private String video;
@@ -50,11 +48,12 @@ public class Activity {
 
     private Integer state;
 
-    public Activity(Integer id, Integer enterpriseId, String title, String word, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify, Date arriveTime, Integer category, Integer copies, Integer arriveCopies, Integer state) {
+    private String word;
+
+    public Activity(Integer id, Integer enterpriseId, String title, String picture, String video, String feature, Integer containPeople, BigDecimal preferentialPrice, BigDecimal originalPrice, String address, Date activityTime, Integer minuPeople, String addressName, String longitude, String latitude, String favourable, Integer classify, Date arriveTime, Integer category, Integer copies, Integer arriveCopies, Integer state, String word) {
         this.id = id;
         this.enterpriseId = enterpriseId;
         this.title = title;
-        this.word = word;
         this.picture = picture;
         this.video = video;
         this.feature = feature;
@@ -74,6 +73,7 @@ public class Activity {
         this.copies = copies;
         this.arriveCopies = arriveCopies;
         this.state = state;
+        this.word = word;
     }
 
     public Activity() {
@@ -102,14 +102,6 @@ public class Activity {
 
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
-    }
-
-    public String getWord() {
-        return word;
-    }
-
-    public void setWord(String word) {
-        this.word = word == null ? null : word.trim();
     }
 
     public String getPicture() {
@@ -262,5 +254,13 @@ public class Activity {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word == null ? null : word.trim();
     }
 }

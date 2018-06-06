@@ -6,7 +6,6 @@
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="enterprise_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="word" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="picture" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="video" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="feature" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -28,14 +27,46 @@
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hust.party.pojo.Activity" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="enterprise_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="picture" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="video" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="feature" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="contain_people" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="preferential_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="original_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="activity_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="minu_people" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="address_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="longitude" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="latitude" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="favourable" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="classify" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="arrive_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="category" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="copies" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="arrive_copies" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="word" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
   <sql id="Base_Column_List" >
-    id, enterprise_id, title, word, picture, video, feature, contain_people, preferential_price, 
+    id, enterprise_id, title, picture, video, feature, contain_people, preferential_price, 
     original_price, address, activity_time, minu_people, address_name, longitude, latitude, 
     favourable, classify, arrive_time, category, copies, arrive_copies, state
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <sql id="Blob_Column_List" >
+    word
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from activity
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -43,23 +74,23 @@
     delete from activity
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Activity"  useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.hust.party.pojo.Activity" useGeneratedKeys="true" keyProperty="id" >
     insert into activity (id, enterprise_id, title, 
-      word, picture, video, 
-      feature, contain_people, preferential_price, 
-      original_price, address, activity_time, 
-      minu_people, address_name, longitude, 
-      latitude, favourable, classify, 
-      arrive_time, category, copies, 
-      arrive_copies, state)
+      picture, video, feature, 
+      contain_people, preferential_price, original_price, 
+      address, activity_time, minu_people, 
+      address_name, longitude, latitude, 
+      favourable, classify, arrive_time, 
+      category, copies, arrive_copies, 
+      state, word)
     values (#{id,jdbcType=INTEGER}, #{enterpriseId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
-      #{word,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{video,jdbcType=VARCHAR}, 
-      #{feature,jdbcType=VARCHAR}, #{containPeople,jdbcType=INTEGER}, #{preferentialPrice,jdbcType=DECIMAL}, 
-      #{originalPrice,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, #{activityTime,jdbcType=TIMESTAMP}, 
-      #{minuPeople,jdbcType=INTEGER}, #{addressName,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, 
-      #{latitude,jdbcType=VARCHAR}, #{favourable,jdbcType=VARCHAR}, #{classify,jdbcType=INTEGER}, 
-      #{arriveTime,jdbcType=TIMESTAMP}, #{category,jdbcType=INTEGER}, #{copies,jdbcType=INTEGER}, 
-      #{arriveCopies,jdbcType=INTEGER}, #{state,jdbcType=INTEGER})
+      #{picture,jdbcType=VARCHAR}, #{video,jdbcType=VARCHAR}, #{feature,jdbcType=VARCHAR}, 
+      #{containPeople,jdbcType=INTEGER}, #{preferentialPrice,jdbcType=DECIMAL}, #{originalPrice,jdbcType=DECIMAL}, 
+      #{address,jdbcType=VARCHAR}, #{activityTime,jdbcType=TIMESTAMP}, #{minuPeople,jdbcType=INTEGER}, 
+      #{addressName,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, 
+      #{favourable,jdbcType=VARCHAR}, #{classify,jdbcType=INTEGER}, #{arriveTime,jdbcType=TIMESTAMP}, 
+      #{category,jdbcType=INTEGER}, #{copies,jdbcType=INTEGER}, #{arriveCopies,jdbcType=INTEGER}, 
+      #{state,jdbcType=INTEGER}, #{word,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hust.party.pojo.Activity" useGeneratedKeys="true" keyProperty="id" >
     insert into activity
@@ -72,9 +103,6 @@
       </if>
       <if test="title != null" >
         title,
-      </if>
-      <if test="word != null" >
-        word,
       </if>
       <if test="picture != null" >
         picture,
@@ -133,6 +161,9 @@
       <if test="state != null" >
         state,
       </if>
+      <if test="word != null" >
+        word,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -143,9 +174,6 @@
       </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="word != null" >
-        #{word,jdbcType=VARCHAR},
       </if>
       <if test="picture != null" >
         #{picture,jdbcType=VARCHAR},
@@ -204,6 +232,9 @@
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
       </if>
+      <if test="word != null" >
+        #{word,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.Activity" >
@@ -214,9 +245,6 @@
       </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="word != null" >
-        word = #{word,jdbcType=VARCHAR},
       </if>
       <if test="picture != null" >
         picture = #{picture,jdbcType=VARCHAR},
@@ -275,14 +303,42 @@
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
       </if>
+      <if test="word != null" >
+        word = #{word,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hust.party.pojo.Activity" >
+    update activity
+    set enterprise_id = #{enterpriseId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      video = #{video,jdbcType=VARCHAR},
+      feature = #{feature,jdbcType=VARCHAR},
+      contain_people = #{containPeople,jdbcType=INTEGER},
+      preferential_price = #{preferentialPrice,jdbcType=DECIMAL},
+      original_price = #{originalPrice,jdbcType=DECIMAL},
+      address = #{address,jdbcType=VARCHAR},
+      activity_time = #{activityTime,jdbcType=TIMESTAMP},
+      minu_people = #{minuPeople,jdbcType=INTEGER},
+      address_name = #{addressName,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      favourable = #{favourable,jdbcType=VARCHAR},
+      classify = #{classify,jdbcType=INTEGER},
+      arrive_time = #{arriveTime,jdbcType=TIMESTAMP},
+      category = #{category,jdbcType=INTEGER},
+      copies = #{copies,jdbcType=INTEGER},
+      arrive_copies = #{arriveCopies,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      word = #{word,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.Activity" >
     update activity
     set enterprise_id = #{enterpriseId,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
-      word = #{word,jdbcType=VARCHAR},
       picture = #{picture,jdbcType=VARCHAR},
       video = #{video,jdbcType=VARCHAR},
       feature = #{feature,jdbcType=VARCHAR},
@@ -315,8 +371,8 @@
     <if test="title != null">
       and title = #{title,jdbcType=VARCHAR}
     </if>
-    <if test="word != null">
-      and word = #{word,jdbcType=VARCHAR}
+    <if test="word != null" >
+    and  word = #{word,jdbcType=LONGVARCHAR}
     </if>
     <if test="picture != null">
       and picture = #{picture,jdbcType=VARCHAR}
@@ -370,7 +426,7 @@
       and copies = #{copies,jdbcType=INTEGER}
     </if>
     <if test="arriveCopies != null" >
-     and arrive_copies = #{arriveCopies,jdbcType=INTEGER}
+      and arrive_copies = #{arriveCopies,jdbcType=INTEGER}
     </if>
     <if test="state != null" >
       and   state = #{state,jdbcType=INTEGER}
@@ -391,8 +447,8 @@
     <if test="title != null">
       and title = #{title,jdbcType=VARCHAR}
     </if>
-    <if test="word != null">
-      and word = #{word,jdbcType=VARCHAR}
+    <if test="word != null" >
+      and  word = #{word,jdbcType=LONGVARCHAR}
     </if>
     <if test="picture != null">
       and picture = #{picture,jdbcType=VARCHAR}
