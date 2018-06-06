@@ -87,6 +87,18 @@ public class UserForceController
         return new ReturnMessage(200, insertNum);
 
     }
+    @ApiOperation(value = "提取force", notes = "提取force值到数据库")
+    @ResponseBody
+    @RequestMapping(value="/getUserForce", method = RequestMethod.POST)
+    public ReturnMessage getUserForce( @RequestParam("user_id") Integer user_id ){
+        int insertNum=0;
+        UserForce userForce=new UserForce();
+        userForce.setUserId(user_id);
+     List<UserForce> list= userForceService.select(userForce,null);
+     insertNum=list.get(0).getUserForce();
+        return new ReturnMessage(200, insertNum);
+
+    }
     public boolean insertForce(int []num){
         boolean insertNum=false;
         UserForce userForce =new UserForce();

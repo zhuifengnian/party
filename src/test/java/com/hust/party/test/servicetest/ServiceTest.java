@@ -49,7 +49,11 @@ public class ServiceTest {
     private CategoryService categoryService;
     @Autowired
     private EnterpriseService enterpriseService;
-
+@Test
+public void testGetAcitivity(){
+    List<Activity> list = activityService.getQitaActivity(null);
+    System.out.println("+++++++++++++++++"+list);
+}
     @Test
     public void testGetActivity(){
         Activity activity = activityService.selectByPrimaryKey(14);
