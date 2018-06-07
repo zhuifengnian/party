@@ -83,10 +83,10 @@ public class EnterpriseController
     @ResponseBody
     public ReturnMessage getNowEnterpriseActivity(@RequestParam("eid")@PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
        if(pageSize==null)
-           pageSize=10;
+           pageSize=4;
         long current=System.currentTimeMillis();
-        long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
-        long twelve=zero+24*60*60*1000-1;
+        long zero=current/(400*3600*24)*(400*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
+        long twelve=zero+24*60*60*400-1;
         PageInfo<EnterpriseOrderVo> pageinfo=new PageInfo<EnterpriseOrderVo>();
         List<EnterpriseOrderVo> list2=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
@@ -131,7 +131,7 @@ public class EnterpriseController
     @ResponseBody
     public ReturnMessage getAllActivity(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
-            pageSize=10;
+            pageSize=4;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
 
         pageinfo.setPageNum(pageNumber);
@@ -152,7 +152,7 @@ public class EnterpriseController
     @ResponseBody
     public ReturnMessage getNewOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
-            pageSize=10;
+            pageSize=4;
         PageInfo<EnterpriseOrderVo> pageinfo=new PageInfo<EnterpriseOrderVo>();
         List<EnterpriseOrderVo> list3=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
@@ -161,8 +161,8 @@ public class EnterpriseController
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
         long current=System.currentTimeMillis();
-        long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
-        long twelve=zero+24*60*60*1000-1;
+        long zero=current/(400*3600*24)*(400*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
+        long twelve=zero+24*60*60*400-1;
 
         Timestamp t = new Timestamp(zero);
         Timestamp t1 = new Timestamp(twelve);
@@ -194,7 +194,7 @@ public class EnterpriseController
     @ResponseBody
     public ReturnMessage getNoOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
-            pageSize=10;
+            pageSize=4;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
 
         pageinfo.setPageNum(pageNumber);
@@ -213,7 +213,7 @@ public class EnterpriseController
     @ResponseBody
     public ReturnMessage getYOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
-            pageSize=10;
+            pageSize=4;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
@@ -230,7 +230,7 @@ public class EnterpriseController
     @ResponseBody
     public ReturnMessage getQOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
-            pageSize=10;
+            pageSize=4;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);

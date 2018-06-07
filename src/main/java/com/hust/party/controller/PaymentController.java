@@ -38,7 +38,7 @@ private PaymentService paymentService;
     @ResponseBody
     public ReturnMessage gettotalList(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
-            pageSize=10;
+            pageSize=4;
         PageInfo<AccountVO> pageinfo=new PageInfo<AccountVO>();
 
         pageinfo.setPageNum(pageNumber);

@@ -53,7 +53,7 @@ public class CommentController
     @ResponseBody
     public ReturnMessage getComment(@RequestParam("eid") Integer eid, @RequestParam(required = false) Integer pageSize, @RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
-            pageSize=10;
+            pageSize=4;
         PageInfo<CommentVo> pageinfo=new PageInfo<CommentVo>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);

@@ -3,14 +3,14 @@ package com.hust.party.common;
 /**
  * @Description
  * @Author:王焕
- * @Date:2017/7/10
+ * @Date:2017/7/4
  */
 
 public class Page {
 
     Integer start = 0;
     Integer pageNumber = 1;
-    Integer pageSize = 10;
+    Integer pageSize = 4;
     Integer totalPageCount;
     Integer total;
 

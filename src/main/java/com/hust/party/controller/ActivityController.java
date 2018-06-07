@@ -82,7 +82,7 @@ public class ActivityController
     @ResponseBody
     public ReturnMessage getCategoryActivity(@RequestParam("name") String name,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         PageInfo<PerenceActivityVO> pageinfo = new PageInfo<PerenceActivityVO>();
-        pageSize=10;
+        pageSize=4;
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page = new Page();
