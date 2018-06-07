@@ -105,9 +105,20 @@
       score = #{score,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="getCommnet" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select *
-    from comment
-    where   enterprise_id  = #{enterpriseId,jdbcType=INTEGER}
+  <select id="getEnterpriseComment" resultType="com.hust.party.vo.CommentVo">
+    select c.context, c.comment_time,c.score,u.nickname as username,u.avatarurl as avatarurl
+    from comment c left join user u on c.user_id=u.id
+    where 1=1
+    and  c.enterprise_id=#{eid}
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <select id="getEnterpriseCommentCount" resultType="Integer">
+    select count(*)
+    from comment c left join user u on c.user_id=u.id
+    where 1=1
+    and  c.enterprise_id=#{eid}
+
   </select>
 </mapper>

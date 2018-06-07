@@ -115,4 +115,5 @@
       and total_money = #{totalMoney,jdbcType=DECIMAL}
     </if>
   </select>
+
 </mapper>

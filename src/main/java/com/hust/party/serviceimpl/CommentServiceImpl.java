@@ -5,6 +5,7 @@ import com.hust.party.dao.BaseMapper;
 import com.hust.party.dao.CommentMapper;
 import com.hust.party.pojo.Comment;
 import com.hust.party.service.CommentService;
+import com.hust.party.vo.CommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,15 @@ public class CommentServiceImpl extends  AbstractBaseServiceImpl<Comment> implem
         return commentMapper;
     }
 
+
+
     @Override
-    public List<Comment> getCommnet(Integer enterpriseId) {
-        return commentMapper.getCommnet(enterpriseId);
+    public List<CommentVo> getEnterpriseComment(Integer eid, Page page) {
+        return commentMapper.getEnterpriseComment(eid,page);
+    }
+
+    @Override
+    public Integer getEnterpriseCommentCount(Integer eid) {
+        return commentMapper.getEnterpriseCommentCount(eid);
     }
 }

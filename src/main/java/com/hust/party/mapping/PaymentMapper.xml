@@ -7,13 +7,13 @@
       <arg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
-      <arg column="creat_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="enterprise_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="activity_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_id, state, price, creat_time, enterprise_id, activity_id
+    id, order_id, state, price, create_time, enterprise_id, activity_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,15 +25,15 @@
     delete from payment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Payment"  useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.hust.party.pojo.Payment" >
     insert into payment (id, order_id, state, 
-      price, creat_time, enterprise_id, 
+      price, create_time, enterprise_id, 
       activity_id)
     values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
-      #{price,jdbcType=DECIMAL}, #{creatTime,jdbcType=TIMESTAMP}, #{enterpriseId,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{enterpriseId,jdbcType=INTEGER}, 
       #{activityId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.Payment"  useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Payment" >
     insert into payment
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -48,8 +48,8 @@
       <if test="price != null" >
         price,
       </if>
-      <if test="creatTime != null" >
-        creat_time,
+      <if test="createTime != null" >
+        create_time,
       </if>
       <if test="enterpriseId != null" >
         enterprise_id,
@@ -71,8 +71,8 @@
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
-      <if test="creatTime != null" >
-        #{creatTime,jdbcType=TIMESTAMP},
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="enterpriseId != null" >
         #{enterpriseId,jdbcType=INTEGER},
@@ -94,8 +94,8 @@
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
-      <if test="creatTime != null" >
-        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="enterpriseId != null" >
         enterprise_id = #{enterpriseId,jdbcType=INTEGER},
@@ -111,7 +111,7 @@
     set order_id = #{orderId,jdbcType=INTEGER},
       state = #{state,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
-      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       enterprise_id = #{enterpriseId,jdbcType=INTEGER},
       activity_id = #{activityId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
@@ -131,8 +131,8 @@
     <if test="price != null" >
       and  price = #{price,jdbcType=DECIMAL}
     </if>
-    <if test="creatTime != null" >
-      and  creat_time = #{creatTime,jdbcType=TIMESTAMP}
+    <if test="createTime != null" >
+    and  create_time = #{createTime,jdbcType=TIMESTAMP}
     </if>
     <if test="enterpriseId != null" >
       and  enterprise_id = #{enterpriseId,jdbcType=INTEGER}
@@ -160,8 +160,8 @@
     <if test="price != null" >
       and  price = #{price,jdbcType=DECIMAL}
     </if>
-    <if test="creatTime != null" >
-      and  creat_time = #{creatTime,jdbcType=TIMESTAMP}
+    <if test="createTime != null" >
+      and  create_time = #{createTime,jdbcType=TIMESTAMP}
     </if>
     <if test="enterpriseId != null" >
       and  enterprise_id = #{enterpriseId,jdbcType=INTEGER}
@@ -170,4 +170,22 @@
       and activity_id = #{activityId,jdbcType=INTEGER}
     </if>
   </select>
+  <select id="gettotalList" resultType="com.hust.party.vo.AccountVO">
+    select   p.id,p.order_id,a.title as title,p.price,p.create_time as createTime
+    from payment p left join activity a on p.activity_id=a.id
+    where 1=1
+    and  p.enterprise_id=#{eid}
+
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <select id="gettotalListCount" resultType="Integer">
+    select count(*)
+    from payment p left join activity a on p.activity_id=a.id
+    where 1=1
+    and  p.enterprise_id=#{eid}
+
+  </select>
+
 </mapper>

@@ -21,6 +21,7 @@ import com.qiniu.util.Auth;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -47,45 +48,27 @@ public class CommentController
     private UserService userService;
     @Autowired
     private ActivityService activityService;
-    @RequestMapping(value = "/getComment", method = RequestMethod.GET)
-    @ApiOperation(value = "根据商家id提取信息", httpMethod = "GET")
+    @RequestMapping(value = "/getComment", method = RequestMethod.POST)
+    @ApiOperation(value = "根据商家id提取信息", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getComment(@ApiParam(required = true, name = "aid", value = "商家id") @RequestParam("aid") Integer aid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-        List<CommentVo> lists=new ArrayList<>();
-        List<Comment> list = commentService.getCommnet(aid);
+    public ReturnMessage getComment(@RequestParam("eid") Integer eid, @RequestParam(required = false) Integer pageSize, @RequestParam(required = false) Integer pageNumber){
+        if(pageSize==null)
+            pageSize=10;
         PageInfo<CommentVo> pageinfo=new PageInfo<CommentVo>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-        for(int i=0;i<list.size();i++){
-            CommentVo commentVo =new CommentVo();
-            Comment comment = list.get(i);
-            User user= userService.selectByPrimaryKey(comment.getUserId());
-            try {
-                PropertyUtils.copyProperties(commentVo, comment);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-            commentVo.setUsername(user.getNickname());
-
-            commentVo.setAvatarurl(user.getAvatarurl());
-            lists.add(commentVo);
-        }
+        List<CommentVo> lists=commentService.getEnterpriseComment(eid,page);
         pageinfo.setRows( lists);
-        int count=list.size();
-        pageinfo.setTotal(count);
+        pageinfo.setTotal(commentService.getEnterpriseCommentCount(eid));
         return new ReturnMessage(200, pageinfo);
     }
     @RequestMapping(value = "/putComment", method = RequestMethod.POST)
     @ApiOperation(value = "插入评论")
     @ResponseBody
-    public ReturnMessage setComment(Comment comment,@ApiParam(required = true, name = "aid", value = "活动id") @RequestParam("aid") Integer aid,@ApiParam(required = true, name = "uid", value = "活动id") @RequestParam("uid") Integer uid ){
+    public ReturnMessage setComment(Comment comment,@RequestParam("eid") Integer aid,@ApiParam(required = true, name = "uid", value = "活动id") @RequestParam("uid") Integer uid ){
         Activity activity=activityService.selectByPrimaryKey(aid);
         comment.setCommentTime(new Date());
         comment.setEnterpriseId(activity.getEnterpriseId());

@@ -12,18 +12,18 @@ public class Payment {
 
     private BigDecimal price;
 
-    private Date creatTime;
+    private Date createTime;
 
     private Integer enterpriseId;
 
     private Integer activityId;
 
-    public Payment(Integer id, Integer orderId, Integer state, BigDecimal price, Date creatTime, Integer enterpriseId, Integer activityId) {
+    public Payment(Integer id, Integer orderId, Integer state, BigDecimal price, Date createTime, Integer enterpriseId, Integer activityId) {
         this.id = id;
         this.orderId = orderId;
         this.state = state;
         this.price = price;
-        this.creatTime = creatTime;
+        this.createTime = createTime;
         this.enterpriseId = enterpriseId;
         this.activityId = activityId;
     }
@@ -64,12 +64,12 @@ public class Payment {
         this.price = price;
     }
 
-    public Date getCreatTime() {
-        return creatTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Integer getEnterpriseId() {
