@@ -161,8 +161,8 @@ public class EnterpriseController
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
         long current=System.currentTimeMillis();
-        long zero=current/(400*3600*24)*(400*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
-        long twelve=zero+24*60*60*400-1;
+        long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
+        long twelve=zero+24*60*60*1000-1;
 
         Timestamp t = new Timestamp(zero);
         Timestamp t1 = new Timestamp(twelve);
