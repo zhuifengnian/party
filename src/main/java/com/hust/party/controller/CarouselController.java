@@ -57,8 +57,9 @@ public class CarouselController {
         //对图片路径做下处理
         carousels.forEach((carousel) ->{
             String pictureUrl = carousel.getPictureUrl();
+
             if(pictureUrl != null && pictureUrl.startsWith("/")){
-                String dir = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+                String dir = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
                 carousel.setPictureUrl(dir + pictureUrl);
             }
         });
