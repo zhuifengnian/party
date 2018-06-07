@@ -39,8 +39,18 @@ public class EnterpriseServiceImpl extends AbstractBaseServiceImpl<Enterprise> i
     }
 
     @Override
+    public Integer getQOderCount(Integer eid) {
+        return enterpriseMapper.getQOderCount(eid);
+    }
+
+    @Override
     public List<AllOrderVO> getYOrder(Integer eid, Page page) {
         return enterpriseMapper.getYOrder(eid,page);
+    }
+
+    @Override
+    public Integer getYOrderCount(Integer eid) {
+        return enterpriseMapper.getYOrderCount(eid);
     }
 
     @Override
@@ -49,8 +59,18 @@ public class EnterpriseServiceImpl extends AbstractBaseServiceImpl<Enterprise> i
     }
 
     @Override
+    public Integer getNoOrderCount(Integer eid) {
+        return enterpriseMapper.getNoOrderCount(eid);
+    }
+
+    @Override
     public List<AllOrderVO> getAllOrder(Integer eid, Page page) {
         return enterpriseMapper.getAllOrder(eid,page);
+    }
+
+    @Override
+    public Integer getAllOrderCount(Integer eid) {
+        return enterpriseMapper.getAllOrderCount(eid);
     }
 
     @Override

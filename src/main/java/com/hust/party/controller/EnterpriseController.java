@@ -130,9 +130,10 @@ public class EnterpriseController
     @ApiOperation(value = "根据企业id提取全部订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getAllActivity(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-       if(pageSize==null)
-           pageSize=10;
+        if(pageSize==null)
+            pageSize=10;
         PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
+
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
@@ -143,7 +144,7 @@ public class EnterpriseController
 
 
         pageinfo.setRows(list2);
-
+        pageinfo.setTotal(enterpriseService.getAllOrderCount(eid));
         return new ReturnMessage(200, pageinfo);
     }
     @RequestMapping(value = "/enterprise/getNew", method = RequestMethod.POST)
@@ -204,6 +205,7 @@ public class EnterpriseController
 
         List<AllOrderVO> list3=enterpriseService.getNoOrder(eid,page);
         pageinfo.setRows(list3);
+        pageinfo.setTotal(enterpriseService.getNoOrderCount(eid));
         return new ReturnMessage(200, pageinfo);
     }
     @RequestMapping(value = "/enterprise/getY", method = RequestMethod.POST)
@@ -220,6 +222,7 @@ public class EnterpriseController
         page.setPageSize(pageSize);
         List<AllOrderVO> list3=enterpriseService.getYOrder(eid,page);
         pageinfo.setRows(list3);
+        pageinfo.setTotal(enterpriseService.getYOrderCount(eid));
         return new ReturnMessage(200, pageinfo);
     }
     @RequestMapping(value = "/enterprise/getQ", method = RequestMethod.POST)
@@ -236,6 +239,7 @@ public class EnterpriseController
         page.setPageSize(pageSize);
         List<AllOrderVO> list3=enterpriseService.getQOrder(eid,page);
         pageinfo.setRows(list3);
+        pageinfo.setTotal(enterpriseService.getQOderCount(eid));
         return new ReturnMessage(200, pageinfo);
     }
     @RequestMapping(value = "/enterprise", method = RequestMethod.POST)
