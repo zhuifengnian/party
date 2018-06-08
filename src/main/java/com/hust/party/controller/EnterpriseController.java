@@ -85,8 +85,8 @@ public class EnterpriseController
        if(pageSize==null)
            pageSize=4;
         long current=System.currentTimeMillis();
-        long zero=current/(400*3600*24)*(400*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
-        long twelve=zero+24*60*60*400-1;
+        long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
+        long twelve=zero+24*60*60*1000-1;
         PageInfo<EnterpriseOrderVo> pageinfo=new PageInfo<EnterpriseOrderVo>();
         List<EnterpriseOrderVo> list2=new ArrayList<>();
         pageinfo.setPageNum(pageNumber);
