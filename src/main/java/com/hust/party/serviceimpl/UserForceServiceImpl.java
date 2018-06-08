@@ -48,29 +48,38 @@ public class UserForceServiceImpl extends  AbstractBaseServiceImpl<UserForce> im
         }
 
     @Override
-    public boolean insertcolonelForce(Integer user_id) {
-        boolean insertNum=false;
+    public int insertcolonelForce(Integer user_id) {
+        int insertNum=0;
         UserForce userForce =new UserForce();
         userForce.setUserId(user_id);
         List<UserForce> userForces= userForceService.select(userForce,null);
-        userForce.setUserForce(userForces.get(0).getUserForce()+10);
-        Integer insert=userForceMapper.updateByPrimaryKeySelective(userForce);
-        if(insert==userForces.get(0).getUserId())
-            insertNum=true;
+        if(userForces.size()!=0) {
+            userForce.setUserForce(userForces.get(0).getUserForce() + 10);
+            Integer insert = userForceMapper.updateByPrimaryKeySelective(userForce);
+            if (insert != null)
+                insertNum = 1;
+        }
+        else
+            insertNum=2;
+
         return insertNum;
     }
 
     @Override
-    public boolean insertCommonUserForce(Integer user_id) {
+    public int insertCommonUserForce(Integer user_id) {
 
-        boolean insertNum=false;
+        int insertNum=0;
         UserForce userForce =new UserForce();
         userForce.setUserId(user_id);
         List<UserForce> userForces= userForceService.select(userForce,null);
-        userForce.setUserForce(userForces.get(0).getUserForce()+2);
-        Integer insert=userForceMapper.updateByPrimaryKeySelective(userForce);
-        if(insert==userForces.get(0).getUserId())
-            insertNum=true;
+        if(userForces.size()!=0) {
+            userForce.setUserForce(userForces.get(0).getUserForce() + 2);
+            Integer insert = userForceMapper.updateByPrimaryKeySelective(userForce);
+            if (insert != null)
+                insertNum = 1;
+        }
+        else
+            insertNum=2;
         return insertNum;
     }
 }
