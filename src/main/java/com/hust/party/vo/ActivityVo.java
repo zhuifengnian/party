@@ -29,7 +29,7 @@ public class ActivityVo {
     private String longitude;
 
     private String latitude;
-
+    private List<CommentVo> commentVos;
 
 
     public Integer getId() {
@@ -184,5 +184,11 @@ public class ActivityVo {
     }
 
 
+    public List<CommentVo> getCommentVos() {
+        return commentVos;
+    }
 
+    public void setCommentVos(List<CommentVo> commentVos) {
+        this.commentVos = commentVos;
+    }
 }

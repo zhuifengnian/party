@@ -34,4 +34,9 @@ public class CommentServiceImpl extends  AbstractBaseServiceImpl<Comment> implem
     public Integer getEnterpriseCommentCount(Integer eid) {
         return commentMapper.getEnterpriseCommentCount(eid);
     }
+
+    @Override
+    public List<CommentVo> getAEnterpriseComment(Integer eid) {
+        return commentMapper.getAEnterpriseComment(eid);
+    }
 }

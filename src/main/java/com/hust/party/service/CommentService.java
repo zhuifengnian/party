@@ -13,4 +13,5 @@ public interface CommentService extends BaseService<Comment>{
 
     List<CommentVo> getEnterpriseComment(@Param("eid") Integer eid, @Param("page") Page page);
     Integer getEnterpriseCommentCount(Integer eid);
+    List<CommentVo> getAEnterpriseComment(@Param("eid") Integer eid);
 }

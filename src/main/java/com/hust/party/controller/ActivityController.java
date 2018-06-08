@@ -57,16 +57,9 @@ public class ActivityController
     @RequestMapping(value = "/getactivity", method = RequestMethod.POST)
     @ApiOperation(value = "根据活动id提取信息", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getIdActivity(@RequestParam("aid") Integer aid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getIdActivity(@RequestParam("aid") Integer aid){
 
-        if(pageSize==null)
-            pageSize=4;
-        PageInfo<CommentVo> pageinfo=new PageInfo<CommentVo>();
-        pageinfo.setPageNum(pageNumber);
-        pageinfo.setPageSize(pageSize);
-        Page page= new Page();
-        page.setPageNumber(pageNumber);
-        page.setPageSize(pageSize);
+
         ActivityVo activityVo =new ActivityVo();
 
         Activity activity = activityService.selectByPrimaryKey(aid);
@@ -84,6 +77,7 @@ public class ActivityController
             activityEnterpriseVo.setEnterprisePhone(enterprise.getLeadPhone());
             activityVo.setActivityEnterpriseVo(activityEnterpriseVo);
             activityVo.setTag(tag);
+         activityVo.setCommentVos(commentService.getAEnterpriseComment(enterprise.getId()));
 
 
 
