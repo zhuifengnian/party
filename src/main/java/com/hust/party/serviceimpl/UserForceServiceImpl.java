@@ -46,5 +46,32 @@ public class UserForceServiceImpl extends  AbstractBaseServiceImpl<UserForce> im
 
             return insertNum;
         }
+
+    @Override
+    public boolean insertcolonelForce(Integer user_id) {
+        boolean insertNum=false;
+        UserForce userForce =new UserForce();
+        userForce.setUserId(user_id);
+        List<UserForce> userForces= userForceService.select(userForce,null);
+        userForce.setUserForce(userForces.get(0).getUserForce()+10);
+        Integer insert=userForceMapper.updateByPrimaryKeySelective(userForce);
+        if(insert==userForces.get(0).getUserId())
+            insertNum=true;
+        return insertNum;
     }
+
+    @Override
+    public boolean insertCommonUserForce(Integer user_id) {
+
+        boolean insertNum=false;
+        UserForce userForce =new UserForce();
+        userForce.setUserId(user_id);
+        List<UserForce> userForces= userForceService.select(userForce,null);
+        userForce.setUserForce(userForces.get(0).getUserForce()+2);
+        Integer insert=userForceMapper.updateByPrimaryKeySelective(userForce);
+        if(insert==userForces.get(0).getUserId())
+            insertNum=true;
+        return insertNum;
+    }
+}
 
