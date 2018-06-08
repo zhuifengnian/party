@@ -10,6 +10,7 @@ import com.hust.party.service.*;
 import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.ActivityEnterpriseVo;
 import com.hust.party.vo.OrderActivityVO;
+import com.sun.istack.internal.logging.Logger;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * OrderController<br/>
@@ -27,6 +29,9 @@ import java.util.*;
 @Controller
 @RequestMapping("/order")
 public class OrderController {
+
+    Logger mLogger = Logger.getLogger(OrderController.class);
+
     @Autowired
     private OrdersService ordersService;
     @Autowired
@@ -41,6 +46,8 @@ public class OrderController {
     private UserMoneyService userMoneyService;
     @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private UserForceService userForce;
 
     @ApiOperation(value =  "生成订单", notes = "发起人生成订单到数据库，能够调用这个接口的前提是用户已经支付了这个订单，" +
             "所以这里我们不再处理支付逻辑，只对支付和订单作记录")
@@ -76,6 +83,7 @@ public class OrderController {
         orderUser.setState(Const.ORDER_USER_STATUS_ACTIVATE);
         orderUser.setUserId(uid);
         orderUser.setCreatTime(createTime);
+
         int orderUserId = orderUserService.insert(orderUser);
 
         //记录用户支付数据,插入数据到user_money表中
@@ -87,6 +95,12 @@ public class OrderController {
         userMoney.setMoney(preferentialPrice);
         userMoney.setUserorderId(orderUserId);
         userMoneyService.insert(userMoney);
+
+        //开团人的团力值加10
+        int i = userForce.insertCommonUserForce(uid);
+        if(i != 1){
+            mLogger.info("团力值添加失败");
+        }
 
         //再在payment表中记录下这笔金额（payment记录的是这笔订单需要给商家的金额，在第一个人创建订单时，会生成这样的记录
 //        Payment payment = new Payment();
@@ -215,6 +229,12 @@ public class OrderController {
 
         Integer containPeople = activity.getContainPeople();    //活动最大人数
         Integer atleastPeople = activity.getMinuPeople();    //活动最少人数
+
+        //参团人的团力值加2
+        int i = userForce.insertCommonUserForce(uid);
+        if(i != 1){
+            mLogger.info("团力值添加失败");
+        }
 
         //插入完成后判断订单总的状态是否达到了最大容纳人数，达到后，订单状态改为人数已满
         if(userCnt >= containPeople){
