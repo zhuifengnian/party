@@ -84,11 +84,11 @@ public class ActivityController
             activityEnterpriseVo.setEnterprisePhone(enterprise.getLeadPhone());
             activityVo.setActivityEnterpriseVo(activityEnterpriseVo);
             activityVo.setTag(tag);
-            List<CommentVo> lists=commentService.getEnterpriseComment(enterprise.getId(),page);
 
 
 
-         activityVo.setCommentVo(lists);
+
+
         }
         return new ReturnMessage(200, activityVo);
     }
