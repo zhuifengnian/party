@@ -38,7 +38,7 @@ public class UserForceController
 {
     @Autowired
     private UserForceService userForceService;
-    @ApiOperation(value = "插入团力值", notes = "插入团力值到数据库")
+    @ApiOperation(value = "插入金币", notes = "插入金币到数据库")
     @ResponseBody
     @RequestMapping(value="/insertUserForce", method = RequestMethod.POST)
     public ReturnMessage insertUserForce( @RequestParam("user_id") Integer user_id ){
@@ -46,15 +46,7 @@ public class UserForceController
         UserForce userForce =new UserForce();
         userForce.setUserId(user_id);
        List<UserForce> userForces= userForceService.select(userForce,null);
-       if(userForces.size()==0){
-           userForce.setGold(10);
-           userForce.setUserMedal("小兵");
-           userForce.setCreateTime(new Date());
-           userForce.setUpdateTime(new Date());
-           userForce.setTimeState(1);
-         insertNum=  userForceService.insert(userForce);
-       }
-       else{
+
            Integer gold=userForces.get(0).getGold()+10;
            userForce.setGold(gold);
 
@@ -83,51 +75,10 @@ public class UserForceController
            userForce.setId(userForces.get(0).getId());
            userForce.setUpdateTime(new Date());
           insertNum= userForceService.updateByPrimaryKeySelective(userForce);
-       }
+
         return new ReturnMessage(200, insertNum);
 
     }
-    @ApiOperation(value = "提取force", notes = "提取force值到数据库")
-    @ResponseBody
-    @RequestMapping(value="/getUserForce", method = RequestMethod.POST)
-    public ReturnMessage getUserForce( @RequestParam("user_id") Integer user_id ){
-        int insertNum=0;
-        UserForce userForce=new UserForce();
-        userForce.setUserId(user_id);
-     List<UserForce> list= userForceService.select(userForce,null);
-     insertNum=list.get(0).getUserForce();
-        return new ReturnMessage(200, insertNum);
 
-    }
-    public boolean insertForce(int []num){
-        boolean insertNum=false;
-        UserForce userForce =new UserForce();
 
-        for(int i=0;i<num.length;i++){
-            userForce.setUserId(num[i]);
-            List<UserForce> userForces= userForceService.select(userForce,null);
-            if(userForces.size()==0){
-                if(i==0) {
-                    userForce.setUserForce(10);
-                }else
-                    userForce.setUserForce(2);
-             userForce.setCreateTime(new Date());
-             userForce.setUpdateTime(new Date());
-             Integer insert=userForceService.updateByPrimaryKeySelective(userForce);
-               if(insert!=null)
-                   insertNum=true;
-            }
-            else{
-                if(i==0)
-                userForce.setUserForce(userForces.get(0).getUserForce()+10);
-                else
-                    userForce.setUserForce(userForces.get(0).getUserForce()+2);
-                userForce.setUpdateTime(new Date());
-                Integer insert=userForceService.updateByPrimaryKeySelective(userForce);
-                if(insert!=null)
-                    insertNum=true;
-            }
-        }
-        return insertNum;
-    }
 }
