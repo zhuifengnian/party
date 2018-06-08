@@ -65,6 +65,7 @@ public class CommentController
         pageinfo.setTotal(commentService.getEnterpriseCommentCount(eid));
         return new ReturnMessage(200, pageinfo);
     }
+
     @RequestMapping(value = "/putComment", method = RequestMethod.POST)
     @ApiOperation(value = "插入评论")
     @ResponseBody

@@ -24,6 +24,7 @@ public class ActivityVo {
     private List<String> pictures;
     private List<String> tag;
     private ActivityEnterpriseVo activityEnterpriseVo;
+    private List<CommentVo> commentVo;
 
     private String longitude;
 
@@ -180,5 +181,14 @@ public class ActivityVo {
 
     public void setActivityTime(Date activityTime) {
         this.activityTime = activityTime;
+    }
+
+
+    public List<CommentVo> getCommentVo() {
+        return commentVo;
+    }
+
+    public void setCommentVo(List<CommentVo> commentVo) {
+        this.commentVo = commentVo;
     }
 }
