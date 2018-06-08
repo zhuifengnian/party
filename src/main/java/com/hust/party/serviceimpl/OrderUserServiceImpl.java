@@ -8,6 +8,7 @@ import com.hust.party.pojo.Enterprise;
 import com.hust.party.pojo.OrderUser;
 import com.hust.party.pojo.Orders;
 import com.hust.party.service.OrderUserService;
+import com.hust.party.util.OrdersUtil;
 import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.ActivityEnterpriseVo;
 import com.hust.party.vo.OrderActivityVO;
@@ -136,6 +137,8 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
 
         for(OrderActivityVO orderActivityVO: orderActivityVOs){
             Integer oid = orderActivityVO.getOid();     //oid在获取对象时已经放入
+            Integer status = orderActivityVO.getStatus();   //订单状态在查询时也已完成
+            orderActivityVO.setStatusName(OrdersUtil.getStateName(status));
             Orders orders = ordersMapper.selectByPrimaryKey(oid);
             Integer activityId = orders.getActivityId();
             Activity activity = activityMapper.selectByPrimaryKey(activityId);

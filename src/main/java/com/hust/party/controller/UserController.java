@@ -6,9 +6,11 @@ import com.hust.party.common.ReturnMessage;
 import com.hust.party.exception.ApiException;
 import com.hust.party.pojo.User;
 import com.hust.party.service.UserService;
+import com.hust.party.vo.UserInfoVO;
 import com.hust.party.wxpay.ConstantUtil;
 import com.hust.party.wxpay.TenpayHttpClient;
 import com.hust.party.wxpay.XMLUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,6 +57,17 @@ private UserService userService;
         } catch (IOException e) {
             throw new ApiException(201, "网络请求出现错误");
         }
+    }
+
+    @ApiOperation(value = "返回用户详细信息", notes = "返回用户详细信息")
+    @ResponseBody
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
+    public ReturnMessage getUserInfo(@RequestParam("uid") Integer uid){
+        UserInfoVO userInfoVO = userService.selectUserInfo(uid);
+        if(userInfoVO == null){
+            throw new ApiException(200, "所传uid没有数据");
+        }
+        return new ReturnMessage(200, userInfoVO);
     }
 
 }

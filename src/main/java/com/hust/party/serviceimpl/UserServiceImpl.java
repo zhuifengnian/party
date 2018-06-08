@@ -4,6 +4,7 @@ import com.hust.party.dao.BaseMapper;
 import com.hust.party.dao.UserMapper;
 import com.hust.party.pojo.User;
 import com.hust.party.service.UserService;
+import com.hust.party.vo.UserInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,11 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User> implements Us
     public Integer selectUserByChatId(String open_id) {
 
         return userMapper.selectUserByChatId(open_id);
+    }
+
+    @Override
+    public UserInfoVO selectUserInfo(Integer uid) {
+        return userMapper.selectUserInfo(uid);
     }
 
     @Override

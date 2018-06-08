@@ -179,4 +179,10 @@
   <select id="selectUserByChatId" parameterType="string" resultType="int">
     select id from user where  open_id = #{openId, jdbcType=VARCHAR}
   </select>
+  <select id="selectUserInfo" parameterType="int" resultType="userInfoVO">
+    select u.id as uid, u.nickname, u.avatarurl, u.gender, uf.gold, uf.user_force as userForce, uf.user_medal as userMedal
+    from user u left join user_force uf on u.id = uf.user_id
+    where u.id = #{uid}
+  </select>
+
 </mapper>

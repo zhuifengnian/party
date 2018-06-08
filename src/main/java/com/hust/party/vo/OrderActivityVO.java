@@ -19,13 +19,17 @@ public class OrderActivityVO {
 
     private Integer status = Const.ORDER_STATUS_ENGAGING;             //订单状态（0可以支付，1拼单人数满，2拼单人数未满，3日期已过）
 
+    private String statusName;      //状态对应的名称
+
     private Integer aid;            //活动id
 
     private Integer enterpriseId;
 
     private String title;       //活动标题（名称）
 
-    private Date activityTime;      //活动时间（消费时间）
+    private Date activityTime;      //活动开始时间
+
+    private Date arriveTime;       //活动结束时间
 
     private String word;        //描述
 
@@ -81,6 +85,14 @@ public class OrderActivityVO {
         this.status = status;
     }
 
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
     public Integer getAid() {
         return aid;
     }
@@ -111,6 +123,14 @@ public class OrderActivityVO {
 
     public void setActivityTime(Date activityTime) {
         this.activityTime = activityTime;
+    }
+
+    public Date getArriveTime() {
+        return arriveTime;
+    }
+
+    public void setArriveTime(Date arriveTime) {
+        this.arriveTime = arriveTime;
     }
 
     public String getWord() {
