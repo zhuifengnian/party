@@ -50,14 +50,18 @@ public class ServiceTest {
     private CategoryService categoryService;
     @Autowired
     private EnterpriseService enterpriseService;
+    @Autowired
+    private UserForceService userForceService;
 @Test
 public void testGetAcitivity(){
-    Integer list = activityService.getNameActivityCount("轰趴馆");
-  System.out.println("+++++++++++++++++"+list);
+   // Integer list = activityService.getNameActivityCount("轰趴馆");
+ // System.out.println("+++++++++++++++++"+list);
    // List<PerenceActivityVO> list =activityService.getNameActivity("轰趴馆",null);
    // System.out.println("+++++++++++++++++"+list);
  //  List<AllOrderVO> list =enterpriseService.getYOrder(1,null);
    // System.out.println("+++++++++++++++++"+list);
+    userForceService.insertcolonelForce(25);
+
 }
     @Test
     public void testGetActivity(){
