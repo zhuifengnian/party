@@ -26,22 +26,27 @@ public class UserForceServiceImpl extends  AbstractBaseServiceImpl<UserForce> im
     }
 
     @Override
-    public boolean insertForce(int[] num){
-            boolean insertNum=false;
+    public int insertForce(int[] num){
+            int insertNum=0;
             UserForce userForce =new UserForce();
 
-            for(int i=0;i<num.length;i++){
+            for(int i=0;i<num.length;i++) {
                 userForce.setUserId(num[i]);
-                List<UserForce> userForces= userForceService.select(userForce,null);
-
-                if(i==0)
-                    userForce.setUserForce(userForces.get(0).getUserForce()+10);
-                else
-                    userForce.setUserForce(userForces.get(0).getUserForce()+2);
-                userForce.setUpdateTime(new Date());
-                Integer insert=userForceMapper.updateByPrimaryKeySelective(userForce);
-                if(insert!=null)
-                    insertNum=true;
+                List<UserForce> userForces = userForceService.select(userForce, null);
+                if (userForces.size() != 0) {
+                    if (i == 0)
+                        userForce.setUserForce(userForces.get(0).getUserForce() + 10);
+                    else
+                        userForce.setUserForce(userForces.get(0).getUserForce() + 2);
+                    userForce.setUpdateTime(new Date());
+                    Integer insert = userForceMapper.updateByPrimaryKeySelective(userForce);
+                    if (insert != null)
+                        insertNum = 1;
+                }
+                else {
+                    insertNum = 2;
+                   break;
+                }
             }
 
             return insertNum;
@@ -54,6 +59,7 @@ public class UserForceServiceImpl extends  AbstractBaseServiceImpl<UserForce> im
         userForce.setUserId(user_id);
         List<UserForce> userForces= userForceService.select(userForce,null);
         if(userForces.size()!=0) {
+            userForce.setId(userForces.get(0).getId());
             userForce.setUserForce(userForces.get(0).getUserForce() + 10);
             Integer insert = userForceMapper.updateByPrimaryKeySelective(userForce);
             if (insert != null)
@@ -73,6 +79,7 @@ public class UserForceServiceImpl extends  AbstractBaseServiceImpl<UserForce> im
         userForce.setUserId(user_id);
         List<UserForce> userForces= userForceService.select(userForce,null);
         if(userForces.size()!=0) {
+            userForce.setId(userForces.get(0).getId());
             userForce.setUserForce(userForces.get(0).getUserForce() + 2);
             Integer insert = userForceMapper.updateByPrimaryKeySelective(userForce);
             if (insert != null)
