@@ -39,9 +39,9 @@ public class UserForceServiceImpl extends  AbstractBaseServiceImpl<UserForce> im
                     else
                         userForce.setUserForce(userForces.get(0).getUserForce() + 2);
                     userForce.setUpdateTime(new Date());
-                    if( userForce.getUserForce()>50)
+                    if( userForce.getUserForce()>50&&userForce.getUserForce()<=200)
                         userForce.setUserMedal("铜牌团长");
-                    else if( userForce.getUserForce()>200)
+                    else if( userForce.getUserForce()>200&&userForce.getUserForce()<=500)
                         userForce.setUserMedal("银牌团长");
                     else if( userForce.getUserForce()>500)
                         userForce.setUserMedal("金牌团长");
@@ -68,9 +68,9 @@ public class UserForceServiceImpl extends  AbstractBaseServiceImpl<UserForce> im
             userForce.setId(userForces.get(0).getId());
             userForce.setUserForce(userForces.get(0).getUserForce() + 10);
 
-            if( userForce.getUserForce()>50)
+            if( userForce.getUserForce()>50&&userForce.getUserForce()<=200)
                 userForce.setUserMedal("铜牌团长");
-            else if( userForce.getUserForce()>200)
+            else if( userForce.getUserForce()>200&&userForce.getUserForce()<=500)
                 userForce.setUserMedal("银牌团长");
             else if( userForce.getUserForce()>500)
                 userForce.setUserMedal("金牌团长");
@@ -95,9 +95,9 @@ public class UserForceServiceImpl extends  AbstractBaseServiceImpl<UserForce> im
         if(userForces.size()!=0) {
             userForce.setId(userForces.get(0).getId());
             userForce.setUserForce(userForces.get(0).getUserForce() + 2);
-            if( userForce.getUserForce()>50)
+            if( userForce.getUserForce()>50&&userForce.getUserForce()<=200)
                 userForce.setUserMedal("铜牌团长");
-            else if( userForce.getUserForce()>200)
+            else if( userForce.getUserForce()>200&&userForce.getUserForce()<=500)
                 userForce.setUserMedal("银牌团长");
             else if( userForce.getUserForce()>500)
                 userForce.setUserMedal("金牌团长");
