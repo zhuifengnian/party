@@ -9,12 +9,11 @@
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="finish_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="enterprise_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="activity_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="qr_code" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, activity_id, state, create_time, finish_time, enterprise_id, activity_time, qr_code
+    id, activity_id, state, create_time, finish_time, enterprise_id, qr_code
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -29,7 +28,7 @@
   <insert id="insert" parameterType="com.hust.party.pojo.Orders" useGeneratedKeys="true" keyProperty="id">
     insert into orders (id, activity_id, state,
       create_time, finish_time, enterprise_id,
-      activity_time, qr_code)
+       qr_code)
     values (#{id,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, #{enterpriseId,jdbcType=INTEGER},
       #{activityTime,jdbcType=TIMESTAMP}, #{qrCode,jdbcType=VARCHAR})
@@ -54,9 +53,6 @@
       </if>
       <if test="enterpriseId != null" >
         enterprise_id,
-      </if>
-      <if test="activityTime != null" >
-        activity_time,
       </if>
       <if test="qrCode != null" >
         qr_code,
@@ -107,9 +103,6 @@
       <if test="enterpriseId != null" >
         enterprise_id = #{enterpriseId,jdbcType=INTEGER},
       </if>
-      <if test="activityTime != null" >
-        activity_time = #{activityTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="qrCode != null" >
         qr_code = #{qrCode,jdbcType=VARCHAR},
       </if>
@@ -123,7 +116,6 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       finish_time = #{finishTime,jdbcType=TIMESTAMP},
       enterprise_id = #{enterpriseId,jdbcType=INTEGER},
-      activity_time = #{activityTime,jdbcType=TIMESTAMP},
       qr_code = #{qrCode,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -145,9 +137,6 @@
     </if>
     <if test="enterpriseId != null" >
       and enterprise_id = #{enterpriseId,jdbcType=INTEGER}
-    </if>
-    <if test="activityTime != null" >
-      and activity_time = #{activityTime,jdbcType=TIMESTAMP}
     </if>
     <if test="qrCode != null" >
       qr_code = #{qrCode,jdbcType=VARCHAR}
@@ -176,9 +165,6 @@
     </if>
     <if test="enterpriseId != null" >
       and  enterprise_id = #{enterpriseId,jdbcType=INTEGER}
-    </if>
-    <if test="activityTime != null" >
-      and activity_time = #{activityTime,jdbcType=TIMESTAMP}
     </if>
     <if test="qrCode != null" >
       and qr_code = #{qrCode,jdbcType=VARCHAR}
