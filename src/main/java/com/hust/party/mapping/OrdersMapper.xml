@@ -274,4 +274,10 @@
     </if>
 
   </select>
+
+  <!--根据用户id及订单状态，返回订单列表-->
+  <select id="getOrderActivityVo" resultType="com.hust.party.vo.OrderActivityVO">
+    select o.id as oid, o.state as status, o.create_time as creatTime
+    from orders o where o.id = #{oid}
+  </select>
 </mapper>

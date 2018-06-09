@@ -140,6 +140,7 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
             Integer status = orderActivityVO.getStatus();   //订单状态在查询时也已完成
             orderActivityVO.setStatusName(OrdersUtil.getStateName(status));
             Orders orders = ordersMapper.selectByPrimaryKey(oid);
+            orderActivityVO.setQrCode(orders.getQrCode());  //二维码
             Integer activityId = orders.getActivityId();
             Activity activity = activityMapper.selectByPrimaryKey(activityId);
             //将数据封装到vo类中
@@ -168,6 +169,7 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
 
             //TODO:真实价格暂时使用活动优惠价格
             orderActivityVO.setRealPrice(activity.getPreferentialPrice());
+
         }
     }
 }

@@ -53,6 +53,8 @@ public class OrderActivityVO {
 
     private BigDecimal realPrice;       //真实价格
 
+    private String qrCode;      //订单二维码
+
     public Integer getOid() {
         return oid;
     }
@@ -219,5 +221,13 @@ public class OrderActivityVO {
 
     public void setConsumeTime(Date consumeTime) {
         this.consumeTime = consumeTime;
+    }
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
     }
 }

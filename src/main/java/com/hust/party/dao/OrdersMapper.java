@@ -2,6 +2,7 @@ package com.hust.party.dao;
 
 import com.hust.party.common.Page;
 import com.hust.party.pojo.Orders;
+import com.hust.party.vo.OrderActivityVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
@@ -18,4 +19,6 @@ public interface OrdersMapper extends BaseMapper<Orders>{
     List<Orders> getNewOrder(Integer activityId);
     List<Orders>getActivityOrder(Map map);
     int getActivityCount(Map map);
+
+    OrderActivityVO getOrderActivityVo(Integer oid);
 }
