@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.hust.party.common.ReturnMessage;
 import com.hust.party.exception.ApiException;
 import com.hust.party.pojo.User;
+import com.hust.party.pojo.UserForce;
+import com.hust.party.service.UserForceService;
 import com.hust.party.service.UserService;
 import com.hust.party.vo.UserInfoVO;
 import com.hust.party.wxpay.ConstantUtil;
@@ -27,18 +29,25 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     private static final String GET_OPENID_URL = "https://api.weixin.qq.com/sns/jscode2session";
-@Autowired
-private UserService userService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserForceService userForceService;
+
+
     @ApiOperation(value = "插入用户", notes = "插入用户到数据库，当用户已经存在时，不插入，会返回这个用户在数据库中的uid")
     @ResponseBody
     @RequestMapping(value="/insertAndLogin", method = RequestMethod.POST)
-    public ReturnMessage insertAndLogin( @RequestBody User user){
+    public ReturnMessage insertAndLogin(User user){
         //当用户不存在时，在数据库中先记录这个用户
         //在数据库中根据open_id查找用户是否存在
         Integer uid = userService.selectUserByChatId(user.getOpenId());
         if(uid == null){
             //执行插入操作
             uid = userService.insert(user);
+            UserForce userForce = new UserForce();
+            userForce.setUserId(uid);
+            userForceService.insert(userForce);
         }
         return new ReturnMessage(200, uid);
     }
@@ -65,7 +74,7 @@ private UserService userService;
     public ReturnMessage getUserInfo(@RequestParam("uid") Integer uid){
         UserInfoVO userInfoVO = userService.selectUserInfo(uid);
         if(userInfoVO == null){
-            throw new ApiException(200, "所传uid没有数据");
+            throw new ApiException(201, "所传uid没有数据");
         }
         return new ReturnMessage(200, userInfoVO);
     }

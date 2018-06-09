@@ -1,5 +1,6 @@
 package com.hust.party.controller;
 
+import com.hust.party.common.ReturnMessage;
 import com.hust.party.exception.ApiException;
 import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Orders;
@@ -232,6 +233,14 @@ public class TenPayController {
 //                }
 //            }
 //        }
+    }
+
+    @RequestMapping(value = "/refund", method = RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "退款接口，会将金额退还给用户，该功能还在施工中", httpMethod = "post")
+    public ReturnMessage refund(@RequestParam("uid") Integer uid,@RequestParam("oid") Integer oid){
+        //TODO:退款操作
+        return new ReturnMessage(200, "收到退款请求，客服将会尽快审核");
     }
 
 }

@@ -39,7 +39,9 @@ public class OrderActivityVO {
 
     private String feature;     //标签
 
-    private Integer containPeople;
+    private Integer containPeople;  //活动最大容纳人数
+
+    private Integer minuPeople;     //活动最小容纳人数
 
     private BigDecimal preferentialPrice;   //优惠价格
 
@@ -173,6 +175,14 @@ public class OrderActivityVO {
 
     public void setContainPeople(Integer containPeople) {
         this.containPeople = containPeople;
+    }
+
+    public Integer getMinuPeople() {
+        return minuPeople;
+    }
+
+    public void setMinuPeople(Integer minuPeople) {
+        this.minuPeople = minuPeople;
     }
 
     public BigDecimal getPreferentialPrice() {
