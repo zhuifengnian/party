@@ -5,10 +5,7 @@ import com.hust.party.common.Page;
 import com.hust.party.common.PageInfo;
 import com.hust.party.common.ReflectUtil;
 import com.hust.party.dao.ActivityMapper;
-import com.hust.party.pojo.Activity;
-import com.hust.party.pojo.Carousel;
-import com.hust.party.pojo.Category;
-import com.hust.party.pojo.Orders;
+import com.hust.party.pojo.*;
 import com.hust.party.service.*;
 import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.OrderActivityVO;
@@ -65,8 +62,13 @@ public void testGetAcitivity(){
 }
     @Test
     public void testGetActivity(){
-        Activity activity = activityService.selectByPrimaryKey(14);
-        System.out.println(activity);
+      //  Activity activity = activityService.selectByPrimaryKey(14);
+       // System.out.println(activity);
+
+       List<Integer> list= new ArrayList<>();
+       list.add(25);
+    int insert=  userForceService.insertForce(list);
+        System.out.println(insert);
     }
 @Test
 public void getCategory(){

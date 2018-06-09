@@ -44,4 +44,9 @@ public interface OrderUserMapper  extends BaseMapper<OrderUser>{
      */
     List<OrderActivityVO> selectDrwabackingOrders(@Param("uid") Integer uid,@Param("orderStatusCancel") Integer orderStatusCancel,
              @Param("userMoneyNotTransferToEntrerprise") Integer userMoneyNotTransferToEntrerprise, @Param("page") Page page);
+    /**
+     * 获取user_id列表
+     *
+     */
+    List<Integer> getUserId(Integer order_id);
 }

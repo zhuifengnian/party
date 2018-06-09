@@ -208,4 +208,12 @@
       limit #{page.start},#{page.pageSize}
     </if>
   </select>
+  <!--根据时间创建排序-->
+  <select id="getUserId" resultType="Integer">
+    select user_id
+    from order_user
+    where order_id = #{order_id}
+    order by creat_time asc
+
+  </select>
 </mapper>
