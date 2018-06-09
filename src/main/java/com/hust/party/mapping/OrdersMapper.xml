@@ -206,19 +206,19 @@
   </select>
   <select id="getActivityOrder" resultMap="BaseResultMap" >
     select *
-    from orders
+    from orders os left join activity a on os.activity_id=a.id
     where 1=1
     <if test="eid != null" >
-      and  enterprise_id = #{eid}
+      and  os.enterprise_id = #{eid}
     </if>
     <if test="state != null" >
-      and   state = #{state,jdbcType=INTEGER}
+      and   os.state = #{state,jdbcType=INTEGER}
     </if>
     <if test="d != null" >
-      and   activity_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
+      and   a.activity_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
     </if>
     <if test="t != null" >
-      and   activity_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
+      and   a.activity_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
     </if>
     <if test="start != null and pageSize!=null">
       limit #{start},#{pageSize}
@@ -226,19 +226,19 @@
   </select>
   <select id="getActivityCount"  resultType="Integer" >
     select count(*)
-    from orders
+    from orders os left join activity a on os.activity_id=a.id
     where 1=1
     <if test="eid != null" >
-      and  enterprise_id = #{eid}
+      and  os.enterprise_id = #{eid}
     </if>
     <if test="state != null" >
-      and   state = #{state,jdbcType=INTEGER}
+      and   os.state = #{state,jdbcType=INTEGER}
     </if>
     <if test="d != null" >
-      and   activity_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
+      and  a.activity_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
     </if>
     <if test="t != null" >
-      and  activity_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
+      and  a.activity_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
     </if>
 
   </select>

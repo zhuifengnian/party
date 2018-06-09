@@ -54,7 +54,7 @@ public class EnterpriseController
     @RequestMapping(value = "/enterprise/activity", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取活动", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getEnterpriseActivity(@RequestParam("eid") @PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getEnterpriseActivity(@RequestParam("eid")  Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
 
 
         PageInfo<EnterpriseActivityVo> pageinfo=new PageInfo<EnterpriseActivityVo>();
@@ -85,7 +85,7 @@ public class EnterpriseController
     @RequestMapping(value = "/enterprise/getNowEnterpriseActivity", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取今日消费订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getNowEnterpriseActivity(@RequestParam("eid")@PathVariable Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getNowEnterpriseActivity(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
        if(pageSize==null)
            pageSize=4;
         long current=System.currentTimeMillis();
