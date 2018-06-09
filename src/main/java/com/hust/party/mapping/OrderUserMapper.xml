@@ -216,4 +216,8 @@
     order by creat_time asc
 
   </select>
+  <select id="selectOrderShareUserVo" resultType="com.hust.party.vo.OrderShareUserVO">
+    select u.id as uid, u.nickname, u.avatarurl
+    from order_user ou left join user u on ou.user_id = u.id where order_id = #{oid} and   state = 1
+  </select>
 </mapper>

@@ -1,11 +1,8 @@
 package com.hust.party.service;
 
-import com.hust.party.common.Page;
 import com.hust.party.pojo.Orders;
-import org.apache.ibatis.annotations.Param;
+import com.hust.party.vo.OrderShareVO;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,4 +18,11 @@ public interface OrdersService extends BaseService<Orders>{
     int getActivityCount(Map map);
     int getCount(Map map);
     List<Orders> getNewOrder(Integer activityId);
+
+    /**
+     * 获取订单详情页的数据
+     * @param oid
+     * @return
+     */
+    OrderShareVO getOrderDetailVO(Integer oid);
 }

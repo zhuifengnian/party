@@ -1,10 +1,9 @@
 package com.hust.party.dao;
 
 import com.hust.party.common.Page;
-import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.OrderUser;
-import com.hust.party.pojo.Orders;
 import com.hust.party.vo.OrderActivityVO;
+import com.hust.party.vo.OrderShareUserVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +19,10 @@ public interface OrderUserMapper  extends BaseMapper<OrderUser>{
      * @param oid
      */
     Integer selectUserCnt(Integer oid);
-
+    /**
+     * 根据orderId返回该订单下所有用户
+     */
+    List<OrderShareUserVO> selectOrderShareUserVo(Integer oid);
     /**
      * 根据用户id和订单id，获取用户在那个订单下的情况
      * @param uid

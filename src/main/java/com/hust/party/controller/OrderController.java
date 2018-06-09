@@ -10,9 +10,12 @@ import com.hust.party.service.*;
 import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.ActivityEnterpriseVo;
 import com.hust.party.vo.OrderActivityVO;
+import com.hust.party.vo.OrderShareVO;
+import com.hust.party.wxpay.UUID;
 import com.sun.istack.internal.logging.Logger;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.ietf.jgss.Oid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +72,8 @@ public class OrderController {
         Orders order = new Orders();
         order.setActivityId(aid);
         order.setState(Const.ORDER_STATUS_ENGAGING);    //新插入的订单默认处于正在拼团状态
+        String qrCode = java.util.UUID.randomUUID().toString();
+        order.setQrCode(qrCode);  //生成二维码随机字符串
 
         Activity activity = activityService.selectByPrimaryKey(aid);
         Integer eid = activity.getEnterpriseId();
@@ -369,4 +374,15 @@ public class OrderController {
         return  new ReturnMessage(200, pageInfo);
     }
 
+    @ApiOperation(value = "获取订单分享界面数据", notes = "获取订单分享界面数据")
+    @ResponseBody
+    @RequestMapping(value="/getShareOrder", method = RequestMethod.GET)
+    public ReturnMessage getShareOrder(@RequestParam("oid") Integer oid){
+        Orders orders = ordersService.selectByPrimaryKey(oid);
+        if(orders == null){
+            throw new ApiException(201, "所给订单id不存在");
+        }
+        OrderShareVO orderDetailVO = ordersService.getOrderDetailVO(oid);
+        return new ReturnMessage(200, orderDetailVO);
+    }
 }
