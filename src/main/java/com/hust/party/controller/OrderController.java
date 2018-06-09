@@ -369,7 +369,7 @@ public class OrderController {
         if(order_state == Const.ORDER_LIST_STATUS_DRAWBACKING){
             orderActivityVOs = orderUserService.selectOrders(uid, Const.ORDER_LIST_STATUS_DRAWBACKING, page);
         }
-
+        Collections.reverse(orderActivityVOs);  //逆序列表
         pageInfo.setRows(orderActivityVOs);
         return  new ReturnMessage(200, pageInfo);
     }

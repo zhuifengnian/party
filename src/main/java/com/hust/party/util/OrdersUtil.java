@@ -17,19 +17,17 @@ public class OrdersUtil {
                 ret = "已取消";
                 break;
             case Const.ORDER_STATUS_ENGAGING:
-                ret = "正在拼团";
+                ret = "拼单中";
                 break;
             case Const.ORDER_STATUS_REACH_LEAST_PEOPLE:
-                ret = "可以支付";
+            case Const.ORDER_STATUS_HAS_FULL:   //人数已满和可以支付的状态都是待消费的状态
+                ret = "待消费";
                 break;
             case Const.ORDER_STATUS_EXCEED_TIME:
                 ret = "已超时";
                 break;
-            case Const.ORDER_STATUS_HAS_FULL:
-                ret = "人数已满";
-                break;
             case Const.ORDER_STATUS_HAS_CONSUME:
-                ret = "已消费";
+                ret = "已完成";
                 break;
             case Const.ORDER_STATUS_ENTERPRISE_CANCEL:
                 ret = "商家取消订单";
@@ -37,7 +35,6 @@ public class OrdersUtil {
             default:
                 ret = "未知订单状态";
         }
-
         return ret;
     }
 }

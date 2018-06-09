@@ -59,7 +59,7 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
     public List<OrderActivityVO> selectOrders(Integer uid, Integer orderStatus, Page page) {
         List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
         switch(orderStatus){
-            //全部订单
+            //全部
             case Const.ORDER_LIST_STATUS_ALL:
                 orderActivityVOs = orderListAll(uid, page);
                 break;
@@ -75,7 +75,7 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
             case Const.ORDER_LIST_STATUS_FINISH:
                 orderActivityVOs = orderListFinish(uid, page);
                 break;
-            //退款中
+            //退款
             case Const.ORDER_LIST_STATUS_DRAWBACKING:
                 orderActivityVOs = orderListDrawbacking(uid, page);
                 break;
