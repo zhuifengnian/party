@@ -175,6 +175,7 @@
     <if test="orderStatus != null">
       and o.state = #{orderStatus}
     </if>
+    order by ou.creat_time desc
     <if test="page != null and page.start != null and page.pageSize!=null">
       limit #{page.start},#{page.pageSize}
     </if>
@@ -189,6 +190,7 @@
     <if test="orderStatusReachLeastPeople != null or orderStatusHasFull != null">
       and o.state = #{orderStatusReachLeastPeople} or o.state = #{orderStatusHasFull}
     </if>
+    order by ou.creat_time desc
     <if test="page != null and page.start != null and page.pageSize!=null">
       limit #{page.start},#{page.pageSize}
     </if>
@@ -204,6 +206,7 @@
     <if test="orderStatusCancel != null and userMoneyNotTransferToEntrerprise != null">
       and o.state = #{orderStatusCancel} and um.state = #{userMoneyNotTransferToEntrerprise}
     </if>
+    order by ou.creat_time desc
     <if test="page != null and page.start != null and page.pageSize!=null">
       limit #{page.start},#{page.pageSize}
     </if>
