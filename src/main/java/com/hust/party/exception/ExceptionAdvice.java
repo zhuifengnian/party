@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.net.ConnectException;
+
 /**
  * 用于接收异常信息的切面，如需返回给前台异常信息，只需throw一个ApiException对象
  * fan
@@ -23,6 +25,12 @@ public class ExceptionAdvice {
     @ResponseBody
     public ReturnMessage processApiException(ApiException e) {
         return new ReturnMessage(e.getCode(), e.getMessage()); //返回给前台异常信息
+    }
+
+    @ExceptionHandler(ConnectException.class)
+    @ResponseBody
+    public ReturnMessage connectionException(ConnectException ce){
+        return new ReturnMessage(500, ce.getMessage());
     }
 
     //参数类型不匹配

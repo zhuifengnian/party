@@ -57,7 +57,9 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
 
     @Override
     public List<PerenceActivityVO> getNameActivity(String name, Page page) {
-        return activityMapper.getNameActivity(name,page);
+        List<PerenceActivityVO> perenceActivityVOS = new ArrayList<>();
+        perenceActivityVOS = activityMapper.getNameActivity(name,page);
+        return perenceActivityVOS;
     }
 
     @Override

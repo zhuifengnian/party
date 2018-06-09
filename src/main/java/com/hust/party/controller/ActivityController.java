@@ -111,8 +111,8 @@ public class ActivityController
         }
         else if(name!=null) {
         List<PerenceActivityVO>list2=activityService.getNameActivity(name,page);
-        pageinfo.setRows(list2);
-        pageinfo.setTotal(activityService.getNameActivityCount(name));
+            pageinfo.setRows(list2);
+            pageinfo.setTotal(activityService.getNameActivityCount(name));
 }
         //  List<Activity> list = activityService.getEnterpriseActivity(eid);
         return new ReturnMessage(200, pageinfo);
