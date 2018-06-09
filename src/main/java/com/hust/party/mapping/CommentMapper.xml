@@ -121,4 +121,11 @@
     and  c.enterprise_id=#{eid}
 
   </select>
+  <select id="getAEnterpriseComment" resultType="com.hust.party.vo.CommentVo">
+    select c.context, c.comment_time,c.score,u.nickname as username,u.avatarurl as avatarurl
+    from comment c left join user u on c.user_id=u.id
+    where 1=1
+    and  c.enterprise_id=#{eid}
+    limit 0,2
+  </select>
 </mapper>
