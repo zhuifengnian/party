@@ -4,12 +4,8 @@ import com.google.gson.Gson;
 import com.hust.party.common.Page;
 import com.hust.party.common.PageInfo;
 import com.hust.party.common.ReturnMessage;
-import com.hust.party.pojo.Activity;
-import com.hust.party.pojo.Enterprise;
-import com.hust.party.pojo.Orders;
-import com.hust.party.service.ActivityService;
-import com.hust.party.service.EnterpriseService;
-import com.hust.party.service.OrdersService;
+import com.hust.party.pojo.*;
+import com.hust.party.service.*;
 import com.hust.party.util.QiNiuUtil;
 import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.AllOrderVO;
@@ -47,6 +43,14 @@ public class EnterpriseController
     private EnterpriseService enterpriseService;
     @Autowired
     private OrdersService ordersService;
+    @Autowired
+    private OrderUserService orderUserService;
+    @Autowired
+    private UserForceService userForceService;
+    @Autowired
+    private PaymentService paymentService;
+    @Autowired
+    private EnterprisePaymentService enterprisePaymentService;
     @RequestMapping(value = "/enterprise/activity", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取活动", httpMethod = "POST")
     @ResponseBody
@@ -293,6 +297,47 @@ public class EnterpriseController
                text="撤销完成";
       }
         return new ReturnMessage(200, text);
+    }
+    @RequestMapping(value = "/scanOrders", method = RequestMethod.POST)
+    @ApiOperation(value = "企业扫描二维码", httpMethod = "POST")
+    @ResponseBody
+    public ReturnMessage scanOders(@RequestParam("qr_code") String qr_code){
+         Orders order=new Orders();
+         order.setQrCode(qr_code);
+         int insert=0;
+        List<Orders> orders =ordersService.select(order,null);
+         //修改orders下的状态
+        if(orders.size()!=0){
+            order.setId(orders.get(0).getId());
+            order.setState(5);
+            insert=ordersService.updateByPrimaryKeySelective(order);
+          List<Integer> user= orderUserService.getUserId(orders.get(0).getId());
+            insert= userForceService.insertForce(user);
+            //获取payment中的订单钱数
+            Payment payment =new Payment();
+
+            payment.setOrderId(orders.get(0).getId());
+         List<Payment> list=  paymentService.select(payment,null);
+         if(list.size()!=0) {
+             payment.setId(list.get(0).getId());
+             payment.setState(1);
+             insert = paymentService.updateByPrimaryKeySelective(payment);
+             //修改enterprisepayment中的钱数
+
+             EnterprisePayment enterprisePayment = new EnterprisePayment();
+             enterprisePayment.setEnterpriseId(list.get(0).getEnterpriseId());
+             List<EnterprisePayment> enterprisePayments = enterprisePaymentService.select(enterprisePayment, null);
+             if(enterprisePayments.size()!=0) {
+                 enterprisePayment.setId(enterprisePayments.get(0).getId());
+                 enterprisePayment.setAccountMoney(enterprisePayments.get(0).getAccountMoney().add(list.get(0).getPrice()));
+                 enterprisePayment.setAccountMoney(enterprisePayments.get(0).getTotalMoney().add(list.get(0).getPrice()));
+                 insert = enterprisePaymentService.updateByPrimaryKeySelective(enterprisePayment);
+             }
+         }
+
+        }
+
+        return new ReturnMessage(200, insert);
     }
     @RequestMapping(value = "/updateActivity", method = RequestMethod.POST)
     @ApiOperation(value = "企业修改自己的活动", httpMethod = "POST")

@@ -26,13 +26,14 @@ public class UserForceServiceImpl extends  AbstractBaseServiceImpl<UserForce> im
     }
 
     @Override
-    public int insertForce(int[] num){
+    public int insertForce(List<Integer> userId){
             int insertNum=0;
             UserForce userForce =new UserForce();
 
-            for(int i=0;i<num.length;i++) {
-                userForce.setUserId(num[i]);
+            for(int i=0;i<userId.size();i++) {
+                userForce.setUserId(userId.get(i));
                 List<UserForce> userForces = userForceService.select(userForce, null);
+                userForce.setId(userForces.get(0).getId());
                 if (userForces.size() != 0) {
                     if (i == 0)
                         userForce.setUserForce(userForces.get(0).getUserForce() + 10);

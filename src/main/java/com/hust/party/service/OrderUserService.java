@@ -37,4 +37,11 @@ public interface OrderUserService extends BaseService<OrderUser> {
      * @return
      */
     List<OrderActivityVO> selectOrders(Integer uid, Integer orderStatus, Page page);
+
+    /**
+     * 根据order_id获取列表
+     * @param order_id
+     * @return
+     */
+    List<Integer> getUserId(Integer order_id);
 }

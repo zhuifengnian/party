@@ -85,6 +85,11 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
         return orderActivityVOs;
     }
 
+    @Override
+    public List<Integer> getUserId(Integer order_id) {
+        return orderUserMapper.getUserId(order_id);
+    }
+
     /**
      * 退款中的实现
      */
