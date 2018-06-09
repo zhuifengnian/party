@@ -32,7 +32,10 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
 
     @Override
     public List<PerenceActivityVO> getAllActivity(Page page) {
-        return activityMapper.getAllActivity(page);
+
+        List<PerenceActivityVO> perenceActivityVOS = new ArrayList<>();
+        perenceActivityVOS = activityMapper.getAllActivity(page);
+        return perenceActivityVOS;
     }
 
     @Override
@@ -42,12 +45,15 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
 
     @Override
     public List<Activity> getAllCurrentActivity(Integer eid) {
+
         return activityMapper.getAllCurrentActivity(eid);
     }
 
     @Override
     public   List<PerenceActivityVO>  getQitaActivity(Page page) {
-        return activityMapper.getQitaActivity(page);
+        List<PerenceActivityVO> perenceActivityVOS = new ArrayList<>();
+        perenceActivityVOS = activityMapper.getQitaActivity(page);
+        return perenceActivityVOS;
     }
 
     @Override
