@@ -66,12 +66,12 @@ public class UserForceController
                 userForce.setTimeState(0);
             }
            }
-           if( userForce.getGold()>50)
-               userForce.setUserMedal("铜牌团长");
-           else if( userForce.getGold()>200)
-               userForce.setUserMedal("银牌团长");
-           else if( userForce.getGold()>500)
-               userForce.setUserMedal("金牌团长");
+        if( userForce.getUserForce()>50&&userForce.getUserForce()<=200)
+            userForce.setUserMedal("铜牌团长");
+        else if( userForce.getUserForce()>200&&userForce.getUserForce()<=500)
+            userForce.setUserMedal("银牌团长");
+        else if( userForce.getUserForce()>500)
+            userForce.setUserMedal("金牌团长");
            userForce.setId(userForces.get(0).getId());
            userForce.setUpdateTime(new Date());
           insertNum= userForceService.updateByPrimaryKeySelective(userForce);
