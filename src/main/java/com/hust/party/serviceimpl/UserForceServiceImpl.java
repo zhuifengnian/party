@@ -39,7 +39,7 @@ public class UserForceServiceImpl extends  AbstractBaseServiceImpl<UserForce> im
                         userForce.setUserForce(userForces.get(0).getUserForce() + 10);
                     else
                         userForce.setUserForce(userForces.get(0).getUserForce() + 2);
-                    userForce.setUpdateTime(new Date());
+
                     if( userForce.getUserForce()>50&&userForce.getUserForce()<=200)
                         userForce.setUserMedal("铜牌团长");
                     else if( userForce.getUserForce()>200&&userForce.getUserForce()<=500)
