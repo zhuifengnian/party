@@ -31,7 +31,7 @@
     </if>
   </select>
   <!-- 查詢数量 -->
-  <select id="selectCount" parameterType="com.hust.party.pojo.Activity"
+  <select id="selectCount" parameterType="com.hust.party.pojo.UserMoney"
           resultType="Integer">
     SELECT count(*)
     FROM user_money
