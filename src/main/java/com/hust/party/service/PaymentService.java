@@ -13,6 +13,12 @@ import java.util.List;
  * fan 2018/5/14 15:12
  */
 public interface PaymentService extends BaseService<Payment>{
+    /**获取企业账单列表
+     * huoqu
+     * @param eid
+     * @param page
+     * @return
+     */
     List<AccountVO> gettotalList(@Param("eid") Integer eid, @Param("page") Page page);
     Integer gettotalListCount(Integer eid);
 }

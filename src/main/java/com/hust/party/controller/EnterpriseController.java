@@ -1,34 +1,23 @@
 package com.hust.party.controller;
 
-import com.google.gson.Gson;
 import com.hust.party.common.Page;
 import com.hust.party.common.PageInfo;
 import com.hust.party.common.ReturnMessage;
+import com.hust.party.exception.ApiException;
 import com.hust.party.pojo.*;
 import com.hust.party.service.*;
 import com.hust.party.util.QiNiuUtil;
 import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.EnterpriseActivityVo;
-import com.hust.party.vo.EnterpriseOrderVo;
-import com.qiniu.common.QiniuException;
-import com.qiniu.common.Zone;
-import com.qiniu.http.Response;
-import com.qiniu.storage.Configuration;
-import com.qiniu.storage.UploadManager;
-import com.qiniu.storage.model.DefaultPutRet;
-import com.qiniu.util.Auth;
+import com.hust.party.vo.EnterpriseInfoVO;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -55,7 +44,8 @@ public class EnterpriseController
     @ApiOperation(value = "根据企业id提取活动", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getEnterpriseActivity(@RequestParam("eid")  Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-
+        if(pageSize==null)
+            pageSize=4;
 
         PageInfo<EnterpriseActivityVo> pageinfo=new PageInfo<EnterpriseActivityVo>();
         List<EnterpriseActivityVo> list1= new ArrayList<>();
@@ -64,35 +54,23 @@ public class EnterpriseController
         Page page= new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-        Activity activity =new Activity();
-        activity.setEnterpriseId(eid);
-      List <Activity> list=  activityService.select(activity,page);
-      for(int i=0;i<list.size();i++){
-          EnterpriseActivityVo enterpriseActivityVo =new EnterpriseActivityVo();
-          ReflectUtil.copyProperties(enterpriseActivityVo, list.get(i));
-          Orders orders =new Orders();
-          orders.setActivityId(list.get(0).getId());
-          orders.setState(2);
-          enterpriseActivityVo.setSum(ordersService.selectCount(orders));
-            list1.add(enterpriseActivityVo);
-      }
-        pageinfo.setRows(list1 );
-        int count=activityService.selectCount(activity);
-        pageinfo.setTotal(count);
-        //  List<Activity> list = activityService.getEnterpriseActivity(eid);
+      List<EnterpriseActivityVo>list=  enterpriseService.getAllActivity(eid,page);
+
+        pageinfo.setRows(list);
+        pageinfo.setTotal(enterpriseService.getAllActivityCount(eid));
+
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getNowEnterpriseActivity", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getPayOrders", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取今日消费订单", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage getNowEnterpriseActivity(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+    public ReturnMessage getPayOrders(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
        if(pageSize==null)
            pageSize=4;
         long current=System.currentTimeMillis();
         long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
         long twelve=zero+24*60*60*1000-1;
-        PageInfo<EnterpriseOrderVo> pageinfo=new PageInfo<EnterpriseOrderVo>();
-        List<EnterpriseOrderVo> list2=new ArrayList<>();
+        PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
@@ -100,37 +78,17 @@ public class EnterpriseController
         page.setPageSize(pageSize);
 
         Timestamp t = new Timestamp(zero);
-        Date d = new Date(t.getTime());
         Timestamp t1 = new Timestamp(twelve);
-        Date d1 = new Date(t1.getTime());
 
-            Orders orders =new Orders();
+           List<AllOrderVO> list1=enterpriseService.getPayOrders(eid,t,t1,page);
+            pageinfo.setTotal(enterpriseService.getPayCount(eid,t,t1));
 
-        Map map= com.hust.party.common.ReflectUtil.generalMap(orders,page);
-        map.put("eid",eid);
-        map.put("d",t);
-        map.put("t",t1);
-        map.put("state",2);
-           List<Orders> list1=ordersService.getActivityOrder(map);
-            pageinfo.setTotal(ordersService.getActivityCount(map));
-           for(int j=0;j<list1.size();j++){
 
-               Orders order1 =list1.get(j);
-               Activity activity= activityService.selectByPrimaryKey(order1.getActivityId());
-               EnterpriseOrderVo enterpriseOrderVo = new EnterpriseOrderVo();
-               enterpriseOrderVo.setId(list1.get(j).getId());
-
-               enterpriseOrderVo.setActivityTime(activity.getActivityTime());
-               enterpriseOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
-               enterpriseOrderVo.setTitle(activity.getTitle());
-             list2.add(enterpriseOrderVo);
-           }
-
-        pageinfo.setRows(list2);
+        pageinfo.setRows(list1);
 
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getAll", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getAllActivity", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取全部订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getAllActivity(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
@@ -151,14 +109,13 @@ public class EnterpriseController
         pageinfo.setTotal(enterpriseService.getAllOrderCount(eid));
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getNew", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getNewOrder", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取今日新接订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getNewOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
         if(pageSize==null)
             pageSize=4;
-        PageInfo<EnterpriseOrderVo> pageinfo=new PageInfo<EnterpriseOrderVo>();
-        List<EnterpriseOrderVo> list3=new ArrayList<>();
+        PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
         pageinfo.setPageNum(pageNumber);
         pageinfo.setPageSize(pageSize);
         Page page= new Page();
@@ -170,30 +127,15 @@ public class EnterpriseController
 
         Timestamp t = new Timestamp(zero);
         Timestamp t1 = new Timestamp(twelve);
-        Orders orders =new Orders();
-        Map map= com.hust.party.common.ReflectUtil.generalMap(orders,page);
-        map.put("eid",eid);
-        map.put("d",t);
-        map.put("t",t1);
-        map.put("state",2);
-        List<Orders> list1=ordersService.getOrders(map);
-        pageinfo.setTotal(ordersService.getCount(map));
-            for(int j=0;j<list1.size();j++){
-                Orders order1 =list1.get(j);
-               Activity activity= activityService.selectByPrimaryKey(order1.getActivityId());
-                    EnterpriseOrderVo enterpriseOrderVo =new EnterpriseOrderVo();
-                    enterpriseOrderVo.setTitle(activity.getTitle());
-                    enterpriseOrderVo.setPreferentialPrice(activity.getPreferentialPrice());
-                    enterpriseOrderVo.setActivityTime(activity.getActivityTime());
-                    enterpriseOrderVo.setId(order1.getId());
-                    list3.add(enterpriseOrderVo);
 
-            }
-         pageinfo.setRows(list3);
+        List<AllOrderVO> list1=enterpriseService.getNewOrders(eid,t,t1,page);
+        pageinfo.setTotal(enterpriseService.getNewCount(eid,t,t1));
+
+         pageinfo.setRows(list1);
 
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getNo", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getNoOrder", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取未消费订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getNoOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
@@ -212,7 +154,7 @@ public class EnterpriseController
         pageinfo.setTotal(enterpriseService.getNoOrderCount(eid));
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getY", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getYOrder", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取已消费订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getYOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
@@ -229,7 +171,7 @@ public class EnterpriseController
         pageinfo.setTotal(enterpriseService.getYOrderCount(eid));
         return new ReturnMessage(200, pageinfo);
     }
-    @RequestMapping(value = "/enterprise/getQ", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getQOrder", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取已取消订单", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getQOrder(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
@@ -244,6 +186,23 @@ public class EnterpriseController
         List<AllOrderVO> list3=enterpriseService.getQOrder(eid,page);
         pageinfo.setRows(list3);
         pageinfo.setTotal(enterpriseService.getQOderCount(eid));
+        return new ReturnMessage(200, pageinfo);
+    }
+    @RequestMapping(value = "/enterprise/getEntepriseQoders", method = RequestMethod.POST)
+    @ApiOperation(value = "根据企业id提取企业自己取消订单", httpMethod = "POST")
+    @ResponseBody
+    public ReturnMessage getEnterpriseQoders(@RequestParam("eid") Integer eid,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
+        if(pageSize==null)
+            pageSize=4;
+        PageInfo<AllOrderVO> pageinfo=new PageInfo<AllOrderVO>();
+        pageinfo.setPageNum(pageNumber);
+        pageinfo.setPageSize(pageSize);
+        Page page= new Page();
+        page.setPageNumber(pageNumber);
+        page.setPageSize(pageSize);
+        List<AllOrderVO> list3=enterpriseService.getEnterpriseQOrders(eid,page);
+        pageinfo.setRows(list3);
+        pageinfo.setTotal(enterpriseService.getEnterpriseQOrdersCount(eid));
         return new ReturnMessage(200, pageinfo);
     }
     @RequestMapping(value = "/enterprise", method = RequestMethod.POST)
@@ -263,16 +222,20 @@ public class EnterpriseController
             insert=0;
         return new ReturnMessage(200, insert);
     }
+
     @RequestMapping(value = "/updateEnterprise", method = RequestMethod.POST)
     @ApiOperation(value = "修改企业信息", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage updateEnterprise(Enterprise enterprise,@RequestParam(value = "flyfile", required = false) MultipartFile flfile){
-        String license=null;
-        if(flfile!=null)
-            license= QiNiuUtil.manageFile(flfile);
-        ;
-        enterprise.setLicence(license);
-        int insert=  enterpriseService.updateByPrimaryKey(enterprise);
+      int insert=0;
+       if(enterprise.getId()!=null) {
+           String license = null;
+           if (flfile != null)
+               license = QiNiuUtil.manageFile(flfile);
+           ;
+           enterprise.setLicence(license);
+           insert = enterpriseService.updateByPrimaryKeySelective(enterprise);
+       }
         return new ReturnMessage(200, insert);
     }
     @RequestMapping(value = "/deleteActivity", method = RequestMethod.POST)
@@ -311,6 +274,7 @@ public class EnterpriseController
             order.setId(orders.get(0).getId());
             order.setState(5);
             insert=ordersService.updateByPrimaryKeySelective(order);
+
           List<Integer> user= orderUserService.getUserId(orders.get(0).getId());
             insert= userForceService.insertForce(user);
             //获取payment中的订单钱数
@@ -330,7 +294,7 @@ public class EnterpriseController
              if(enterprisePayments.size()!=0) {
                  enterprisePayment.setId(enterprisePayments.get(0).getId());
                  enterprisePayment.setAccountMoney(enterprisePayments.get(0).getAccountMoney().add(list.get(0).getPrice()));
-                 enterprisePayment.setAccountMoney(enterprisePayments.get(0).getTotalMoney().add(list.get(0).getPrice()));
+                 enterprisePayment.setTotalMoney(enterprisePayments.get(0).getTotalMoney().add(list.get(0).getPrice()));
                  insert = enterprisePaymentService.updateByPrimaryKeySelective(enterprisePayment);
              }
          }
@@ -369,5 +333,16 @@ public class EnterpriseController
 
 
         return new ReturnMessage(200, text);
+    }
+
+    @ApiOperation(value = "返回企业详细信息", notes = "返回企业详细信息")
+    @ResponseBody
+    @RequestMapping(value = "/getEnterpriseInfo", method = RequestMethod.POST)
+    public ReturnMessage getEnterpriseInfo(@RequestParam("eid") Integer eid){
+        EnterpriseInfoVO enterpriseInfoVO =enterpriseService.selectEnterpriseInfo(eid);
+        if(enterpriseInfoVO== null){
+            throw new ApiException(201, "所传uid没有数据");
+        }
+        return new ReturnMessage(200, enterpriseInfoVO);
     }
 }

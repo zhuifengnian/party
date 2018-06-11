@@ -136,7 +136,7 @@
       and enterprise_id = #{enterpriseId,jdbcType=INTEGER}
     </if>
     <if test="qrCode != null" >
-      qr_code = #{qrCode,jdbcType=VARCHAR}
+    and  qr_code = #{qrCode,jdbcType=VARCHAR}
     </if>
     <if test="start != null and pageSize!=null">
       limit #{start},#{pageSize}
@@ -181,82 +181,7 @@
 
   </select>
 
-  <select id="getOrders" resultMap="BaseResultMap" >
-    select *
-    from orders
-    where 1=1
-    <if test="eid != null" >
-      and  enterprise_id = #{eid}
-    </if>
-    <if test="state != null" >
-      and   state = #{state,jdbcType=INTEGER}
-    </if>
-    <if test="d != null" >
-      and   create_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
-    </if>
-    <if test="t != null" >
-      and   create_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
-    </if>
-    <if test="start != null and pageSize!=null">
-      limit #{start},#{pageSize}
-    </if>
-  </select>
-  <select id="getActivityOrder" resultMap="BaseResultMap" >
-    select *
-    from orders os left join activity a on os.activity_id=a.id
-    where 1=1
-    <if test="eid != null" >
-      and  os.enterprise_id = #{eid}
-    </if>
-    <if test="state != null" >
-      and   os.state = #{state,jdbcType=INTEGER}
-    </if>
-    <if test="d != null" >
-      and   a.activity_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
-    </if>
-    <if test="t != null" >
-      and   a.activity_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
-    </if>
-    <if test="start != null and pageSize!=null">
-      limit #{start},#{pageSize}
-    </if>
-  </select>
-  <select id="getActivityCount"  resultType="Integer" >
-    select count(*)
-    from orders os left join activity a on os.activity_id=a.id
-    where 1=1
-    <if test="eid != null" >
-      and  os.enterprise_id = #{eid}
-    </if>
-    <if test="state != null" >
-      and   os.state = #{state,jdbcType=INTEGER}
-    </if>
-    <if test="d != null" >
-      and  a.activity_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
-    </if>
-    <if test="t != null" >
-      and  a.activity_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
-    </if>
 
-  </select>
-  <select id="getCount"  resultType="Integer" >
-    select count(*)
-    from orders
-    where 1=1
-    <if test="eid != null" >
-      and  enterprise_id = #{eid}
-    </if>
-    <if test="state != null" >
-      and   state = #{state,jdbcType=INTEGER}
-    </if>
-    <if test="d != null" >
-      and   create_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
-    </if>
-    <if test="t != null" >
-      and   create_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
-    </if>
-
-  </select>
 
   <!--根据用户id及订单状态，返回订单列表-->
   <select id="getOrderActivityVo" resultType="com.hust.party.vo.OrderActivityVO">

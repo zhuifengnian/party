@@ -11,8 +11,8 @@ public class EnterpriseActivityVo {
     private String picture;
     private String title;
     private BigDecimal preferentialPrice;
-  private Integer state;
-  private Integer sum;
+    private Integer state;
+  private Integer num;
 
 
     public Integer getId() {
@@ -47,19 +47,20 @@ public class EnterpriseActivityVo {
         this.preferentialPrice = preferentialPrice;
     }
 
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
     public Integer getState() {
         return state;
     }
 
     public void setState(Integer state) {
         this.state = state;
-    }
-
-    public Integer getSum() {
-        return sum;
-    }
-
-    public void setSum(Integer sum) {
-        this.sum = sum;
     }
 }

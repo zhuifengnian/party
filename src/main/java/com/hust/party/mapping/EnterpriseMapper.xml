@@ -198,9 +198,11 @@
       address = #{address,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--根据用户名提取信息-->
   <select id="selectUserByChatId" parameterType="string" resultType="int">
     select id from enterprise where  open_id = #{chat_id}
   </select>
+  <!--获取用户取消订单-->
   <select id="getQOrder" resultType="com.hust.party.vo.AllOrderVO">
   select  os.id,a.title,a.activity_time as activityTime,os.state,a.minu_people as minuPeople,a.preferential_price as preferentialPrice,os.create_time as createTime
   from orders os left join activity a on  os.activity_id=a.id
@@ -211,6 +213,7 @@
     limit #{page.start},#{page.pageSize}
   </if>
 </select>
+  <!--获取用户取消订单数量-->
   <select id="getQOrderCount" resultType="Integer">
     select  count(*)
     from orders os left join activity a on  os.activity_id=a.id
@@ -218,6 +221,7 @@
     and os.state=0
     and os.enterprise_id=#{eid}
   </select>
+  <!--获取企业已消费订单-->
   <select id="getYOrder" resultType="com.hust.party.vo.AllOrderVO">
     select  os.id,a.title,a.activity_time as activityTime,os.state,a.minu_people as minuPeople,a.preferential_price as preferentialPrice,os.create_time as createTime
     from orders os left join activity a on  os.activity_id=a.id
@@ -228,6 +232,7 @@
       limit #{page.start},#{page.pageSize}
     </if>
   </select>
+  <!--获取企业已消费的订单数量-->
   <select id="getYOrderCount" resultType="Integer">
     select  count(*)
     from orders os left join activity a on  os.activity_id=a.id
@@ -235,23 +240,26 @@
     and os.state=5
     and os.enterprise_id=#{eid}
   </select>
+  <!--获取用户逾期订单-->
   <select id="getNoOrder" resultType="com.hust.party.vo.AllOrderVO">
     select  os.id,a.title,a.activity_time as activityTime,os.state,a.minu_people as minuPeople,a.preferential_price as preferentialPrice,os.create_time as createTime
     from orders os left join activity a on  os.activity_id=a.id
     where 1=1
-    and os.state=2
+    and os.state=3
     and os.enterprise_id=#{eid}
     <if test="page != null and page.start != null and page.pageSize!=null">
       limit #{page.start},#{page.pageSize}
     </if>
   </select>
+  <!--获取用户逾期订单数量-->
   <select id="getNoOrderCount" resultType="Integer">
     select  count(*)
     from orders os left join activity a on  os.activity_id=a.id
     where 1=1
-    and os.state=2
+    and os.state=3
     and os.enterprise_id=#{eid}
   </select>
+  <!--获取企业所有订单-->
   <select id="getAllOrder" resultType="com.hust.party.vo.AllOrderVO">
     select  os.id,a.title,a.activity_time as activityTime,os.state,a.minu_people as minuPeople,a.preferential_price as preferentialPrice,os.create_time as createTime
     from orders os left join activity a on  os.activity_id=a.id
@@ -262,11 +270,110 @@
       limit #{page.start},#{page.pageSize}
     </if>
   </select>
+  <!--获取企业所有的订单数量-->
   <select id="getAllOrderCount" resultType="Integer">
     select  count(*)
     from orders os left join activity a on  os.activity_id=a.id
     where 1=1
     and os.enterprise_id=#{eid}
   </select>
+  <!--获取企业信息-->
+  <select id="selectEnterpriseInfo" resultType="com.hust.party.vo.EnterpriseInfoVO">
+    select  e.name,e.avatarurl,ep.account_money as accountMoney,ep.total_money as totalMoney
+    from enterprise e left join enterprisepayment ep on  e.id=ep.enterprise_id
+    where 1=1
 
+    and e.id=#{eid}
+
+  </select>
+<!--获取企业最新的订单-->
+  <select id="getNewOrders" resultType="com.hust.party.vo.AllOrderVO" >
+    select  os.id,a.title,a.activity_time as activityTime,os.state,a.minu_people as minuPeople,a.preferential_price as preferentialPrice,os.create_time as createTime
+    from orders os left join activity a on  os.activity_id=a.id
+    where 1=1
+    and  os.enterprise_id = #{eid}
+    and   (os.state = 2 or os.state=1  or os.state=4)
+    and   os.create_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
+    and   os.create_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <!--获取企业最新的订单数量-->
+  <select id="getNewCount"  resultType="Integer" >
+   select count(*)
+    from orders os left join activity a on  os.activity_id=a.id
+    where 1=1
+    and  os.enterprise_id = #{eid}
+    and   (os.state = 2 or os.state=1  or os.state=4)
+    and   os.create_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
+    and   os.create_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
+
+  </select>
+  <!--获取企业今日刚接的订单-->
+  <select id="getpayOrder" resultType="com.hust.party.vo.AllOrderVO">
+    select  os.id,a.title,a.activity_time as activityTime,os.state,a.minu_people as minuPeople,a.preferential_price as preferentialPrice,os.create_time as createTime
+    from orders os left join activity a on  os.activity_id=a.id
+    where 1=1
+    and  os.enterprise_id = #{eid}
+    and   os.state = 5
+    and   a.activity_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
+    and   a.activity_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <!--获取企业今日刚接的订单数量-->
+  <select id="getPayCount"  resultType="Integer" >
+    select count(*)
+   from orders os left join activity a on  os.activity_id=a.id
+    where 1=1
+    and  os.enterprise_id = #{eid}
+    and   os.state = 5
+    and   a.activity_time <![CDATA[>=]]> #{d,jdbcType=TIMESTAMP}
+    and   a.activity_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
+  </select>
+  <!--获取企业自己取消的订单-->
+  <select id="getEnterpriseQOrders" resultType="com.hust.party.vo.AllOrderVO">
+    select  os.id,a.title,a.activity_time as activityTime,os.state,a.minu_people as minuPeople,a.preferential_price as preferentialPrice,os.create_time as createTime
+    from orders os left join activity a on  os.activity_id=a.id
+    where 1=1
+    and  os.enterprise_id = #{eid}
+    and  os.state = 6
+
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <!--获取企业自己取消的订单数量-->
+  <select id="getEnterpriseQOrdersCount"  resultType="Integer" >
+    select count(*)
+   from orders os left join activity a on  os.activity_id=a.id
+    where 1=1
+    and  os.enterprise_id = #{eid}
+    and  os.state = 6
+
+
+  </select>
+  <!--获取企业所有活动-->
+  <select id="getAllActivity" resultType="com.hust.party.vo.EnterpriseActivityVo">
+    select a.id,a.picture,a.title,a.preferential_price as preferentialPrice,a.state,
+    (select count(*)  from orders  os where 1=1 and a.id=os.activity_id and (os.state=1 or os.state=2 or os.state=4))  as num
+    from activity a
+    where 1=1
+    and  a.enterprise_id=#{eid}
+
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <!--获取企业活动数量-->
+  <select id="getAllActivityCount" resultType="Integer">
+    select count(*)
+    from activity
+    where 1=1
+    and  enterprise_id=#{eid}
+
+
+  </select>
 </mapper>

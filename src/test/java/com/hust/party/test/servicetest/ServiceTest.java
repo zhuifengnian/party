@@ -8,6 +8,7 @@ import com.hust.party.dao.ActivityMapper;
 import com.hust.party.pojo.*;
 import com.hust.party.service.*;
 import com.hust.party.vo.AllOrderVO;
+import com.hust.party.vo.EnterpriseActivityVo;
 import com.hust.party.vo.OrderActivityVO;
 import com.hust.party.vo.PerenceActivityVO;
 import org.aspectj.weaver.ast.Or;
@@ -57,7 +58,9 @@ public void testGetAcitivity(){
    // System.out.println("+++++++++++++++++"+list);
  //  List<AllOrderVO> list =enterpriseService.getYOrder(1,null);
    // System.out.println("+++++++++++++++++"+list);
-    userForceService.insertcolonelForce(25);
+   // userForceService.insertcolonelForce(25);
+   List<EnterpriseActivityVo> list= enterpriseService.getAllActivity(1,null);
+    System.out.println("+++++++++++++++++"+list);
 
 }
     @Test
@@ -93,7 +96,7 @@ public void getCategory(){
     map.put("d",t);
     map.put("t",t1);
 
-pageinfo.setRows(ordersService.getOrders(map));
+//pageinfo.setRows(ordersService.getOrders(map));
 
 System.out.println("分页信息：" + pageinfo);
 }

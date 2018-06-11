@@ -10,12 +10,33 @@ import java.util.List;
 
 @Repository
 public interface ActivityMapper extends BaseMapper<Activity>{
-    List<Activity> getEnterpriseActivity(Integer eid,Page page);
+
+
+    /**
+     * 获取活动列表
+     * @param page
+     * @return
+     */
     List<PerenceActivityVO> getAllActivity(Page page);
     Integer getAllActivityCount();
-    List<Activity> getAllCurrentActivity( Integer eid);
+
+
+
+    /**
+     * 获取其他活动
+     * @param page
+     * @return
+     */
     List<PerenceActivityVO>  getQitaActivity(Page page);
+
     Integer getQitaActivityCount();
+
+    /**
+     * 通过传入name获取类别活动
+     * @param name
+     * @param page
+     * @return
+     */
     List<PerenceActivityVO> getNameActivity(@Param("name") String name, @Param("page")  Page page);
     Integer getNameActivityCount(String name);
 }

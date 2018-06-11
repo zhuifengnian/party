@@ -25,10 +25,6 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
         return activityMapper;
     }
 
-    @Override
-    public List<Activity> getEnterpriseActivity(Integer eid, Page page) {
-        return activityMapper.getEnterpriseActivity(eid,page);
-    }
 
     @Override
     public List<PerenceActivityVO> getAllActivity(Page page) {
@@ -43,11 +39,7 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
         return activityMapper.getAllActivityCount();
     }
 
-    @Override
-    public List<Activity> getAllCurrentActivity(Integer eid) {
 
-        return activityMapper.getAllCurrentActivity(eid);
-    }
 
     @Override
     public   List<PerenceActivityVO>  getQitaActivity(Page page) {

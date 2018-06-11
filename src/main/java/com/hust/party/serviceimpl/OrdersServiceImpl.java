@@ -1,6 +1,7 @@
 package com.hust.party.serviceimpl;
 
 import com.hust.party.common.Const;
+import com.hust.party.common.Page;
 import com.hust.party.dao.*;
 import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Enterprise;
@@ -9,13 +10,11 @@ import com.hust.party.pojo.Orders;
 import com.hust.party.service.OrdersService;
 import com.hust.party.util.OrdersUtil;
 import com.hust.party.util.ReflectUtil;
-import com.hust.party.vo.ActivityEnterpriseVo;
-import com.hust.party.vo.OrderActivityVO;
-import com.hust.party.vo.OrderShareUserVO;
-import com.hust.party.vo.OrderShareVO;
+import com.hust.party.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -39,41 +38,10 @@ public class OrdersServiceImpl extends AbstractBaseServiceImpl<Orders>implements
         return ordersMapper;
     }
 
-    @Override
-    public Integer getOrderId(Integer activityId) {
-        return ordersMapper.getOrderId(activityId);
-    }
-
-    @Override
-    public List<Orders> getOrder(Integer activityId) {
-        return ordersMapper.getOrder(activityId);
-    }
-
-    @Override
-    public List<Orders> getOrders(Map map) {
-        return ordersMapper.getOrders( map);
-    }
-
-    @Override
-    public List<Orders> getActivityOrder(Map map) {
-        return ordersMapper.getActivityOrder(map);
-    }
-
-    @Override
-    public int getActivityCount(Map map) {
-        return ordersMapper.getActivityCount(map);
-    }
-
-    @Override
-    public int getCount(Map map) {
-        return ordersMapper.getCount(map);
-    }
 
 
-    @Override
-    public List<Orders> getNewOrder(Integer activityId) {
-        return ordersMapper.getNewOrder(activityId);
-    }
+
+
 
     @Override
     public OrderShareVO getOrderDetailVO(Integer oid) {

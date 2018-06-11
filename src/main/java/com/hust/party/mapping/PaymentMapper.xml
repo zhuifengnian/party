@@ -170,6 +170,7 @@
       and activity_id = #{activityId,jdbcType=INTEGER}
     </if>
   </select>
+  <!--获取企业账单信息-->
   <select id="gettotalList" resultType="com.hust.party.vo.AccountVO">
     select   p.id,p.order_id,a.title as title,p.price,p.create_time as createTime
     from payment p left join activity a on p.activity_id=a.id
@@ -180,6 +181,7 @@
       limit #{page.start},#{page.pageSize}
     </if>
   </select>
+  <!--获取企业账单信息数量-->
   <select id="gettotalListCount" resultType="Integer">
     select count(*)
     from payment p left join activity a on p.activity_id=a.id

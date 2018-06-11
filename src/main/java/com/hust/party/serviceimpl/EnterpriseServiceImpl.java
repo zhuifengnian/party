@@ -3,14 +3,15 @@ package com.hust.party.serviceimpl;
 import com.hust.party.common.Page;
 import com.hust.party.dao.BaseMapper;
 import com.hust.party.dao.EnterpriseMapper;
-import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Enterprise;
 import com.hust.party.service.EnterpriseService;
 import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.EnterpriseActivityVo;
+import com.hust.party.vo.EnterpriseInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -77,4 +78,46 @@ public class EnterpriseServiceImpl extends AbstractBaseServiceImpl<Enterprise> i
     public List<EnterpriseActivityVo> getAllActivity(Integer eid, Page page) {
         return enterpriseMapper.getAllActivity(eid,page);
     }
+
+    @Override
+    public Integer getAllActivityCount(Integer eid) {
+        return enterpriseMapper.getAllActivityCount(eid);
+    }
+
+    @Override
+    public EnterpriseInfoVO selectEnterpriseInfo(Integer eid) {
+        return enterpriseMapper.selectEnterpriseInfo(eid);
+    }
+
+    @Override
+    public  List<AllOrderVO>   getNewOrders(Integer eid, Timestamp t, Timestamp t1, Page page) {
+        return enterpriseMapper.getNewOrders(eid,t,t1,page);
+    }
+
+    @Override
+    public int getNewCount(Integer eid, Timestamp t, Timestamp t1) {
+        return enterpriseMapper.getNewCount(eid,t,t1);
+    }
+
+    @Override
+    public  List<AllOrderVO>   getPayOrders(Integer eid, Timestamp t, Timestamp t1, Page page) {
+        return enterpriseMapper.getPayOrders(eid,t,t1,page);
+    }
+
+
+    @Override
+    public int getPayCount(Integer eid, Timestamp t, Timestamp t1) {
+        return enterpriseMapper.getPayCount(eid,t,t1);
+    }
+
+    @Override
+    public List<AllOrderVO> getEnterpriseQOrders(Integer eid, Page page) {
+        return enterpriseMapper.getEnterpriseQOrders(eid,page);
+    }
+
+    @Override
+    public Integer getEnterpriseQOrdersCount(Integer eid) {
+        return enterpriseMapper.getEnterpriseQOrdersCount(eid);
+    }
+
 }
