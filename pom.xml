@@ -243,6 +243,11 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.8.7</version>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180130</version>
+        </dependency>
 
         <!--jdom解析xml，解析微信返回信息要用到-->
         <dependency>

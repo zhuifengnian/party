@@ -184,12 +184,8 @@
   <select id="selectWaitConsumeOrders" resultType="com.hust.party.vo.OrderActivityVO">
     select o.id as oid, o.state as status, ou.creat_time as creatTime, ou.consume_time as consumeTime
     from orders o left join order_user ou on o.id = ou.order_id where 1=1
-    <if test="uid != null">
       and ou.user_id = #{uid}
-    </if>
-    <if test="orderStatusReachLeastPeople != null or orderStatusHasFull != null">
-      and o.state = #{orderStatusReachLeastPeople} or o.state = #{orderStatusHasFull}
-    </if>
+      and (o.state = #{orderStatusReachLeastPeople} or o.state = #{orderStatusHasFull})
     order by ou.creat_time desc
     <if test="page != null and page.start != null and page.pageSize!=null">
       limit #{page.start},#{page.pageSize}

@@ -11,6 +11,15 @@
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
     <!--&lt;!&ndash;扫描solr&ndash;&gt;-->
     <!--<context:property-placeholder location="classpath:properties/solr.properties"></context:property-placeholder>-->
+    <!-- 引入jdbc配置文件 -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:properties/*.properties</value>
+                <!--要是有多个配置文件，只需在这里继续添加即可 -->
+            </list>
+        </property>
+    </bean>
     <!--为controller添加事务管理-->
     <tx:annotation-driven/>
     <!-- 扫描controller（controller层注入） -->
