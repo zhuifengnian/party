@@ -579,4 +579,21 @@
     and a.copies != a.arrive_copies
 
   </select>
+  <select id="getNowDay" resultType="com.hust.party.pojo.Activity">
+    select *
+    from activity
+    where 1=1
+    and state=1
+    and arrive_time <![CDATA[<=]]> #{t,jdbcType=TIMESTAMP}
+  </select>
+  <update id="updateNowDay" parameterType="com.hust.party.pojo.Activity" >
+    update activity
+    set
+      activity_time = DATE_ADD(activity_time,INTERVAL 7 DAY),
+      arrive_time = DATE_ADD(arrive_time,INTERVAL 7 DAY),
+      arrive_copies = 0
+
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
 </mapper>

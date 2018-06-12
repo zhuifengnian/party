@@ -1,9 +1,6 @@
 package com.hust.party.test.servicetest;
 
-import com.hust.party.common.Const;
-import com.hust.party.common.Page;
-import com.hust.party.common.PageInfo;
-import com.hust.party.common.ReflectUtil;
+import com.hust.party.common.*;
 import com.hust.party.dao.ActivityMapper;
 import com.hust.party.pojo.*;
 import com.hust.party.service.*;
@@ -16,6 +13,7 @@ import org.junit.Test;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -50,6 +48,9 @@ public class ServiceTest {
     private EnterpriseService enterpriseService;
     @Autowired
     private UserForceService userForceService;
+
+
+
 @Test
 public void testGetAcitivity(){
    // Integer list = activityService.getNameActivityCount("轰趴馆");
@@ -59,8 +60,20 @@ public void testGetAcitivity(){
  //  List<AllOrderVO> list =enterpriseService.getYOrder(1,null);
    // System.out.println("+++++++++++++++++"+list);
    // userForceService.insertcolonelForce(25);
-   List<EnterpriseActivityVo> list= enterpriseService.getAllActivity(1,null);
-    System.out.println("+++++++++++++++++"+list);
+//   List<EnterpriseActivityVo> list= enterpriseService.getAllActivity(1,null);
+   // long current=System.currentTimeMillis();
+    //long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
+    //long twelve=zero+24*60*60*1000-1;
+
+ //   Timestamp t1 = new Timestamp(twelve);
+ //   List<Activity> list =activityService.getNowDay(t1);
+    Date activity_time=new Date();
+    Date arrive_time=new Date();
+
+   // activity_time=dateFormat.DateFormats(activity_time.getTime());
+  // int i= activityMapper.updateDay(3);
+
+  //  System.out.println("+++++++++++++++++"+i);
 
 }
     @Test

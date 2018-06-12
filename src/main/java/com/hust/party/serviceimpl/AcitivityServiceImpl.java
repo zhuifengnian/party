@@ -9,7 +9,9 @@ import com.hust.party.vo.PerenceActivityVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,6 +65,16 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
     @Override
     public Integer getNameActivityCount(String name) {
         return activityMapper.getNameActivityCount(name);
+    }
+
+    @Override
+    public List<Activity> getNowDay(Timestamp t1) {
+        return activityMapper.getNowDay(t1);
+    }
+
+    @Override
+    public int updateNowDay(Integer id) {
+        return activityMapper.updateNowDay(id);
     }
 
 
