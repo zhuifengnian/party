@@ -187,7 +187,8 @@ public void testGetAcitivity(){
     }
     @Test
     public void testKuaidiSmsService(){
-        String s = kuaidiSmsService.extractExpressCode("【好递讯美】你好，你的快递到了请到新博士生公寓旁老附中邮政服务中心来取，谢谢取件码R303");
+//        String s = kuaidiSmsService.extractExpressCode("【好递讯美】你好，你的快递到了请到新博士生公寓旁老附中邮政服务中心来取，谢谢取件码R303");
+        String s = kuaidiSmsService.extractExpressCode("【菜鸟驿站】请在19:00前凭提货码（1-3-6017）至华科东校区东九楼斜对面菜鸟驿站领申通包裹，询02752863368");
         System.out.println(s);
     }
 }

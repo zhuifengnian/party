@@ -58,6 +58,10 @@ public class KuaidiSmsServiceImpl implements KuaidiSmsService {
      * @param s
      */
     private boolean judgeExtractCode(String s) {
+        Pattern extractCodePattern = Pattern.compile("^(\\-*\\w*\\-*)+$");  //提取码为数字，字母，中斜杠的组合
+        if(!extractCodePattern.matcher(s).find()){
+            return false;
+        }
         //判断是否是时间19:00
         Pattern timePattern = Pattern.compile("^(20|21|22|23|[0-1]\\d)(:|：)([0-5]\\d)$");
         if(timePattern.matcher(s).find()){
