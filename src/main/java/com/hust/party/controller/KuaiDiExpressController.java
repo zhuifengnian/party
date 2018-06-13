@@ -80,29 +80,18 @@ public class KuaiDiExpressController
         return new ReturnMessage(200, kuaidiExpressVo);
     }
 
+    @RequestMapping(value = "/insertKuaidiExpress", method = RequestMethod.POST)
+    @ApiOperation(value = "存储信息")
+    @ResponseBody
+    public ReturnMessage insertKuaidiExpress(KuaiDiExpress kuaiDiExpress) {
+         int insert=kuaiDiExpressService.insert(kuaiDiExpress);
 
- public String topinyin(String input) {
 
-          StringBuilder pinyin = new StringBuilder();
-     for (int i = 0; i < input.length(); i++) {
-         HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
-         defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
-         defaultFormat.setVCharType(HanyuPinyinVCharType.WITH_V);
-         char c = input.charAt(i);
-         String[] pinyinArray = null;
-         try {
-             pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c, defaultFormat);
-         } catch (BadHanyuPinyinOutputFormatCombination e) {
-             e.printStackTrace();
-         }
-         if (pinyinArray != null) {
-             pinyin.append(pinyinArray[0]);
-         } else if (c != ' ') {
-             pinyin.append(input.charAt(i));
-         }
-     }
-     return pinyin.toString().trim().toLowerCase();
- }
+
+        return new ReturnMessage(200, insert);
+    }
+
+
 
  }
 

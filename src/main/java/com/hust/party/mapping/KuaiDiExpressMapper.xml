@@ -29,7 +29,7 @@
     delete from kuaidi_express
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.KuaiDiExpress" >
+  <insert id="insert" parameterType="com.hust.party.pojo.KuaiDiExpress" useGeneratedKeys="true" keyProperty="id" >
     insert into kuaidi_express (id, key1, name, 
       express_station, latitude, longitude, 
       create_time, update_time, state, 
@@ -39,7 +39,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}, 
       #{picture,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.KuaiDiExpress" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.KuaiDiExpress" useGeneratedKeys="true" keyProperty="id">
     insert into kuaidi_express
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
