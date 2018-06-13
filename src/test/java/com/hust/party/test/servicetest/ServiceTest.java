@@ -77,42 +77,46 @@ public void testGetAcitivity(){
 
 }
     @Test
-    public void testGetActivity(){
+    public void testGetActivity() throws  Exception{
       //  Activity activity = activityService.selectByPrimaryKey(14);
        // System.out.println(activity);
 
-       List<Integer> list= new ArrayList<>();
-       list.add(25);
-    int insert=  userForceService.insertForce(list);
-        System.out.println(insert);
+//       List<Integer> list= new ArrayList<>();
+//       list.add(25);
+//    int insert=  userForceService.insertForce(list);
+//        System.out.println(insert);
+       // String msg = "【好递讯美】你好，你的快递到了请到新博士生公寓旁老附中邮政服务中心来取，谢谢取件码R303";
+       //System.out.print( "++++++++"+msg.contains("新博士生公寓旁老附中"));
+       // PinyinTool tool = new PinyinTool();
+        //System.out.println("刘亚壮的运行测试结果为====" + tool.toPinYin("刘亚壮", "", PinyinTool.Type.LOWERCASE));
     }
-@Test
-public void getCategory(){
-
-        PageInfo<Orders> pageinfo=new PageInfo<Orders>();
-    pageinfo.setPageNum(2);
-    pageinfo.setPageSize(10);
-    Page page= new Page();
-    page.setPageNumber(2);
-    page.setPageSize(10);
-    long current=System.currentTimeMillis();
-    long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
-    long twelve=zero+24*60*60*1000-1;
-
-    Timestamp t = new Timestamp(zero);
-    Date d = new Date(t.getTime());
-    Timestamp t1 = new Timestamp(twelve);
-    Date d1 = new Date(t1.getTime());
-    Orders orders =new Orders();
-    Map map= ReflectUtil.generalMap(orders,page);
-    map.put("eid",1);
-    map.put("d",t);
-    map.put("t",t1);
-
-//pageinfo.setRows(ordersService.getOrders(map));
-
-System.out.println("分页信息：" + pageinfo);
-}
+//@Test
+//public void getCategory(){
+//
+//    PageInfo<Orders> pageinfo=new PageInfo<Orders>();
+//    pageinfo.setPageNum(2);
+//    pageinfo.setPageSize(10);
+//    Page page= new Page();
+//    page.setPageNumber(2);
+//    page.setPageSize(10);
+//    long current=System.currentTimeMillis();
+//    long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();//今天零点零分零秒的毫秒数
+//    long twelve=zero+24*60*60*1000-1;
+//
+//    Timestamp t = new Timestamp(zero);
+//    Date d = new Date(t.getTime());
+//    Timestamp t1 = new Timestamp(twelve);
+//    Date d1 = new Date(t1.getTime());
+//    Orders orders =new Orders();
+//    Map map= ReflectUtil.generalMap(orders,page);
+//    map.put("eid",1);
+//    map.put("d",t);
+//    map.put("t",t1);
+//
+////pageinfo.setRows(ordersService.getOrders(map));
+//
+//System.out.println("分页信息：" + pageinfo);
+//}
     @Test
     public void testActivity(){
         List<PerenceActivityVO> activity = activityService.getAllActivity(null);

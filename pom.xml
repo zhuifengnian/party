@@ -43,7 +43,18 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.22</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.belerweb/pinyin4j -->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.sun.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>3.0.9</version>
+        </dependency>
         <!-- 添加Spring依赖 -->
         <dependency>
             <groupId>org.springframework</groupId>

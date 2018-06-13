@@ -18,6 +18,7 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import com.sun.jna.Native;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -77,5 +78,6 @@ public class CommentController
         int insert=commentService.insert(comment);
         return new ReturnMessage(200, insert);
     }
+
 
 }
