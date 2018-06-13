@@ -48,6 +48,8 @@ public class ServiceTest {
     private EnterpriseService enterpriseService;
     @Autowired
     private UserForceService userForceService;
+    @Autowired
+    private KuaidiSmsService kuaidiSmsService;
 
 
 
@@ -182,5 +184,10 @@ public void testGetAcitivity(){
     public void selectUserId(){
        int insert=   userService.selectUserByChatId("oReIb5LdIAyYRRWD76b8wic9q2NY");
        System.out.print("+++++++++++++++++++++++++"+insert);
+    }
+    @Test
+    public void testKuaidiSmsService(){
+        String s = kuaidiSmsService.extractExpressCode("【好递讯美】你好，你的快递到了请到新博士生公寓旁老附中邮政服务中心来取，谢谢取件码R303");
+        System.out.println(s);
     }
 }
