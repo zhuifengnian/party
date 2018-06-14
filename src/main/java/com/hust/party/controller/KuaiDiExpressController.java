@@ -52,11 +52,8 @@ public class KuaiDiExpressController
 
         KuaidiExpressVo kuaidiExpressVo1 =new KuaidiExpressVo();
         KuaidiExpressVo kuaidiExpressVo =new KuaidiExpressVo();
-        if(input==null) {
-            kuaidiExpressVo1.setText("Please provide express SMS");
-            return new ReturnMessage(200, kuaidiExpressVo1);
-        }
 
+        boolean f=false;
        String code= kuaidiSmsService.extractExpressCode(input);
        //正则表达式判断括号中内容
         List<String> list=new ArrayList<String>();
@@ -66,7 +63,7 @@ public class KuaiDiExpressController
             list.add(m.group().substring(1, m.group().length()-1));
         }
         if(list.size()==0){
-            kuaidiExpressVo1.setText("Please provide detailed message information");
+            kuaidiExpressVo1.setState(2);
             return  new ReturnMessage(200, kuaidiExpressVo1);
         }
 
@@ -91,8 +88,8 @@ public class KuaiDiExpressController
                        kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
                        kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
                        kuaidiExpressVo.setKey1(list1.get(i).getKey1());
-                       kuaidiExpressVo.setPicture(list1.get(i).getPicture());
-                       kuaidiExpressVo.setText("Please take express delivery as soon as possible");
+                       kuaidiExpressVo.setState(1);
+                       f = true;
                        break;
 
                    }
@@ -100,6 +97,11 @@ public class KuaiDiExpressController
 
            }
        }
+
+       }
+       if(f==false) {
+            kuaidiExpressVo1.setState(3);
+           return new ReturnMessage(200, kuaidiExpressVo1);
        }
         return new ReturnMessage(200, kuaidiExpressVo);
     }

@@ -22,7 +22,7 @@ public class KuaidiExpressVo {
     private String picture;
 
     private String exactCode;
-    private  String text;
+    private  Integer state;
 
     public String getKey1() {
         return key1;
@@ -108,11 +108,12 @@ public class KuaidiExpressVo {
         this.pinyinexpressStation = pinyinexpressStation;
     }
 
-    public String getText() {
-        return text;
+
+    public Integer getState() {
+        return state;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setState(Integer state) {
+        this.state = state;
     }
 }
