@@ -107,11 +107,9 @@ public class KuaiDiExpressController
     @RequestMapping(value = "/insertKuaidiExpress", method = RequestMethod.POST)
     @ApiOperation(value = "存储信息")
     @ResponseBody
-    public ReturnMessage insertKuaidiExpress(KuaiDiExpress kuaiDiExpress, @RequestParam(value = "flyfile", required = false) MultipartFile flfile) {
-      String picture="";
-        if(flfile!=null)
-          picture  =KuaidiQiNiuUtil.manageFile(flfile);
-        kuaiDiExpress.setPicture(picture);
+    public ReturnMessage insertKuaidiExpress(KuaiDiExpress kuaiDiExpress) {
+
+
          int insert=kuaiDiExpressService.insert(kuaiDiExpress);
 
 
@@ -120,6 +118,21 @@ public class KuaiDiExpressController
     }
 
 
+    @RequestMapping(value = "/insertKuaidiExpressPicture", method = RequestMethod.POST)
+    @ApiOperation(value = "存储图片信息")
+    @ResponseBody
+    public ReturnMessage insertKuaidiExpressExpressPicture(Integer id,@RequestParam(value = "flyfile", required = false) MultipartFile flfile) {
+        String picture="";
+      KuaiDiExpress kuaiDiExpress =new KuaiDiExpress();
+        if(flfile!=null)
+            picture  =KuaidiQiNiuUtil.manageFile(flfile);
+        kuaiDiExpress.setPicture(picture);
+        kuaiDiExpress.setId(id);
+        int insert=kuaiDiExpressService.updateByPrimaryKeySelective(kuaiDiExpress);
 
+
+
+        return new ReturnMessage(200, insert);
+    }
  }
 
