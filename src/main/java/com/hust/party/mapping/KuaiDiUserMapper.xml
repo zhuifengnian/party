@@ -152,4 +152,13 @@
       state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectUserByOpenId" parameterType="string" resultType="int">
+    select id from kuaidi_user where  open_id = #{openId, jdbcType=VARCHAR}
+  </select>
+  <select id="selectUserInfo" parameterType="int" resultType="kuaiDiUser">
+    select *
+    from kuaidi_user u
+    where u.id = #{uid}
+  </select>
 </mapper>
