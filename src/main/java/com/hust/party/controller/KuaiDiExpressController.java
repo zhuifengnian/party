@@ -8,10 +8,7 @@ import com.hust.party.common.ReturnMessage;
 import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Comment;
 import com.hust.party.pojo.KuaiDiExpress;
-import com.hust.party.service.ActivityService;
-import com.hust.party.service.CommentService;
-import com.hust.party.service.KuaiDiExpressService;
-import com.hust.party.service.UserService;
+import com.hust.party.service.*;
 import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.CommentVo;
 import com.hust.party.vo.KuaidiExpressVo;
@@ -42,40 +39,63 @@ public class KuaiDiExpressController
 {
     @Autowired
     private KuaiDiExpressService kuaiDiExpressService;
+    @Autowired
+    private KuaidiSmsService kuaidiSmsService;
     @RequestMapping(value = "/getAdress", method = RequestMethod.POST)
     @ApiOperation(value = "获取地址")
     @ResponseBody
     public ReturnMessage getAdress(String input) throws Exception{
-        String msg = input;
+
+        KuaidiExpressVo kuaidiExpressVo1 =new KuaidiExpressVo();
+        KuaidiExpressVo kuaidiExpressVo =new KuaidiExpressVo();
+        if(input==null) {
+            kuaidiExpressVo1.setText("Please provide express SMS");
+            return new ReturnMessage(200, kuaidiExpressVo1);
+        }
+
+       String code= kuaidiSmsService.extractExpressCode(input);
+       //正则表达式判断括号中内容
         List<String> list=new ArrayList<String>();
         Pattern p = Pattern.compile("(\\【[^\\]]*\\】)");
-        Matcher m = p.matcher(msg);
+        Matcher m = p.matcher(input);
         while(m.find()){
             list.add(m.group().substring(1, m.group().length()-1));
         }
-        KuaidiExpressVo kuaidiExpressVo =new KuaidiExpressVo();
-       if(list.size()!=0){
-        List<KuaiDiExpress>  list1= kuaiDiExpressService.getListKuaiinfo(list.get(0));
-        KuaidiExpressVo kuaidiExpressVo1 =new KuaidiExpressVo();
-           PinyinTool pinyinTool=new PinyinTool();
-        if(list1.size()!=0) {
-            for (int i = 0; i < list1.size(); i++) {
-                if (msg.contains(list1.get(i).getKey1())) {
-                    kuaidiExpressVo.setExpressStation(list1.get(0).getExpressStation());
-                    kuaidiExpressVo.setPinyinexpressStation(pinyinTool.toPinYin(list1.get(i).getExpressStation()," ", Type.FIRSTUPPER));
-                    kuaidiExpressVo.setPinyinkey1(pinyinTool.toPinYin((list1.get(i).getKey1())," ",Type.FIRSTUPPER));
-                    kuaidiExpressVo.setPinyinname(pinyinTool.toPinYin(list1.get(i).getName()," ",Type.FIRSTUPPER));
-                    kuaidiExpressVo.setName(list1.get(i).getName());
-                    kuaidiExpressVo.setExactCode("0");
-                    kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
-                    kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
-                    kuaidiExpressVo.setKey1(list1.get(i).getKey1());
-                    kuaidiExpressVo.setPicture(list1.get(i).getPicture());
-                    break;
-
-                }
-            }
+        if(list.size()==0){
+            kuaidiExpressVo1.setText("Please provide detailed message information");
+            return  new ReturnMessage(200, kuaidiExpressVo1);
         }
+
+//定义快递返回信息
+        List<KuaiDiExpress>  list1= kuaiDiExpressService.getListKuaiinfo(list.get(0));
+
+
+        if(code!=""){
+       if(list.size()!=0) {
+
+           PinyinTool pinyinTool = new PinyinTool();
+           if (list1.size() != 0) {
+               //当遇到符合快递点信息时，直接输出
+               for (int i = 0; i < list1.size(); i++) {
+                   if (input.contains(list1.get(i).getKey1())) {
+                       kuaidiExpressVo.setExpressStation(list1.get(0).getExpressStation());
+                       kuaidiExpressVo.setPinyinexpressStation(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
+                       kuaidiExpressVo.setPinyinkey1(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
+                       kuaidiExpressVo.setPinyinname(pinyinTool.toPinYin(list1.get(i).getName(), " ", Type.FIRSTUPPER));
+                       kuaidiExpressVo.setName(list1.get(i).getName());
+                       kuaidiExpressVo.setExactCode(code);
+                       kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
+                       kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
+                       kuaidiExpressVo.setKey1(list1.get(i).getKey1());
+                       kuaidiExpressVo.setPicture(list1.get(i).getPicture());
+                       kuaidiExpressVo.setText("Please take express delivery as soon as possible");
+                       break;
+
+                   }
+               }
+
+           }
+       }
        }
         return new ReturnMessage(200, kuaidiExpressVo);
     }

@@ -22,6 +22,7 @@ public class KuaidiExpressVo {
     private String picture;
 
     private String exactCode;
+    private  String text;
 
     public String getKey1() {
         return key1;
@@ -105,5 +106,13 @@ public class KuaidiExpressVo {
 
     public void setPinyinexpressStation(String pinyinexpressStation) {
         this.pinyinexpressStation = pinyinexpressStation;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

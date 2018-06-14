@@ -55,7 +55,7 @@ public class Time  implements ServletContextListener {
          *  定制每天的24:00:00执行，若程序已超过24点启动,当天不再执行，等到明日二十四点再执行
          *  这样保证了时间一直是8点，而不会变成程序启动时间
          */
-        calendar.set(year, month, day, 24, 0, 00);
+        calendar.set(year, month, day, 24, 00, 00);
         Date defaultdate = calendar.getTime();// 今天24点（默
 
         long daySpan=24*60*60*1000;
@@ -63,7 +63,7 @@ public class Time  implements ServletContextListener {
         t.schedule(new TimerTask() {
 
             public void run() {
-
+                logger.info("更新开始");
                 try {
                     moveStableMes();
                 } catch (SQLException e) {
