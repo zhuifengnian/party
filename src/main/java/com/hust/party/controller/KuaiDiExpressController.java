@@ -9,6 +9,8 @@ import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Comment;
 import com.hust.party.pojo.KuaiDiExpress;
 import com.hust.party.service.*;
+import com.hust.party.util.KuaidiQiNiuUtil;
+import com.hust.party.util.QiNiuUtil;
 import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.CommentVo;
 import com.hust.party.vo.KuaidiExpressVo;
@@ -31,6 +33,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.hust.party.common.PinyinTool.Type;
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * Created by luyue on 2018/5/12.
  */
@@ -103,7 +107,11 @@ public class KuaiDiExpressController
     @RequestMapping(value = "/insertKuaidiExpress", method = RequestMethod.POST)
     @ApiOperation(value = "存储信息")
     @ResponseBody
-    public ReturnMessage insertKuaidiExpress(KuaiDiExpress kuaiDiExpress) {
+    public ReturnMessage insertKuaidiExpress(KuaiDiExpress kuaiDiExpress, @RequestParam(value = "flyfile", required = false) MultipartFile flfile) {
+      String picture="";
+        if(flfile!=null)
+          picture  =KuaidiQiNiuUtil.manageFile(flfile);
+        kuaiDiExpress.setPicture(picture);
          int insert=kuaiDiExpressService.insert(kuaiDiExpress);
 
 
