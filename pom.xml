@@ -267,12 +267,6 @@
             <version>2.0.2</version>
         </dependency>
 
-        <!--jna-->
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>4.0.0</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>

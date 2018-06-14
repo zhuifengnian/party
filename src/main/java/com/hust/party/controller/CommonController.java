@@ -1,8 +1,12 @@
 package com.hust.party.controller;
 
 import com.hust.party.common.ReturnMessage;
+import com.hust.party.service.KuaidiSmsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -12,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/common")
 public class CommonController {
+
+    @Autowired
+    KuaidiSmsService kuaidiSmsService;
 
     @RequestMapping("/404")
     @ResponseBody
@@ -28,6 +35,13 @@ public class CommonController {
     @ResponseBody
     public ReturnMessage ServerException(){
         return new ReturnMessage(500, "服务器状态异常");
+    }
+
+    @RequestMapping(value = "/testNL", method = RequestMethod.POST)
+    @ResponseBody
+    public ReturnMessage testNL(String msg){
+        String s = kuaidiSmsService.extractExpressCode(msg);
+        return new ReturnMessage(200, s);
     }
 
 }
