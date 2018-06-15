@@ -80,14 +80,14 @@ public class KuaiDiExpressController
                for (int i = 0; i < list1.size(); i++) {
                    if (input.contains(list1.get(i).getKey1())&&input.contains(list1.get(i).getName())) {
                        kuaidiExpressVo.setExpressStation(list1.get(0).getExpressStation());
-                       kuaidiExpressVo.setPinyinexpressStation(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
-                       kuaidiExpressVo.setPinyinkey1(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
-                       kuaidiExpressVo.setPinyinname(pinyinTool.toPinYin(list1.get(i).getName(), " ", Type.FIRSTUPPER));
-                       kuaidiExpressVo.setName(list1.get(i).getName());
-                       kuaidiExpressVo.setExactCode(code);
+                       kuaidiExpressVo.setExpressStation_E(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
+                       kuaidiExpressVo.setLankmark_E(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
+                       kuaidiExpressVo.setExpressCompant_E(pinyinTool.toPinYin(list1.get(i).getName(), " ", Type.FIRSTUPPER));
+                       kuaidiExpressVo.setExpressCompany(list1.get(i).getName());
+                       kuaidiExpressVo.setExtractCode(code);
                        kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
                        kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
-                       kuaidiExpressVo.setKey1(list1.get(i).getKey1());
+                       kuaidiExpressVo.setLandmark(list1.get(i).getKey1());
                        kuaidiExpressVo.setPicture(list1.get(i).getPicture());
                        kuaidiExpressVo.setState(1);
                        f = true;

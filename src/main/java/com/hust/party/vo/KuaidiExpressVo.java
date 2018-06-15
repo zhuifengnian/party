@@ -6,14 +6,14 @@ import java.util.Date;
  * Created by luyue on 2018/5/16.
  */
 public class KuaidiExpressVo {
- private String name;
- private String pinyinname;
+ private String expressCompany;
+ private String expressCompant_E;
 
-    private String key1;
-    private String pinyinkey1;
+    private String landmark;
+    private String lankmark_E;
 
     private String expressStation;
-    private String pinyinexpressStation;
+    private String expressStation_E;
 
     private Double latitude;
 
@@ -21,16 +21,9 @@ public class KuaidiExpressVo {
 
     private String picture;
 
-    private String exactCode;
+    private String extractCode;
     private  Integer state;
 
-    public String getKey1() {
-        return key1;
-    }
-
-    public void setKey1(String key1) {
-        this.key1 = key1;
-    }
 
 
 
@@ -68,45 +61,11 @@ public class KuaidiExpressVo {
         this.picture = picture;
     }
 
-    public String getExactCode() {
-        return exactCode;
-    }
 
-    public void setExactCode(String exactCode) {
-        this.exactCode = exactCode;
-    }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getPinyinname() {
-        return pinyinname;
-    }
 
-    public void setPinyinname(String pinyinname) {
-        this.pinyinname = pinyinname;
-    }
-
-    public String getPinyinkey1() {
-        return pinyinkey1;
-    }
-
-    public void setPinyinkey1(String pinyinkey1) {
-        this.pinyinkey1 = pinyinkey1;
-    }
-
-    public String getPinyinexpressStation() {
-        return pinyinexpressStation;
-    }
-
-    public void setPinyinexpressStation(String pinyinexpressStation) {
-        this.pinyinexpressStation = pinyinexpressStation;
-    }
 
 
     public Integer getState() {
@@ -115,5 +74,53 @@ public class KuaidiExpressVo {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getExpressCompany() {
+        return expressCompany;
+    }
+
+    public void setExpressCompany(String expressCompany) {
+        this.expressCompany = expressCompany;
+    }
+
+    public String getExpressCompant_E() {
+        return expressCompant_E;
+    }
+
+    public void setExpressCompant_E(String expressCompant_E) {
+        this.expressCompant_E = expressCompant_E;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    public String getLankmark_E() {
+        return lankmark_E;
+    }
+
+    public void setLankmark_E(String lankmark_E) {
+        this.lankmark_E = lankmark_E;
+    }
+
+    public String getExpressStation_E() {
+        return expressStation_E;
+    }
+
+    public void setExpressStation_E(String expressStation_E) {
+        this.expressStation_E = expressStation_E;
+    }
+
+    public String getExtractCode() {
+        return extractCode;
+    }
+
+    public void setExtractCode(String extractCode) {
+        this.extractCode = extractCode;
     }
 }
