@@ -160,4 +160,11 @@
     and state=1
 
   </select>
+  <select id="getListKuaiinfo1" resultMap="BaseResultMap">
+    select *
+    from kuaidi_express
+    where 1=1
+    and state=1
+
+  </select>
 </mapper>

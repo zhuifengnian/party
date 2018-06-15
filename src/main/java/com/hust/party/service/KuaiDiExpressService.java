@@ -17,5 +17,9 @@ public interface KuaiDiExpressService extends BaseService<KuaiDiExpress>{
      * @return
      */
     List<KuaiDiExpress> getListKuaiinfo(@Param("express_station") String express_station);
+    /**
+     * 直接选取所有地址
+     */
+    List<KuaiDiExpress>getListKuaiinfo1();
 
 }

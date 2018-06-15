@@ -45,67 +45,67 @@ public class KuaiDiExpressController
     private KuaiDiExpressService kuaiDiExpressService;
     @Autowired
     private KuaidiSmsService kuaidiSmsService;
-    @RequestMapping(value = "/getAdress", method = RequestMethod.POST)
-    @ApiOperation(value = "获取地址")
-    @ResponseBody
-    public ReturnMessage getAdress(String input) throws Exception{
-
-        KuaidiExpressVo kuaidiExpressVo1 =new KuaidiExpressVo();
-        KuaidiExpressVo kuaidiExpressVo =new KuaidiExpressVo();
-
-        boolean f=false;
-       String code= kuaidiSmsService.extractExpressCode(input);
-       //正则表达式判断括号中内容
-        List<String> list=new ArrayList<String>();
-        Pattern p = Pattern.compile("(\\【[^\\]]*\\】)");
-        Matcher m = p.matcher(input);
-        while(m.find()){
-            list.add(m.group().substring(1, m.group().length()-1));
-        }
-        if(list.size()==0){
-            kuaidiExpressVo1.setState(2);
-            return  new ReturnMessage(200, kuaidiExpressVo1);
-        }
-
-//定义快递返回信息
-        List<KuaiDiExpress>  list1= kuaiDiExpressService.getListKuaiinfo(list.get(0));
-
-
-        if(code!=""){
-       if(list.size()!=0) {
-
-           PinyinTool pinyinTool = new PinyinTool();
-           if (list1.size() != 0) {
-               //当遇到符合快递点信息时，直接输出
-               for (int i = 0; i < list1.size(); i++) {
-                   if (input.contains(list1.get(i).getKey1())&&input.contains(list1.get(i).getName())) {
-                       kuaidiExpressVo.setExpressStation(list1.get(0).getExpressStation());
-                       kuaidiExpressVo.setExpressStation_E(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
-                       kuaidiExpressVo.setLankmark_E(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
-                       kuaidiExpressVo.setExpressCompant_E(pinyinTool.toPinYin(list1.get(i).getName(), " ", Type.FIRSTUPPER));
-                       kuaidiExpressVo.setExpressCompany(list1.get(i).getName());
-                       kuaidiExpressVo.setExtractCode(code);
-                       kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
-                       kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
-                       kuaidiExpressVo.setLandmark(list1.get(i).getKey1());
-                       kuaidiExpressVo.setPicture(list1.get(i).getPicture());
-                       kuaidiExpressVo.setState(1);
-                       f = true;
-                       break;
-
-                   }
-               }
-
-           }
-       }
-
-       }
-       if(f==false) {
-            kuaidiExpressVo1.setState(3);
-           return new ReturnMessage(200, kuaidiExpressVo1);
-       }
-        return new ReturnMessage(200, kuaidiExpressVo);
-    }
+//    @RequestMapping(value = "/getAdress", method = RequestMethod.POST)
+//    @ApiOperation(value = "获取地址")
+//    @ResponseBody
+//    public ReturnMessage getAdress(String input) throws Exception{
+//
+//        KuaidiExpressVo kuaidiExpressVo1 =new KuaidiExpressVo();
+//        KuaidiExpressVo kuaidiExpressVo =new KuaidiExpressVo();
+//
+//        boolean f=false;
+//       String code= kuaidiSmsService.extractExpressCode(input);
+//       //正则表达式判断括号中内容
+//        List<String> list=new ArrayList<String>();
+//        Pattern p = Pattern.compile("(\\【[^\\]]*\\】)");
+//        Matcher m = p.matcher(input);
+//        while(m.find()){
+//            list.add(m.group().substring(1, m.group().length()-1));
+//        }
+//        if(list.size()==0){
+//            kuaidiExpressVo1.setState(2);
+//            return  new ReturnMessage(200, kuaidiExpressVo1);
+//        }
+//
+////定义快递返回信息
+//        List<KuaiDiExpress>  list1= kuaiDiExpressService.getListKuaiinfo(list.get(0));
+//
+//
+//        if(code!=""){
+//       if(list.size()!=0) {
+//
+//           PinyinTool pinyinTool = new PinyinTool();
+//           if (list1.size() != 0) {
+//               //当遇到符合快递点信息时，直接输出
+//               for (int i = 0; i < list1.size(); i++) {
+//                   if (input.contains(list1.get(i).getKey1())&&input.contains(list1.get(i).getName())) {
+//                       kuaidiExpressVo.setExpressStation(list1.get(0).getExpressStation());
+//                       kuaidiExpressVo.setExpressStation_E(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
+//                       kuaidiExpressVo.setLankmark_E(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
+//                       kuaidiExpressVo.setExpressCompant_E(pinyinTool.toPinYin(list1.get(i).getName(), " ", Type.FIRSTUPPER));
+//                       kuaidiExpressVo.setExpressCompany(list1.get(i).getName());
+//                       kuaidiExpressVo.setExtractCode(code);
+//                       kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
+//                       kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
+//                       kuaidiExpressVo.setLandmark(list1.get(i).getKey1());
+//                       kuaidiExpressVo.setPicture(list1.get(i).getPicture());
+//                       kuaidiExpressVo.setState(1);
+//                       f = true;
+//                       break;
+//
+//                   }
+//               }
+//
+//           }
+//       }
+//
+//       }
+//       if(f==false) {
+//            kuaidiExpressVo1.setState(3);
+//           return new ReturnMessage(200, kuaidiExpressVo1);
+//       }
+//        return new ReturnMessage(200, kuaidiExpressVo);
+//    }
 
     @RequestMapping(value = "/insertKuaidiExpress", method = RequestMethod.POST)
     @ApiOperation(value = "存储信息")
@@ -137,5 +137,55 @@ public class KuaiDiExpressController
 
         return new ReturnMessage(200, insert);
     }
- }
+    @RequestMapping(value = "/getAdress", method = RequestMethod.POST)
+    @ApiOperation(value = "提取快递地址")
+    @ResponseBody
+    public ReturnMessage getAdress(String input) throws Exception{
+
+        KuaidiExpressVo kuaidiExpressVo1 =new KuaidiExpressVo();
+        KuaidiExpressVo kuaidiExpressVo =new KuaidiExpressVo();
+
+        boolean f=false;
+        String code= kuaidiSmsService.extractExpressCode(input);
+
+
+
+//定义快递返回信息
+        List<KuaiDiExpress>  list1= kuaiDiExpressService.getListKuaiinfo1();
+
+
+        if(code!=""){
+                PinyinTool pinyinTool = new PinyinTool();
+                if (list1.size() != 0) {
+                    //当遇到符合快递点信息时，直接输出
+                    for (int i = 0; i < list1.size(); i++) {
+                        if (input.contains(list1.get(i).getKey1())&&input.contains(list1.get(i).getName())) {
+                            kuaidiExpressVo.setExpressStation(list1.get(0).getExpressStation());
+                            kuaidiExpressVo.setExpressStation_E(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
+                            kuaidiExpressVo.setLankmark_E(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
+                            kuaidiExpressVo.setExpressCompant_E(pinyinTool.toPinYin(list1.get(i).getName(), " ", Type.FIRSTUPPER));
+                            kuaidiExpressVo.setExpressCompany(list1.get(i).getName());
+                            kuaidiExpressVo.setExtractCode(code);
+                            kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
+                            kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
+                            kuaidiExpressVo.setLandmark(list1.get(i).getKey1());
+                            kuaidiExpressVo.setPicture(list1.get(i).getPicture());
+                            kuaidiExpressVo.setState(1);
+                            f = true;
+                            break;
+
+                        }
+                    }
+
+                }
+            }
+
+
+        if(f==false) {
+            kuaidiExpressVo1.setState(3);
+            return new ReturnMessage(200, kuaidiExpressVo1);
+        }
+        return new ReturnMessage(200, kuaidiExpressVo);
+    }
+    }
 

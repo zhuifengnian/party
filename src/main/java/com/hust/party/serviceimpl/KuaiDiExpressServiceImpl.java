@@ -29,4 +29,9 @@ public class KuaiDiExpressServiceImpl extends  AbstractBaseServiceImpl<KuaiDiExp
     public List<KuaiDiExpress> getListKuaiinfo(String express_station) {
         return kuaiDiExpressMapper.getListKuaiinfo(express_station);
     }
+
+    @Override
+    public List<KuaiDiExpress> getListKuaiinfo1() {
+        return kuaiDiExpressMapper.getListKuaiinfo1();
+    }
 }
