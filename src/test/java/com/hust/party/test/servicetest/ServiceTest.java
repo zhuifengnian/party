@@ -69,13 +69,15 @@ public void testGetAcitivity(){
 
  //   Timestamp t1 = new Timestamp(twelve);
  //   List<Activity> list =activityService.getNowDay(t1);
-    Date activity_time=new Date();
-    Date arrive_time=new Date();
+  //  Date activity_time=new Date();
+  //  Date arrive_time=new Date();
 
    // activity_time=dateFormat.DateFormats(activity_time.getTime());
   // int i= activityMapper.updateDay(3);
 
   //  System.out.println("+++++++++++++++++"+i);
+    String x="快递信息在我手里";
+    System.out.println(x.contains(""));
 
 }
     @Test

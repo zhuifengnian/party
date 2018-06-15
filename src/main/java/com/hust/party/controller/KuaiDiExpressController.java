@@ -78,7 +78,7 @@ public class KuaiDiExpressController
            if (list1.size() != 0) {
                //当遇到符合快递点信息时，直接输出
                for (int i = 0; i < list1.size(); i++) {
-                   if (input.contains(list1.get(i).getKey1())) {
+                   if (input.contains(list1.get(i).getKey1())&&input.contains(list1.get(i).getName())) {
                        kuaidiExpressVo.setExpressStation(list1.get(0).getExpressStation());
                        kuaidiExpressVo.setPinyinexpressStation(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
                        kuaidiExpressVo.setPinyinkey1(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
@@ -88,6 +88,7 @@ public class KuaiDiExpressController
                        kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
                        kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
                        kuaidiExpressVo.setKey1(list1.get(i).getKey1());
+                       kuaidiExpressVo.setPicture(list1.get(i).getPicture());
                        kuaidiExpressVo.setState(1);
                        f = true;
                        break;
