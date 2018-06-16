@@ -158,7 +158,7 @@ public class KuaiDiExpressController
                 if (list1.size() != 0) {
                     //当遇到符合快递点信息时，直接输出
                     for (int i = 0; i < list1.size(); i++) {
-                        if (input.contains(list1.get(i).getKey1())&&input.contains(list1.get(i).getName())) {
+                        if ((input.contains(list1.get(i).getKey1())&&input.contains(list1.get(i).getName()))) {
                             kuaidiExpressVo.setExpressStation(list1.get(i).getExpressStation());
 
                             kuaidiExpressVo.setExpressStation_E(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));

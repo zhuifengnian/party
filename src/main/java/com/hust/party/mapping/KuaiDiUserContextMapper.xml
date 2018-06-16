@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust.party.dao.KuaiDiUserContextMapper" >
+  <resultMap id="BaseResultMap" type="com.hust.party.pojo.KuaiDiUserContext" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_context" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="context_classify" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, user_phone, user_context, context_classify
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from kauidi_user_context
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from kauidi_user_context
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hust.party.pojo.KuaiDiUserContext"  useGeneratedKeys="true" keyProperty="id">
+    insert into kauidi_user_context (id, user_id, user_phone, 
+      user_context, context_classify)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userPhone,jdbcType=VARCHAR}, 
+      #{userContext,jdbcType=VARCHAR}, #{contextClassify,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.KuaiDiUserContext" useGeneratedKeys="true" keyProperty="id">
+    insert into kauidi_user_context
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
+      </if>
+      <if test="userContext != null" >
+        user_context,
+      </if>
+      <if test="contextClassify != null" >
+        context_classify,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userContext != null" >
+        #{userContext,jdbcType=VARCHAR},
+      </if>
+      <if test="contextClassify != null" >
+        #{contextClassify,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.KuaiDiUserContext" >
+    update kauidi_user_context
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userContext != null" >
+        user_context = #{userContext,jdbcType=VARCHAR},
+      </if>
+      <if test="contextClassify != null" >
+        context_classify = #{contextClassify,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.KuaiDiUserContext" >
+    update kauidi_user_context
+    set user_id = #{userId,jdbcType=INTEGER},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_context = #{userContext,jdbcType=VARCHAR},
+      context_classify = #{contextClassify,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

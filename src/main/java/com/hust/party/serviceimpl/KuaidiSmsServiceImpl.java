@@ -24,7 +24,7 @@ public class KuaidiSmsServiceImpl implements KuaidiSmsService {
        ret=timerMatcher.replaceAll("");
 
         //删除标点符号s
-        Pattern comaPattern = Pattern.compile("[{!\"#$%&'()*+,./:;<=>?@【】^_`|}~，。（）：；]");
+        Pattern comaPattern = Pattern.compile("[{!\"#$%&'()*+,./:;<=>?@【】^_`|}~，。（）：；〖 〗 @ ]");
         timerMatcher = comaPattern.matcher(ret);
         ret=timerMatcher.replaceAll("");
 
@@ -41,7 +41,11 @@ public class KuaidiSmsServiceImpl implements KuaidiSmsService {
 
         //设定规则，大于2和小于8满足我们需求，如果同时有多个满足，取大的作为取货码
         for(int i=0;i<splited.length;i++){
-            if(splited[i].length()<11){
+            if(splited[i].length()==8&&splited[i].contains("-")){
+                ret=splited[i];
+                break;
+            }
+            if((splited[i].length()<8)){
                 if(ret.length()>splited[i].length()&&i!=0) {
                     ret=ret;
                 }
