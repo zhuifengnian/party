@@ -161,14 +161,21 @@ public class KuaiDiExpressController
                     for (int i = 0; i < list1.size(); i++) {
                         if (input.contains(list1.get(i).getKey1())&&input.contains(list1.get(i).getName())) {
                             kuaidiExpressVo.setExpressStation(list1.get(i).getExpressStation());
+
                             kuaidiExpressVo.setExpressStation_E(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
-                            kuaidiExpressVo.setLankmark_E(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
+
+
                             kuaidiExpressVo.setExpressCompant_E(pinyinTool.toPinYin(list1.get(i).getName(), " ", Type.FIRSTUPPER));
                             kuaidiExpressVo.setExpressCompany(list1.get(i).getName());
                             kuaidiExpressVo.setExtractCode(code);
                             kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
                             kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
                             kuaidiExpressVo.setLandmark(list1.get(i).getKey1());
+                            if(kuaidiExpressVo.getLandmark().equals("汉口银行")){
+                                kuaidiExpressVo.setLankmark_E("Han Kou Yin Hang");
+                            }
+                            else
+                            kuaidiExpressVo.setLankmark_E(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
                             kuaidiExpressVo.setPicture(list1.get(i).getPicture());
                             kuaidiExpressVo.setState(1);
                             f = true;
