@@ -154,7 +154,6 @@ public class KuaiDiExpressController
         List<KuaiDiExpress>  list1= kuaiDiExpressService.getListKuaiinfo1();
 
 
-        if(code!=""){
                 PinyinTool pinyinTool = new PinyinTool();
                 if (list1.size() != 0) {
                     //当遇到符合快递点信息时，直接输出
@@ -164,7 +163,7 @@ public class KuaiDiExpressController
 
                             kuaidiExpressVo.setExpressStation_E(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
 
-
+                            kuaidiExpressVo.setPicture2(list1.get(i).getPicture2());
                             kuaidiExpressVo.setExpressCompant_E(pinyinTool.toPinYin(list1.get(i).getName(), " ", Type.FIRSTUPPER));
                             kuaidiExpressVo.setExpressCompany(list1.get(i).getName());
                             kuaidiExpressVo.setExtractCode(code);
@@ -185,11 +184,10 @@ public class KuaiDiExpressController
                     }
 
                 }
-            }
 
 
         if(f==false) {
-            kuaidiExpressVo1.setState(3);
+            kuaidiExpressVo1.setState(2);
             return new ReturnMessage(200, kuaidiExpressVo1);
         }
         return new ReturnMessage(200, kuaidiExpressVo);

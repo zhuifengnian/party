@@ -24,7 +24,7 @@ public class KuaidiExpressVo {
     private String extractCode;
     private  Integer state;
 
-
+    private String picture2;
 
 
 
@@ -122,5 +122,13 @@ public class KuaidiExpressVo {
 
     public void setExtractCode(String extractCode) {
         this.extractCode = extractCode;
+    }
+
+    public String getPicture2() {
+        return picture2;
+    }
+
+    public void setPicture2(String picture2) {
+        this.picture2 = picture2;
     }
 }

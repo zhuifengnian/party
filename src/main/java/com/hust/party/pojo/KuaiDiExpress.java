@@ -23,7 +23,13 @@ public class KuaiDiExpress {
 
     private String picture;
 
-    public KuaiDiExpress(Integer id, String key1, String name, String expressStation, Double latitude, Double longitude, Date createTime, Date updateTime, String state, String picture) {
+    private String picture2;
+
+    private String picture3;
+
+    private Integer schoolId;
+
+    public KuaiDiExpress(Integer id, String key1, String name, String expressStation, Double latitude, Double longitude, Date createTime, Date updateTime, String state, String picture, String picture2, String picture3, Integer schoolId) {
         this.id = id;
         this.key1 = key1;
         this.name = name;
@@ -34,6 +40,9 @@ public class KuaiDiExpress {
         this.updateTime = updateTime;
         this.state = state;
         this.picture = picture;
+        this.picture2 = picture2;
+        this.picture3 = picture3;
+        this.schoolId = schoolId;
     }
 
     public KuaiDiExpress() {
@@ -118,5 +127,29 @@ public class KuaiDiExpress {
 
     public void setPicture(String picture) {
         this.picture = picture == null ? null : picture.trim();
+    }
+
+    public String getPicture2() {
+        return picture2;
+    }
+
+    public void setPicture2(String picture2) {
+        this.picture2 = picture2 == null ? null : picture2.trim();
+    }
+
+    public String getPicture3() {
+        return picture3;
+    }
+
+    public void setPicture3(String picture3) {
+        this.picture3 = picture3 == null ? null : picture3.trim();
+    }
+
+    public Integer getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(Integer schoolId) {
+        this.schoolId = schoolId;
     }
 }
