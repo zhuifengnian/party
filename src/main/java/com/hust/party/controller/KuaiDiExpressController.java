@@ -124,15 +124,15 @@ public class KuaiDiExpressController
     @RequestMapping(value = "/insertKuaidiExpressPicture", method = RequestMethod.POST)
     @ApiOperation(value = "存储图片信息")
     @ResponseBody
-    public ReturnMessage insertKuaidiExpressExpressPicture(Integer id,@RequestParam(value = "flyfile", required = false) MultipartFile flfile, Integer number) {
+    public ReturnMessage insertKuaidiExpressExpressPicture(@RequestParam Integer id,@RequestParam(value = "flyfile", required = false) MultipartFile flfile,@RequestParam Integer num) {
         String picture="";
         KuaiDiExpress kuaiDiExpress =new KuaiDiExpress();
         kuaiDiExpress.setId(id);
         if(flfile!=null)
             picture  =KuaidiQiNiuUtil.manageFile(flfile);
-        if(number == 1){
+        if(num == 1){
             kuaiDiExpress.setPicture(picture);
-        }else if(number == 2){
+        }else if(num == 2){
             kuaiDiExpress.setPicture2(picture);
         }
         int insert=kuaiDiExpressService.updateByPrimaryKeySelective(kuaiDiExpress);
