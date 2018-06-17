@@ -13,6 +13,14 @@ public class ConstantUtil {
      */
     public static final String APP_SECRET="e4cb47c0a8aa5d9fa1c644e13e8ebeee";
     /**
+     * 快递小程序appid
+     */
+    public static final String APP_ID2="wx446dd0aedf7c2f55";
+    /**
+     * 快递小程序凭证
+     */
+    public static final String APP_SECRET2 = "3249504bf15014d5daf1c13a48c89d52";
+    /**
      * 应用对应的密钥
      */
     public static final String APP_KEY="sinianlife13163248472sinianlife8";

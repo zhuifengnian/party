@@ -105,4 +105,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByUid" parameterType="int" resultMap="BaseResultMap">
+      select * from kuaidi_admin where user_id = #{uid} and state = 1
+  </select>
 </mapper>
