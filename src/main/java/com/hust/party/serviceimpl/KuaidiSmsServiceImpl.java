@@ -55,6 +55,11 @@ public class KuaidiSmsServiceImpl implements KuaidiSmsService {
 
         }
 
+        if(ret.length()==8&&ret.contains("-"))
+            ret=ret;
+        else if(ret.length()>7)
+            ret="";
+
         return ret;
     }
 
