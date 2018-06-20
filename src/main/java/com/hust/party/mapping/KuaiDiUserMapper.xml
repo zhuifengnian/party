@@ -13,11 +13,12 @@
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="state" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="school_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     id, nickname, avatarurl, gender, email, phone, open_id, create_time, update_time, 
-    state
+    state, school_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -29,17 +30,17 @@
     delete from kuaidi_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.KuaiDiUser" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.hust.party.pojo.KuaiDiUser" >
     insert into kuaidi_user (id, nickname, avatarurl, 
       gender, email, phone, 
       open_id, create_time, update_time, 
-      state)
+      state, school_id)
     values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{avatarurl,jdbcType=VARCHAR}, 
       #{gender,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{openId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{state,jdbcType=VARCHAR})
+      #{state,jdbcType=VARCHAR}, #{schoolId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.KuaiDiUser" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.KuaiDiUser" >
     insert into kuaidi_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -71,6 +72,9 @@
       </if>
       <if test="state != null" >
         state,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -104,6 +108,9 @@
       <if test="state != null" >
         #{state,jdbcType=VARCHAR},
       </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.KuaiDiUser" >
@@ -136,6 +143,9 @@
       <if test="state != null" >
         state = #{state,jdbcType=VARCHAR},
       </if>
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -149,16 +159,17 @@
       open_id = #{openId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      state = #{state,jdbcType=VARCHAR}
+      state = #{state,jdbcType=VARCHAR},
+      school_id = #{schoolId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-  <select id="selectUserByOpenId" parameterType="string" resultType="int">
+    <select id="selectUserByOpenId" parameterType="string" resultType="int">
     select id from kuaidi_user where  open_id = #{openId, jdbcType=VARCHAR}
   </select>
-  <select id="selectUserInfo" parameterType="int" resultMap="BaseResultMap">
+    <select id="selectUserInfo" parameterType="int" resultMap="BaseResultMap">
     select *
     from kuaidi_user u
     where u.id = #{uid}
   </select>
+
 </mapper>

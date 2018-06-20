@@ -23,7 +23,9 @@ public class KuaiDiUser {
 
     private String state;
 
-    public KuaiDiUser(Integer id, String nickname, String avatarurl, Integer gender, String email, String phone, String openId, Date createTime, Date updateTime, String state) {
+    private Integer schoolId;
+
+    public KuaiDiUser(Integer id, String nickname, String avatarurl, Integer gender, String email, String phone, String openId, Date createTime, Date updateTime, String state, Integer schoolId) {
         this.id = id;
         this.nickname = nickname;
         this.avatarurl = avatarurl;
@@ -34,6 +36,7 @@ public class KuaiDiUser {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.state = state;
+        this.schoolId = schoolId;
     }
 
     public KuaiDiUser() {
@@ -118,5 +121,13 @@ public class KuaiDiUser {
 
     public void setState(String state) {
         this.state = state == null ? null : state.trim();
+    }
+
+    public Integer getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(Integer schoolId) {
+        this.schoolId = schoolId;
     }
 }
