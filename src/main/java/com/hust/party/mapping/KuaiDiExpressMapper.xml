@@ -191,8 +191,20 @@
     select *
     from kuaidi_express
     where 1=1
-    and  express_station=#{express_station}
+    and school_id=#{school_id}
     and state=1
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+
+  </select>
+  <select id="getListKuaiinfoCount" resultType="Integer">
+    select count(*)
+    from kuaidi_express
+    where 1=1
+    and school_id=#{school_id}
+    and state=1
+
 
   </select>
   <select id="getListKuaiinfo1" resultMap="BaseResultMap">

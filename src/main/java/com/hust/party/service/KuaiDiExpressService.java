@@ -12,11 +12,17 @@ import java.util.List;
 
 public interface KuaiDiExpressService extends BaseService<KuaiDiExpress>{
     /**
-     * 通过驿站名获取信息
-     * @param express_station
+     * 通过大使驿站名获取信息
+     * @param
      * @return
      */
-    List<KuaiDiExpress> getListKuaiinfo(@Param("express_station") String express_station);
+    List<KuaiDiExpress> getListKuaiinfo(@Param("school_id") Integer school_id,@Param("page")  Page page);
+    /**
+     * 通过大使驿站名获取信息数量
+     * @param
+     * @return
+     */
+    Integer getListKuaiinfoCount(@Param("school_id") Integer school_id);
     /**
      * 直接选取所有地址
      */

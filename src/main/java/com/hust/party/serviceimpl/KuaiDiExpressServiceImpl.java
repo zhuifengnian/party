@@ -1,10 +1,12 @@
 package com.hust.party.serviceimpl;
 
+import com.hust.party.common.Page;
 import com.hust.party.dao.BaseMapper;
 import com.hust.party.dao.KuaiDiExpressMapper;
 import com.hust.party.pojo.KuaiDiExpress;
 import com.hust.party.service.KuaiDiExpressService;
 import com.hust.party.vo.KuaidiExpressVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,14 @@ public class KuaiDiExpressServiceImpl extends  AbstractBaseServiceImpl<KuaiDiExp
     }
 
 
+    @Override
+    public List<KuaiDiExpress> getListKuaiinfo(Integer school_id,Page page) {
+        return kuaiDiExpressMapper.getListKuaiinfo(school_id,page);
+    }
 
     @Override
-    public List<KuaiDiExpress> getListKuaiinfo(String express_station) {
-        return kuaiDiExpressMapper.getListKuaiinfo(express_station);
+    public Integer getListKuaiinfoCount(Integer school_id) {
+        return kuaiDiExpressMapper.getListKuaiinfoCount(school_id);
     }
 
     @Override
