@@ -11,4 +11,11 @@ import java.util.List;
  */
 public interface KuaidiSchoolService extends BaseService<KuaiDiSchool> {
     Integer getSchoolId(String school);
+
+    /**
+     * 根据省份获取其下所有的学校
+     * @param provinceId
+     * @return
+     */
+    List<KuaiDiSchool> getSchoolByProvinceId(Integer provinceId);
 }

@@ -70,4 +70,30 @@
       province_name = #{provinceName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 分页查詢 -->
+  <select id="select" parameterType="Map" resultMap="BaseResultMap">
+    SELECT *
+    FROM kuaidi_province
+    WHERE 1=1
+    <if test="province != null" >
+      and province = #{province,jdbcType=VARCHAR}
+    </if>
+    <if test="provinceName != null" >
+      and province_name = #{provinceName,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <!-- 查詢数量 -->
+  <select id="selectCount" parameterType="com.hust.party.pojo.UserMoney"
+          resultType="Integer">
+    SELECT count(*)
+    FROM kuaidi_province
+    WHERE 1=1
+    <if test="province != null" >
+      and province = #{province,jdbcType=VARCHAR}
+    </if>
+    <if test="provinceName != null" >
+      and province_name = #{provinceName,jdbcType=VARCHAR}
+    </if>
+  </select>
 </mapper>

@@ -11,6 +11,7 @@ import com.hust.party.service.KuaidiSmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -31,5 +32,13 @@ private KuaiDiSchoolMapper kuaiDiSchoolMapper;
     @Override
     public Integer getSchoolId(String school) {
         return kuaiDiSchoolMapper.getSchoolId(school);
+    }
+
+    @Override
+    public List<KuaiDiSchool> getSchoolByProvinceId(Integer provinceId) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("provinceId", provinceId);
+        List<KuaiDiSchool> schools = kuaiDiSchoolMapper.select(map);
+        return schools;
     }
 }

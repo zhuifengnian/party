@@ -96,7 +96,43 @@
     select id
     from kuaidi_school
     where school = #{school}
+  </select>
 
-
+  <!-- 分页查詢 -->
+  <select id="select" parameterType="Map" resultMap="BaseResultMap">
+    SELECT *
+    FROM kuaidi_school
+    WHERE 1=1
+    <if test="school != null" >
+      and school = #{school,jdbcType=VARCHAR}
+    </if>
+    <if test="state != null" >
+      and state = #{state,jdbcType=INTEGER}
+    </if>
+    <if test="schoolEnglish != null" >
+      and school_english = #{schoolEnglish,jdbcType=VARCHAR}
+    </if>
+    <if test="provinceId != null" >
+      and province_id = #{provinceId,jdbcType=INTEGER}
+    </if>
+  </select>
+  <!-- 查詢数量 -->
+  <select id="selectCount" parameterType="com.hust.party.pojo.UserMoney"
+          resultType="Integer">
+    SELECT count(*)
+    FROM kuaidi_school
+    WHERE 1=1
+    <if test="school != null" >
+      and school = #{school,jdbcType=VARCHAR}
+    </if>
+    <if test="state != null" >
+      and state = #{state,jdbcType=INTEGER}
+    </if>
+    <if test="schoolEnglish != null" >
+      and school_english = #{schoolEnglish,jdbcType=VARCHAR}
+    </if>
+    <if test="provinceId != null" >
+      and province_id = #{provinceId,jdbcType=INTEGER}
+    </if>
   </select>
 </mapper>
