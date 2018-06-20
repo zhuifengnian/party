@@ -6,10 +6,12 @@
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="school" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="school_english" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="province_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, school, state
+    id, school, state, school_english, province_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -22,12 +24,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hust.party.pojo.KuaiDiSchool" useGeneratedKeys="true" keyProperty="id">
-    insert into kuaidi_school (id, school, state
-      )
-    values (#{id,jdbcType=INTEGER}, #{school,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}
-      )
+    insert into kuaidi_school (id, school, state, 
+      school_english, province_id)
+    values (#{id,jdbcType=INTEGER}, #{school,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{schoolEnglish,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.KuaiDiSchool"  useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.KuaiDiSchool" useGeneratedKeys="true" keyProperty="id">
     insert into kuaidi_school
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -38,6 +40,12 @@
       </if>
       <if test="state != null" >
         state,
+      </if>
+      <if test="schoolEnglish != null" >
+        school_english,
+      </if>
+      <if test="provinceId != null" >
+        province_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -50,6 +58,12 @@
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
       </if>
+      <if test="schoolEnglish != null" >
+        #{schoolEnglish,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hust.party.pojo.KuaiDiSchool" >
@@ -61,13 +75,21 @@
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
       </if>
+      <if test="schoolEnglish != null" >
+        school_english = #{schoolEnglish,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        province_id = #{provinceId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hust.party.pojo.KuaiDiSchool" >
     update kuaidi_school
     set school = #{school,jdbcType=VARCHAR},
-      state = #{state,jdbcType=INTEGER}
+      state = #{state,jdbcType=INTEGER},
+      school_english = #{schoolEnglish,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="getSchoolId" resultType="Integer">

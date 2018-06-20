@@ -7,10 +7,16 @@ public class KuaiDiSchool {
 
     private Integer state;
 
-    public KuaiDiSchool(Integer id, String school, Integer state) {
+    private String schoolEnglish;
+
+    private Integer provinceId;
+
+    public KuaiDiSchool(Integer id, String school, Integer state, String schoolEnglish, Integer provinceId) {
         this.id = id;
         this.school = school;
         this.state = state;
+        this.schoolEnglish = schoolEnglish;
+        this.provinceId = provinceId;
     }
 
     public KuaiDiSchool() {
@@ -39,5 +45,21 @@ public class KuaiDiSchool {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getSchoolEnglish() {
+        return schoolEnglish;
+    }
+
+    public void setSchoolEnglish(String schoolEnglish) {
+        this.schoolEnglish = schoolEnglish == null ? null : schoolEnglish.trim();
+    }
+
+    public Integer getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Integer provinceId) {
+        this.provinceId = provinceId;
     }
 }
