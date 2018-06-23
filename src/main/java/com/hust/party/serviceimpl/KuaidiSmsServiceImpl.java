@@ -40,26 +40,24 @@ public class KuaidiSmsServiceImpl implements KuaidiSmsService {
         String[] splited = ret.split("\\s+");
 
         //设定规则，大于2和小于8满足我们需求，如果同时有多个满足，取大的作为取货码
+        String tmpRet = "";     //用于得到处理时的结果
         for(int i=0;i<splited.length;i++){
             if(splited[i].length()==8&&splited[i].contains("-")){
-                ret=splited[i];
+                tmpRet = splited[i];
                 break;
             }
             if((splited[i].length()<8)){
-                if(ret.length()>splited[i].length()&&i!=0) {
-                    ret=ret;
+                if(tmpRet.length()<splited[i].length()) {
+                    tmpRet=splited[i];
                 }
-                else
-                    ret=splited[i];
             }
-
         }
 
-        if(ret.length()==8&&ret.contains("-"))
-            ret=ret;
-        else if(ret.length()>7)
-            ret="";
-
+        if(tmpRet.length()==8&&tmpRet.contains("-"))
+            tmpRet=tmpRet;
+        else if(tmpRet.length()>7)
+            tmpRet="";
+        ret = tmpRet;
         return ret;
     }
 
