@@ -24,7 +24,7 @@ public class KuaidiSmsServiceImpl implements KuaidiSmsService {
        ret=timerMatcher.replaceAll("");
 
         //删除标点符号s
-        Pattern comaPattern = Pattern.compile("[{!\"#$%&'()*+,./:;<=>?@【】^_`|}~，。（）：；〖 〗 @ ]");
+        Pattern comaPattern = Pattern.compile("[{!\"#$%&'()*+,./:;<=>?@【 】^_`|}~，。（）：；〖 〗『 』 @ ]");
         timerMatcher = comaPattern.matcher(ret);
         ret=timerMatcher.replaceAll("");
 
