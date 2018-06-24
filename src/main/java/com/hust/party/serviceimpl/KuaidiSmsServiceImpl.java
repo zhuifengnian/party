@@ -24,7 +24,7 @@ public class KuaidiSmsServiceImpl implements KuaidiSmsService {
        ret=timerMatcher.replaceAll("");
 
         //删除标点符号s
-        Pattern comaPattern = Pattern.compile("[{!\"#$%&'()*+,./:;<=>?@【 】^_`|}~，。（）：；〖 〗『 』 @ ]");
+        Pattern comaPattern = Pattern.compile("[{!\"#$%&'()+,./:;<=>?@【 】^_`|}~，。（）：；〖 〗『 』 @ ]");
         timerMatcher = comaPattern.matcher(ret);
         ret=timerMatcher.replaceAll("");
 
@@ -39,15 +39,21 @@ public class KuaidiSmsServiceImpl implements KuaidiSmsService {
 
         String[] splited = ret.split("\\s+");
 
-        //设定规则，大于2和小于8满足我们需求，如果同时有多个满足，取大的作为取货码
+        //遍历潜在的取货码，并作出筛选
         String tmpRet = "";     //用于得到处理时的结果
         for(int i=0;i<splited.length;i++){
+            //出现包含星号的直接过滤
+            if(splited[i].contains("*")){
+                continue;
+            }
+            //拿到1-1-5325这样的取货码并认为它就是所要的结果，直接退出循环
             if(splited[i].length()==8&&splited[i].contains("-")){
                 tmpRet = splited[i];
                 break;
             }
+            //长度小于8时，拿到最长的作为取货码，并且同等长度取后者
             if((splited[i].length()<8)){
-                if(tmpRet.length()<splited[i].length()) {
+                if(tmpRet.length()<=splited[i].length()) {
                     tmpRet=splited[i];
                 }
             }
