@@ -2,6 +2,7 @@ package com.hust.party.service;
 
 import com.hust.party.pojo.KuaiDiAdmin;
 import com.hust.party.pojo.KuaiDiSchool;
+import com.hust.party.vo.KuaidiProvinceAndSchoolVO;
 
 import java.util.List;
 
@@ -18,4 +19,11 @@ public interface KuaidiSchoolService extends BaseService<KuaiDiSchool> {
      * @return
      */
     List<KuaiDiSchool> getSchoolByProvinceId(Integer provinceId);
+
+    /**
+     * 获取省份和学校信息
+     * @return
+     */
+    List<KuaidiProvinceAndSchoolVO> getProvinceAndSchool();
+
 }

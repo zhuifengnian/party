@@ -8,6 +8,7 @@ import com.hust.party.pojo.KuaiDiUserContext;
 import com.hust.party.service.KuaidiProvinceService;
 import com.hust.party.service.KuaidiSchoolService;
 import com.hust.party.service.KuaidiUserContextService;
+import com.hust.party.vo.KuaidiProvinceAndSchoolVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,14 @@ public class KuaiDiSchoolController
     public ReturnMessage getSchoolByProvinceId(Integer provinceId) {
         List<KuaiDiSchool> schools = kuaidiSchoolService.getSchoolByProvinceId(provinceId);
         return new ReturnMessage(200,schools);
+    }
+
+    @RequestMapping(value = "/getProvinceAndSchool", method = RequestMethod.GET)
+    @ApiOperation(value = "获取所有省份和学校数据", httpMethod = "GET")
+    @ResponseBody
+    public ReturnMessage getProvinceAndSchool(){
+        List<KuaidiProvinceAndSchoolVO> provinceAndSchool = kuaidiSchoolService.getProvinceAndSchool();
+        return new ReturnMessage(200, provinceAndSchool);
     }
 
 
