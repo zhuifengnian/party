@@ -278,7 +278,7 @@
     and os.enterprise_id=#{eid}
   </select>
   <!--获取企业信息-->
-  <select id="selectEnterpriseInfo" resultType="com.hust.party.vo.EnterpriseInfoVO">
+  <select id="selectEnterpriseInfo" resultType="com.hust.party.vo.EnterprisePaymentInfoVO">
     select  e.name,e.avatarurl,ep.account_money as accountMoney,ep.total_money as totalMoney
     from enterprise e left join enterprisepayment ep on  e.id=ep.enterprise_id
     where 1=1

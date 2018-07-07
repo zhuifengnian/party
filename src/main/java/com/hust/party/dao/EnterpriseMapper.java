@@ -4,7 +4,7 @@ import com.hust.party.common.Page;
 import com.hust.party.pojo.Enterprise;
 import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.EnterpriseActivityVo;
-import com.hust.party.vo.EnterpriseInfoVO;
+import com.hust.party.vo.EnterprisePaymentInfoVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -78,7 +78,7 @@ public interface EnterpriseMapper  extends BaseMapper<Enterprise>{
      * @param eid
      * @return
      */
-    EnterpriseInfoVO selectEnterpriseInfo(Integer eid);
+    EnterprisePaymentInfoVO selectEnterpriseInfo(Integer eid);
 
     /**
      * 提取企业今日新接订单

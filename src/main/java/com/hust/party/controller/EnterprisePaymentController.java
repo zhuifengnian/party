@@ -1,25 +1,15 @@
 package com.hust.party.controller;
 
-import com.hust.party.common.Page;
-import com.hust.party.common.PageInfo;
 import com.hust.party.common.ReturnMessage;
+import com.hust.party.exception.ApiException;
 import com.hust.party.pojo.EnterprisePayment;
-import com.hust.party.pojo.Orders;
-import com.hust.party.pojo.Payment;
-import com.hust.party.service.ActivityService;
-import com.hust.party.service.EnterprisePaymentService;
-import com.hust.party.service.OrdersService;
-import com.hust.party.service.PaymentService;
-import com.hust.party.util.ReflectUtil;
-import com.hust.party.vo.AccountVO;
+import com.hust.party.service.*;
+import com.hust.party.vo.EnterprisePaymentInfoVO;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -36,6 +26,8 @@ private OrdersService ordersService;
 private PaymentService paymentService;
 @Autowired
 private ActivityService activityService;
+@Autowired
+private EnterpriseService enterpriseService;
     @RequestMapping(value = "/enterprisePayment", method = RequestMethod.POST)
     @ApiOperation(value = "根据企业id提取账户余额", httpMethod = "POST")
     @ResponseBody
@@ -54,6 +46,15 @@ private ActivityService activityService;
         List<EnterprisePayment> list=   enterprisePaymentService.select(enterprisePayment,null);
         return new ReturnMessage(200, list.get(0).getTotalMoney());
     }
-
+    @ApiOperation(value = "返回企业账户信息", notes = "返回企业账户信息")
+    @ResponseBody
+    @RequestMapping(value = "/enterprisePayment/getEnterpriseInfo", method = RequestMethod.POST)
+    public ReturnMessage getEnterpriseInfo(@RequestParam("eid") Integer eid){
+        EnterprisePaymentInfoVO enterpriseInfoVO =enterpriseService.selectEnterpriseInfo(eid);
+        if(enterpriseInfoVO== null){
+            throw new ApiException(201, "所传uid没有数据");
+        }
+        return new ReturnMessage(200, enterpriseInfoVO);
+    }
 
 }

@@ -5,7 +5,7 @@ import com.hust.party.common.PageInfo;
 import com.hust.party.pojo.Enterprise;
 import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.EnterpriseActivityVo;
-import com.hust.party.vo.EnterpriseInfoVO;
+import com.hust.party.vo.EnterprisePaymentInfoVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.Timestamp;
@@ -73,7 +73,7 @@ public interface EnterpriseService extends BaseService<Enterprise>{
      * @param eid
      * @return
      */
-    EnterpriseInfoVO selectEnterpriseInfo(Integer eid);
+    EnterprisePaymentInfoVO selectEnterpriseInfo(Integer eid);
 
     /**
      * 提取企业今日新接订单

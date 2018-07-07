@@ -1,6 +1,5 @@
 package com.hust.party.controller;
 
-import com.hust.party.common.Page;
 import com.hust.party.common.PageInfo;
 import com.hust.party.common.ReturnMessage;
 import com.hust.party.exception.ApiException;
@@ -8,11 +7,9 @@ import com.hust.party.pojo.*;
 import com.hust.party.service.*;
 import com.hust.party.util.PageUtil;
 import com.hust.party.util.QiNiuUtil;
-import com.hust.party.util.ReflectUtil;
 import com.hust.party.util.TimeUtil;
 import com.hust.party.vo.AllOrderVO;
-import com.hust.party.vo.EnterpriseActivityVo;
-import com.hust.party.vo.EnterpriseInfoVO;
+import com.hust.party.vo.EnterprisePaymentInfoVO;
 import com.hust.party.vo.PerenceActivityVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -240,10 +237,8 @@ public class EnterpriseController
     @ResponseBody
     @RequestMapping(value = "/enterprise/getEnterpriseInfo", method = RequestMethod.POST)
     public ReturnMessage getEnterpriseInfo(@RequestParam("eid") Integer eid){
-        EnterpriseInfoVO enterpriseInfoVO =enterpriseService.selectEnterpriseInfo(eid);
-        if(enterpriseInfoVO== null){
-            throw new ApiException(201, "所传uid没有数据");
-        }
-        return new ReturnMessage(200, enterpriseInfoVO);
+        Enterprise enterprise =enterpriseService.selectByPrimaryKey(eid);
+      
+        return new ReturnMessage(200, enterprise);
     }
 }

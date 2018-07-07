@@ -8,7 +8,7 @@ import com.hust.party.pojo.Enterprise;
 import com.hust.party.service.EnterpriseService;
 import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.EnterpriseActivityVo;
-import com.hust.party.vo.EnterpriseInfoVO;
+import com.hust.party.vo.EnterprisePaymentInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,7 +92,7 @@ public class EnterpriseServiceImpl extends AbstractBaseServiceImpl<Enterprise> i
     }
 
     @Override
-    public EnterpriseInfoVO selectEnterpriseInfo(Integer eid) {
+    public EnterprisePaymentInfoVO selectEnterpriseInfo(Integer eid) {
         return enterpriseMapper.selectEnterpriseInfo(eid);
     }
 
