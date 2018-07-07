@@ -33,7 +33,7 @@
     delete from enterprise
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.Enterprise" >
+  <insert id="insert" parameterType="com.hust.party.pojo.Enterprise" useGeneratedKeys="true" keyProperty="id">
     insert into enterprise (id, nickname, licence, 
       lead_name, lead_card, lead_phone, 
       lead_email, category_id, lead_position, 
@@ -45,7 +45,7 @@
       #{name,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{avatarurl,jdbcType=VARCHAR}, 
       #{state,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.Enterprise" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.Enterprise" useGeneratedKeys="true" keyProperty="id">
     insert into enterprise
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

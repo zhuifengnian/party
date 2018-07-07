@@ -596,4 +596,59 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <!-- 查詢企业所有活动 -->
+  <select id="getEnterpriseAllActivity" resultType="com.hust.party.vo.PerenceActivityVO">
+    select a.id ,a.copies,a.arrive_copies as arriveCopies,a.longitude,a.latitude,a.title,a.picture,a.contain_people as containPeople,a.preferential_price as preferentialPrice,a.original_price as originalPrice,a.address , e.name as enterpriceName
+    from activity a left join enterprise e on a.enterprise_id = e.id
+    where 1=1
+    and a.enterprise_id = #{id}
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <!--获取企业所有活动数量-->
+  <select id="getEnterpriseAllActivityCount" resultType="Integer">
+    select count(*)
+    from activity a left join enterprise e on a.enterprise_id = e.id
+    where 1=1
+    and a.enterprise_id = #{id}
+  </select>
+  <!-- 查詢企业正上线的活动 -->
+  <select id="getEnterpriseNowActivity" resultType="com.hust.party.vo.PerenceActivityVO">
+    select a.id ,a.copies,a.arrive_copies as arriveCopies,a.longitude,a.latitude,a.title,a.picture,a.contain_people as containPeople,a.preferential_price as preferentialPrice,a.original_price as originalPrice,a.address , e.name as enterpriceName
+    from activity a left join enterprise e on a.enterprise_id = e.id
+    where 1=1
+    and a.arrive_time>now()
+    and a.state=1
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <!--获取企业正上线的活动数量-->
+  <select id="getEnterpriseNowActivityCount" resultType="Integer">
+    select count(*)
+    from activity a left join enterprise e on a.enterprise_id = e.id
+    where 1=1
+    and a.arrive_time>now()
+    and a.state=1
+  </select>
+
+  <!-- 查詢企业已删除的活动 -->
+  <select id="getEnterpriseDeleteActivity" resultType="com.hust.party.vo.PerenceActivityVO">
+    select a.id ,a.copies,a.arrive_copies as arriveCopies,a.longitude,a.latitude,a.title,a.picture,a.contain_people as containPeople,a.preferential_price as preferentialPrice,a.original_price as originalPrice,a.address , e.name as enterpriceName
+    from activity a left join enterprise e on a.enterprise_id = e.id
+    where 1=1
+    and a.state=2
+    <if test="page != null and page.start != null and page.pageSize!=null">
+      limit #{page.start},#{page.pageSize}
+    </if>
+  </select>
+  <!--获取企业已删除的活动数量-->
+  <select id="getEnterpriseDeleteActivityCount" resultType="Integer">
+    select count(*)
+    from activity a left join enterprise e on a.enterprise_id = e.id
+    where 1=1
+
+    and a.state=2
+  </select>
 </mapper>

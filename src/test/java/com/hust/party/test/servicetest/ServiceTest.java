@@ -76,8 +76,11 @@ public void testGetAcitivity(){
   // int i= activityMapper.updateDay(3);
 
   //  System.out.println("+++++++++++++++++"+i);
+Enterprise enterprise=new Enterprise();
+enterprise.setAvatarurl("1213");
+enterprise.setNickname("dsa");
     String x="快递信息在我手里";
-    System.out.println(x.contains(""));
+    System.out.println( enterpriseService.insert(enterprise));
 
 }
     @Test
