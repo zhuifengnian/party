@@ -129,7 +129,7 @@ public class EnterpriseController
         return new ReturnMessage(200, insert);
     }
 
-    @RequestMapping(value = "/updateEnterprise", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/updateEnterprise", method = RequestMethod.POST)
     @ApiOperation(value = "修改企业信息", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage updateEnterprise(Enterprise enterprise){
@@ -139,7 +139,7 @@ public class EnterpriseController
        }
         return new ReturnMessage(200, insert);
     }
-    @RequestMapping(value = "/deleteActivity", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/deleteActivity", method = RequestMethod.POST)
     @ApiOperation(value = "企业撤销自己的活动", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage deleteActivity(@RequestParam("aid") Integer aid){
@@ -162,22 +162,22 @@ public class EnterpriseController
       }
         return new ReturnMessage(200, text);
     }
-    @RequestMapping(value = "/scanOrders", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/scanOrders", method = RequestMethod.POST)
     @ApiOperation(value = "企业扫描二维码", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage scanOders(@RequestParam("qr_code") String qr_code){
          Orders order=new Orders();
          order.setQrCode(qr_code);
-         int insert=0;
+         int []insert = new int[4];
         List<Orders> orders =ordersService.select(order,null);
          //修改orders下的状态
         if(orders.size()!=0){
             order.setId(orders.get(0).getId());
             order.setState(5);
-            insert=ordersService.updateByPrimaryKeySelective(order);
+            insert[0]=ordersService.updateByPrimaryKeySelective(order);
 
           List<Integer> user= orderUserService.getUserId(orders.get(0).getId());
-            insert= userForceService.insertForce(user);
+            insert[1]= userForceService.insertForce(user);
             //获取payment中的订单钱数
             Payment payment =new Payment();
 
@@ -186,7 +186,7 @@ public class EnterpriseController
          if(list.size()!=0) {
              payment.setId(list.get(0).getId());
              payment.setState(1);
-             insert = paymentService.updateByPrimaryKeySelective(payment);
+             insert[2] = paymentService.updateByPrimaryKeySelective(payment);
              //修改enterprisepayment中的钱数
 
              EnterprisePayment enterprisePayment = new EnterprisePayment();
@@ -196,7 +196,7 @@ public class EnterpriseController
                  enterprisePayment.setId(enterprisePayments.get(0).getId());
                  enterprisePayment.setAccountMoney(enterprisePayments.get(0).getAccountMoney().add(list.get(0).getPrice()));
                  enterprisePayment.setTotalMoney(enterprisePayments.get(0).getTotalMoney().add(list.get(0).getPrice()));
-                 insert = enterprisePaymentService.updateByPrimaryKeySelective(enterprisePayment);
+                 insert [3]= enterprisePaymentService.updateByPrimaryKeySelective(enterprisePayment);
              }
          }
 
@@ -204,10 +204,10 @@ public class EnterpriseController
 
         return new ReturnMessage(200, insert);
     }
-    @RequestMapping(value = "/updateActivity", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/updateActivity", method = RequestMethod.POST)
     @ApiOperation(value = "企业修改自己的活动", httpMethod = "POST")
     @ResponseBody
-    public ReturnMessage updateActivity(  Activity activity){
+    public ReturnMessage updateActivity(Activity activity){
 
         String text="";
 
@@ -238,7 +238,7 @@ public class EnterpriseController
 
     @ApiOperation(value = "返回企业详细信息", notes = "返回企业详细信息")
     @ResponseBody
-    @RequestMapping(value = "/getEnterpriseInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/getEnterpriseInfo", method = RequestMethod.POST)
     public ReturnMessage getEnterpriseInfo(@RequestParam("eid") Integer eid){
         EnterpriseInfoVO enterpriseInfoVO =enterpriseService.selectEnterpriseInfo(eid);
         if(enterpriseInfoVO== null){
