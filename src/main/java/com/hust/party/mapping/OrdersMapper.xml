@@ -185,7 +185,14 @@
 
   <!--根据用户id及订单状态，返回订单列表-->
   <select id="getOrderActivityVo" resultType="com.hust.party.vo.OrderActivityVO">
-    select o.id as oid, o.state as status, o.create_time as creatTime
-    from orders o where o.id = #{oid}
+    select o.id as oid, o.state as status, ou.creat_time as creatTime, ou.consume_time as consumeTime,
+    o.state as status, o.activity_id as aid, a.enterprise_id as enterpriseId,
+    a.title as title, a.activity_time as activityTime, a.arrive_time as arriveTime, a.word as word,
+    a.picture as picture, a.video as video, a.feature as feature, a.contain_people as containPeople,
+    a.minu_people as minuPeople, a.preferential_price as preferentialPrice, a.original_price as originalPrice,
+    a.address as address, ou.creat_time as creatTime, ou.consume_time as consumeTime,o.qr_code as qrCode
+    from orders o left join order_user ou on o.id = ou.order_id
+    left join activity a on o.activity_id = a.id
+    where o.id = #{oid}
   </select>
 </mapper>
