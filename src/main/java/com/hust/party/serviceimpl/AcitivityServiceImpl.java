@@ -1,6 +1,7 @@
 package com.hust.party.serviceimpl;
 
 import com.hust.party.common.Page;
+import com.hust.party.common.PageInfo;
 import com.hust.party.dao.ActivityMapper;
 import com.hust.party.dao.BaseMapper;
 import com.hust.party.pojo.Activity;
@@ -75,6 +76,54 @@ public class AcitivityServiceImpl extends  AbstractBaseServiceImpl<Activity> imp
     @Override
     public int updateNowDay(Integer id) {
         return activityMapper.updateNowDay(id);
+    }
+
+    @Override
+    public List<PerenceActivityVO> getEnterpriseAllActivity(Integer id, Page page) {
+        return activityMapper.getEnterpriseAllActivity(id,page);
+    }
+
+    @Override
+    public Integer getEnterpriseAllActivityCount(Integer id) {
+        return activityMapper.getEnterpriseAllActivityCount(id);
+    }
+
+    @Override
+    public List<PerenceActivityVO> getEnterpriseNowActivity(Integer id, Page page) {
+        return activityMapper.getEnterpriseNowActivity(id,page);
+    }
+
+    @Override
+    public Integer getEnterpriseNowActivityCount(Integer id) {
+        return activityMapper.getEnterpriseAllActivityCount(id);
+    }
+
+    @Override
+    public List<PerenceActivityVO> getEnterpriseDeleteActivity(Integer id, Page page) {
+        return activityMapper.getEnterpriseDeleteActivity(id,page);
+    }
+
+    @Override
+    public Integer getEnterpriseDeleteActivityCount(Integer id) {
+        return activityMapper.getEnterpriseDeleteActivityCount(id);
+    }
+
+    @Override
+    public PageInfo<PerenceActivityVO> getEnterpriseActivity(String name, Integer id, Page page) {
+        PageInfo<PerenceActivityVO> pageInfo = new PageInfo<>();
+        pageInfo.setPageNum(page.getPageNumber());
+       pageInfo.setPageSize(page.getPageSize());
+        if ("全部".equals(name)) {
+            pageInfo.setRows(getEnterpriseAllActivity(id, page));
+            pageInfo.setTotal(getEnterpriseAllActivityCount(id));
+        } else if ("删除".equals(name)) {
+            pageInfo.setRows(getEnterpriseDeleteActivity(id, page));
+            pageInfo.setTotal(getEnterpriseDeleteActivityCount(id));
+        } else if ("上线".equals(name)) {
+            pageInfo.setRows(getEnterpriseNowActivity(id, page));
+            pageInfo.setTotal(getEnterpriseNowActivityCount(id));
+        }
+        return pageInfo;
     }
 
 

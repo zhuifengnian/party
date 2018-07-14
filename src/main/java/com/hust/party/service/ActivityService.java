@@ -2,6 +2,7 @@ package com.hust.party.service;
 
 
 import com.hust.party.common.Page;
+import com.hust.party.common.PageInfo;
 import com.hust.party.pojo.Activity;
 import com.hust.party.vo.PerenceActivityVO;
 import org.apache.ibatis.annotations.Param;
@@ -45,4 +46,43 @@ public interface ActivityService extends BaseService<Activity>{
      */
     List<Activity> getNowDay(@Param("t") Timestamp t1);
     int updateNowDay(Integer id);
+    /**
+     * 查看商户所有活动
+     *
+     * @param id
+     * @return
+     */
+    List<PerenceActivityVO> getEnterpriseAllActivity(@Param("id") Integer id, @Param("page") Page page);
+
+    Integer getEnterpriseAllActivityCount(Integer id);
+
+    /**
+     * 获得商户正上线活动
+     *
+     * @param id
+     * @return
+     */
+    List<PerenceActivityVO> getEnterpriseNowActivity(@Param("id") Integer id, @Param("page") Page page);
+
+    Integer getEnterpriseNowActivityCount(Integer id);
+
+
+    /**
+     * 获取商户已删除活动
+     *
+     * @param id
+     * @return
+     */
+    List<PerenceActivityVO> getEnterpriseDeleteActivity(@Param("id") Integer id, @Param("page") Page page);
+
+    Integer getEnterpriseDeleteActivityCount(Integer id);
+    /**
+     * 获取企业活动
+     *
+     * @param name
+     * @param id
+     * @param page
+     * @return
+     */
+    PageInfo<PerenceActivityVO> getEnterpriseActivity(String name, Integer id, Page page);
 }

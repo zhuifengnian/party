@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * 企业数据信息vo<br/>
  * 李越 2018/6/11 11:33
  */
-public class EnterpriseInfoVO {
+public class EnterprisePaymentInfoVO {
     private String name;
 
     private String avatarurl;

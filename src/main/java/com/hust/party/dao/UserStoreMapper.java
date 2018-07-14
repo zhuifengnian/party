@@ -1,10 +1,7 @@
 package com.hust.party.dao;
 
 import com.hust.party.common.Page;
-import com.hust.party.pojo.User;
 import com.hust.party.pojo.UserStore;
-import com.hust.party.vo.EnterpriseInfoVO;
-import com.hust.party.vo.UserInfoVO;
 import com.hust.party.vo.UserStoreEnterpriseVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

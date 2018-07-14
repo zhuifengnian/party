@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import net.sourceforge.pinyin4j.PinyinHelper;
- import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
- import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
- import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -115,7 +115,7 @@ public class KuaiDiExpressController
     public ReturnMessage insertKuaidiExpress(KuaiDiExpress kuaiDiExpress) {
 
 
-         int insert=kuaiDiExpressService.insert(kuaiDiExpress);
+        int insert=kuaiDiExpressService.insert(kuaiDiExpress);
 
 
 
@@ -159,36 +159,36 @@ public class KuaiDiExpressController
         List<KuaiDiExpress>  list1= kuaiDiExpressService.getListKuaiinfo1();
 
 
-                PinyinTool pinyinTool = new PinyinTool();
-                if (list1.size() != 0) {
-                    //当遇到符合快递点信息时，直接输出
-                    for (int i = 0; i < list1.size(); i++) {
-                        if ((input.contains(list1.get(i).getKey1())&&input.contains(list1.get(i).getName()))) {
-                            kuaidiExpressVo.setExpressStation(list1.get(i).getExpressStation());
+        PinyinTool pinyinTool = new PinyinTool();
+        if (list1.size() != 0) {
+            //当遇到符合快递点信息时，直接输出
+            for (int i = 0; i < list1.size(); i++) {
+                if ((input.contains(list1.get(i).getKey1())&&input.contains(list1.get(i).getName()))) {
+                    kuaidiExpressVo.setExpressStation(list1.get(i).getExpressStation());
 
-                            kuaidiExpressVo.setExpressStation_E(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
+                    kuaidiExpressVo.setExpressStation_E(pinyinTool.toPinYin(list1.get(i).getExpressStation(), " ", Type.FIRSTUPPER));
 
-                            kuaidiExpressVo.setPicture2(list1.get(i).getPicture2());
-                            kuaidiExpressVo.setExpressCompant_E(pinyinTool.toPinYin(list1.get(i).getName(), " ", Type.FIRSTUPPER));
-                            kuaidiExpressVo.setExpressCompany(list1.get(i).getName());
-                            kuaidiExpressVo.setExtractCode(code);
-                            kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
-                            kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
-                            kuaidiExpressVo.setLandmark(list1.get(i).getKey1());
-                            if(kuaidiExpressVo.getLandmark().equals("汉口银行")){
-                                kuaidiExpressVo.setLankmark_E("Han Kou Yin Hang");
-                            }
-                            else
-                            kuaidiExpressVo.setLankmark_E(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
-                            kuaidiExpressVo.setPicture(list1.get(i).getPicture());
-                            kuaidiExpressVo.setState(1);
-                            f = true;
-                            break;
-
-                        }
+                    kuaidiExpressVo.setPicture2(list1.get(i).getPicture2());
+                    kuaidiExpressVo.setExpressCompant_E(pinyinTool.toPinYin(list1.get(i).getName(), " ", Type.FIRSTUPPER));
+                    kuaidiExpressVo.setExpressCompany(list1.get(i).getName());
+                    kuaidiExpressVo.setExtractCode(code);
+                    kuaidiExpressVo.setLatitude(list1.get(i).getLatitude());
+                    kuaidiExpressVo.setLongitude(list1.get(i).getLongitude());
+                    kuaidiExpressVo.setLandmark(list1.get(i).getKey1());
+                    if(kuaidiExpressVo.getLandmark().equals("汉口银行")){
+                        kuaidiExpressVo.setLankmark_E("Han Kou Yin Hang");
                     }
+                    else
+                        kuaidiExpressVo.setLankmark_E(pinyinTool.toPinYin((list1.get(i).getKey1()), " ", Type.FIRSTUPPER));
+                    kuaidiExpressVo.setPicture(list1.get(i).getPicture());
+                    kuaidiExpressVo.setState(1);
+                    f = true;
+                    break;
 
                 }
+            }
+
+        }
 
 
         if(f==false) {
@@ -203,7 +203,7 @@ public class KuaiDiExpressController
     @ApiOperation(value = "提取快递地址")
     @ResponseBody
     public ReturnMessage getAdresses(String input,String school) throws Exception{
-         Integer id=  kuaidiSchoolService.getSchoolId(school);
+        Integer id=  kuaidiSchoolService.getSchoolId(school);
         KuaidiExpressVo kuaidiExpressVo1 =new KuaidiExpressVo();
         KuaidiExpressVo kuaidiExpressVo =new KuaidiExpressVo();
 
@@ -212,7 +212,7 @@ public class KuaiDiExpressController
 
 
 
-    //定义快递返回信息
+        //定义快递返回信息
         List<KuaiDiExpress>  list1= kuaiDiExpressService.getListKuaiinfo(id,null);
 
 
@@ -268,7 +268,7 @@ public class KuaiDiExpressController
         Page page = new Page();
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
-          List<KuaiDiAdmin> kuaidiAdmin=  kuaidiAdminService.selectByUid(school_user_id);
+        List<KuaiDiAdmin> kuaidiAdmin=  kuaidiAdminService.selectByUid(school_user_id);
         List<KuaiDiExpress>  list1=  kuaiDiExpressService.getListKuaiinfo(kuaidiAdmin.get(0).getSchoolId(),page);
         pageinfo.setRows(list1);
         pageinfo.setTotal(kuaiDiExpressService.getListKuaiinfoCount(school_user_id));
@@ -279,9 +279,9 @@ public class KuaiDiExpressController
     @ApiOperation(value = "大使修改学校快递地址")
     @ResponseBody
     public ReturnMessage updateSchoolAdress(KuaiDiExpress kuaiDiExpress) throws Exception{
-      int insert=0;
+        int insert=0;
         if(kuaiDiExpress.getId()!=null) {
-          insert=  kuaiDiExpressService.updateByPrimaryKeySelective(kuaiDiExpress);
+            insert=  kuaiDiExpressService.updateByPrimaryKeySelective(kuaiDiExpress);
         }
 
         return new ReturnMessage(200, insert);
@@ -355,4 +355,5 @@ public class KuaiDiExpressController
         return new ReturnMessage(200, kuaidiExpressVo);
     }
 }
+
 

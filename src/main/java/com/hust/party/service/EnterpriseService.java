@@ -1,10 +1,11 @@
 package com.hust.party.service;
 
 import com.hust.party.common.Page;
+import com.hust.party.common.PageInfo;
 import com.hust.party.pojo.Enterprise;
 import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.EnterpriseActivityVo;
-import com.hust.party.vo.EnterpriseInfoVO;
+import com.hust.party.vo.EnterprisePaymentInfoVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.Timestamp;
@@ -64,7 +65,7 @@ public interface EnterpriseService extends BaseService<Enterprise>{
      * @param page
      * @return
      */
-    List<EnterpriseActivityVo> getAllActivity(@Param("eid") Integer eid, @Param("page") Page page);
+    PageInfo<EnterpriseActivityVo> getAllActivity(@Param("eid") Integer eid, @Param("page") Page page);
     Integer getAllActivityCount(Integer eid);
 
     /**
@@ -72,7 +73,7 @@ public interface EnterpriseService extends BaseService<Enterprise>{
      * @param eid
      * @return
      */
-    EnterpriseInfoVO selectEnterpriseInfo(Integer eid);
+    EnterprisePaymentInfoVO selectEnterpriseInfo(Integer eid);
 
     /**
      * 提取企业今日新接订单
@@ -104,4 +105,16 @@ public interface EnterpriseService extends BaseService<Enterprise>{
      */
     List<AllOrderVO>  getEnterpriseQOrders(@Param("eid") Integer eid, @Param("page") Page page);
     Integer getEnterpriseQOrdersCount(Integer eid);
+
+    /**
+     * 企业订单
+     * @param name
+     * @param eid
+     * @param d
+     * @param t
+     * @param page
+     * @return
+     */
+    PageInfo<AllOrderVO> getEnterpriseOrder(String name, Integer eid, Timestamp d, Timestamp t, Page page);
+
 }

@@ -47,6 +47,35 @@ public interface ActivityMapper extends BaseMapper<Activity>{
     List<Activity> getNowDay(@Param("t") Timestamp t1);
 
     int updateNowDay(Integer id);
+    /**
+     * 查看商户所有活动
+     *
+     * @param id
+     * @return
+     */
+    List<PerenceActivityVO> getEnterpriseAllActivity(@Param("id") Integer id, @Param("page") Page page);
 
+    Integer getEnterpriseAllActivityCount(Integer id);
+
+    /**
+     * 获得商户正上线活动
+     *
+     * @param id
+     * @return
+     */
+    List<PerenceActivityVO> getEnterpriseNowActivity(@Param("id") Integer id, @Param("page") Page page);
+
+    Integer getEnterpriseNowActivityCount(Integer id);
+
+
+    /**
+     * 获取商户已删除活动
+     *
+     * @param id
+     * @return
+     */
+    List<PerenceActivityVO> getEnterpriseDeleteActivity(@Param("id") Integer id, @Param("page") Page page);
+
+    Integer getEnterpriseDeleteActivityCount(Integer id);
 
 }

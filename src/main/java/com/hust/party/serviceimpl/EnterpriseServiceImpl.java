@@ -1,13 +1,14 @@
 package com.hust.party.serviceimpl;
 
 import com.hust.party.common.Page;
+import com.hust.party.common.PageInfo;
 import com.hust.party.dao.BaseMapper;
 import com.hust.party.dao.EnterpriseMapper;
 import com.hust.party.pojo.Enterprise;
 import com.hust.party.service.EnterpriseService;
 import com.hust.party.vo.AllOrderVO;
 import com.hust.party.vo.EnterpriseActivityVo;
-import com.hust.party.vo.EnterpriseInfoVO;
+import com.hust.party.vo.EnterprisePaymentInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,8 +76,14 @@ public class EnterpriseServiceImpl extends AbstractBaseServiceImpl<Enterprise> i
     }
 
     @Override
-    public List<EnterpriseActivityVo> getAllActivity(Integer eid, Page page) {
-        return enterpriseMapper.getAllActivity(eid,page);
+    public PageInfo<EnterpriseActivityVo> getAllActivity(Integer eid, Page page) {
+        PageInfo<EnterpriseActivityVo> pageInfo=new PageInfo<>();
+        pageInfo.setPageNum(page.getPageNumber());
+        pageInfo.setPageSize(page.getPageSize());
+        List<EnterpriseActivityVo> enterpriseActivityVos=enterpriseMapper.getAllActivity(eid,page);
+        pageInfo.setTotal(enterpriseMapper.getAllActivityCount(eid));
+        pageInfo.setRows(enterpriseActivityVos);
+        return pageInfo;
     }
 
     @Override
@@ -85,7 +92,7 @@ public class EnterpriseServiceImpl extends AbstractBaseServiceImpl<Enterprise> i
     }
 
     @Override
-    public EnterpriseInfoVO selectEnterpriseInfo(Integer eid) {
+    public EnterprisePaymentInfoVO selectEnterpriseInfo(Integer eid) {
         return enterpriseMapper.selectEnterpriseInfo(eid);
     }
 
@@ -118,6 +125,34 @@ public class EnterpriseServiceImpl extends AbstractBaseServiceImpl<Enterprise> i
     @Override
     public Integer getEnterpriseQOrdersCount(Integer eid) {
         return enterpriseMapper.getEnterpriseQOrdersCount(eid);
+    }
+
+    @Override
+    public PageInfo<AllOrderVO> getEnterpriseOrder(String name, Integer eid, Timestamp d, Timestamp t, Page page) {
+        PageInfo<AllOrderVO> pageInfo = new PageInfo<>();
+        pageInfo.setPageNum(page.getPageNumber());
+        pageInfo.setPageSize(page.getPageSize());
+        if ("今日新接订单".equals(name)) {
+            pageInfo.setRows(getNewOrders(eid, d, t,page));
+            pageInfo.setTotal(getNewCount(eid,d,t));
+        } else if ("全部".equals(name)) {
+            pageInfo.setRows(getAllOrder(eid,page));
+            pageInfo.setTotal(getAllOrderCount(eid));
+        } else if ("未消费".equals(name)) {
+            pageInfo.setRows(getNoOrder(eid,page));
+            pageInfo.setTotal(getNoOrderCount(eid));
+        } else if ("已消费".equals(name)) {
+            pageInfo.setRows(getYOrder(eid,page));
+            pageInfo.setTotal(getYOrderCount(eid));
+
+        } else if ("已取消".equals(name)) {
+            pageInfo.setRows(getQOrder(eid,page));
+            pageInfo.setTotal(getQOderCount(eid));
+        } else if ("自取消".equals(name)) {
+            pageInfo.setRows(getEnterpriseQOrders(eid,page));
+            pageInfo.setTotal(getEnterpriseQOrdersCount(eid));
+        }
+        return pageInfo;
     }
 
 }
