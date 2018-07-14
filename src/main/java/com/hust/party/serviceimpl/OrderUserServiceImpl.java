@@ -200,27 +200,18 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
     private void dealOrderActivityVO(List<OrderActivityVO> orderActivityVOs) {
 
         for(OrderActivityVO orderActivityVO: orderActivityVOs){
-            Integer oid = orderActivityVO.getOid();     //oid在获取对象时已经放入
             Integer status = orderActivityVO.getStatus();   //订单状态在查询时也已完成
             orderActivityVO.setStatusName(OrdersUtil.getStateName(status));
-            Orders orders = ordersMapper.selectByPrimaryKey(oid);
-            orderActivityVO.setQrCode(orders.getQrCode());  //二维码
-            Integer activityId = orders.getActivityId();
-            Activity activity = activityMapper.selectByPrimaryKey(activityId);
-            //将数据封装到vo类中
-            ReflectUtil.copyProperties(orderActivityVO, activity);
-
-            orderActivityVO.setAid(activity.getId());
 
             //获取统计人数
             OrderUser tmpOrderUser2 = new OrderUser();
-            tmpOrderUser2.setOrderId(oid);
+            tmpOrderUser2.setOrderId(orderActivityVO.getOid());
             tmpOrderUser2.setState(Const.ORDER_USER_STATUS_ACTIVATE);
             int userCnt = orderUserMapper.selectCount(tmpOrderUser2);
             orderActivityVO.setNum(userCnt);
 
             //补充订单中商家相关的数据
-            Integer enterpriseId = activity.getEnterpriseId();
+            Integer enterpriseId = orderActivityVO.getEnterpriseId();
             Enterprise enterprise = enterpriseMapper.selectByPrimaryKey(enterpriseId);
             ActivityEnterpriseVo activityEnterpriseVo = new ActivityEnterpriseVo();
 
@@ -232,7 +223,7 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
             orderActivityVO.setActivityEnterpriseVo(activityEnterpriseVo);
 
             //TODO:真实价格暂时使用活动优惠价格
-            orderActivityVO.setRealPrice(activity.getPreferentialPrice());
+            orderActivityVO.setRealPrice(orderActivityVO.getPreferentialPrice());
 
         }
     }
