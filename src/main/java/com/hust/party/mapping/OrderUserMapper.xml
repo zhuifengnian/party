@@ -167,8 +167,7 @@
   </select>
   <!--根据用户id及订单状态，返回订单列表-->
   <select id="selectOrders" resultType="com.hust.party.vo.OrderActivityVO">
-    select o.id as oid, o.state as status, ou.creat_time as creatTime, ou.consume_time as consumeTime,
-        o.state as status, o.activity_id as aid, a.enterprise_id as enterpriseId,
+    select o.id as oid, o.state as status,o.activity_id as aid, a.enterprise_id as enterpriseId,
         a.title as title, a.activity_time as activityTime, a.arrive_time as arriveTime, a.word as word,
         a.picture as picture, a.video as video, a.feature as feature, a.contain_people as containPeople,
         a.minu_people as minuPeople, a.preferential_price as preferentialPrice, a.original_price as originalPrice,
@@ -189,8 +188,7 @@
   </select>
   <!--列出等待消费的订单，包括达到最小人数和人数已满的情况，是selectOrders的特殊情况-->
   <select id="selectWaitConsumeOrders" resultType="com.hust.party.vo.OrderActivityVO">
-    select o.id as oid, o.state as status, ou.creat_time as creatTime, ou.consume_time as consumeTime,
-    o.state as status, o.activity_id as aid, a.enterprise_id as enterpriseId,
+    select o.id as oid, o.state as status, o.activity_id as aid, a.enterprise_id as enterpriseId,
     a.title as title, a.activity_time as activityTime, a.arrive_time as arriveTime, a.word as word,
     a.picture as picture, a.video as video, a.feature as feature, a.contain_people as containPeople,
     a.minu_people as minuPeople, a.preferential_price as preferentialPrice, a.original_price as originalPrice,
@@ -207,8 +205,7 @@
   </select>
   <!--列出正在退款的订单，需要订单处于取消的状态，并且user_money还处于未转移到商户的状态，是selectOrders的特殊情况-->
   <select id="selectDrwabackingOrders" resultType="com.hust.party.vo.OrderActivityVO">
-    select o.id as oid, o.state as status, ou.creat_time as creatTime, ou.consume_time as consumeTime,
-    o.state as status, o.activity_id as aid, a.enterprise_id as enterpriseId,
+    select o.id as oid, o.state as status, o.activity_id as aid, a.enterprise_id as enterpriseId,
     a.title as title, a.activity_time as activityTime, a.arrive_time as arriveTime, a.word as word,
     a.picture as picture, a.video as video, a.feature as feature, a.contain_people as containPeople,
     a.minu_people as minuPeople, a.preferential_price as preferentialPrice, a.original_price as originalPrice,
