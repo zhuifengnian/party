@@ -15,4 +15,16 @@ public interface KuaidiAdminService extends BaseService<KuaiDiAdmin> {
      * @return
      */
     List<KuaiDiAdmin> selectByUid(Integer uid);
+
+    /**
+     * 插入反馈二维码图片
+     * @param feedbackQrcodeImgUrl
+     */
+    void uploadFeedbackQrCode(String feedbackQrcodeImgUrl);
+
+    /**
+     * 获取反馈二维码图片
+     */
+    String getFeedbackQrCode();
+
 }

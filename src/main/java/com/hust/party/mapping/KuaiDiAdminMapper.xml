@@ -108,4 +108,11 @@
   <select id="selectByUid" parameterType="int" resultMap="BaseResultMap">
       select * from kuaidi_admin where user_id = #{uid} and state = 1
   </select>
+  <update id="uploadFeedbackQrCode" parameterType="string">
+      insert into kuaidi_feedback_qrcode(qrcode_url) values(#{feedbackQrcodeImgUrl})
+  </update>
+  <!--取出最新的放入数据库中的那张图片地址-->
+  <select id="getFeedbackQrCode" resultType="string">
+    select qrcode_url from kuaidi_feedback_qrcode order by id desc limit 1
+  </select>
 </mapper>

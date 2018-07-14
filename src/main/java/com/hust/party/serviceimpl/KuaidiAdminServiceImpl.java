@@ -28,4 +28,14 @@ public class KuaidiAdminServiceImpl extends AbstractBaseServiceImpl<KuaiDiAdmin>
 
         return kuaiDiAdminMapper.selectByUid(uid);
     }
+
+    @Override
+    public void uploadFeedbackQrCode(String feedbackQrcodeImgUrl) {
+        kuaiDiAdminMapper.uploadFeedbackQrCode(feedbackQrcodeImgUrl);
+    }
+
+    @Override
+    public String getFeedbackQrCode() {
+        return kuaiDiAdminMapper.getFeedbackQrCode();
+    }
 }

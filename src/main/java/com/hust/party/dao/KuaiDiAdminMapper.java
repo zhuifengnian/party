@@ -12,8 +12,15 @@ public interface KuaiDiAdminMapper extends  BaseMapper<KuaiDiAdmin>   {
      * 判断用户是否是管理员
      */
     List<KuaiDiAdmin> selectByUid(Integer uid);
-    /**
-     * 提取用户管理员
-     */
 
+    /**
+     * 上传反馈二维码
+     * @param feedbackQrcodeImgUrl
+     */
+    void uploadFeedbackQrCode(String feedbackQrcodeImgUrl);
+
+    /**
+     * 获取反馈二维码
+     */
+    String getFeedbackQrCode();
 }

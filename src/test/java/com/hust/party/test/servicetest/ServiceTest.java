@@ -9,6 +9,7 @@ import com.hust.party.vo.EnterpriseActivityVo;
 import com.hust.party.vo.OrderActivityVO;
 import com.hust.party.vo.PerenceActivityVO;
 import org.aspectj.weaver.ast.Or;
+import org.junit.Assert;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
@@ -50,6 +51,10 @@ public class ServiceTest {
     private UserForceService userForceService;
     @Autowired
     private KuaidiSmsService kuaidiSmsService;
+    @Autowired
+    private KuaidiProvinceService kuaidiProvinceService;
+    @Autowired
+    private KuaidiSchoolService kuaidiSchoolService;
 
 
 
@@ -192,5 +197,23 @@ public void testGetAcitivity(){
 //        String s = kuaidiSmsService.extractExpressCode("【好递讯美】你好，你的快递到了请到新博士生公寓旁老附中邮政服务中心来取，谢谢取件码R303");
         String s = kuaidiSmsService.extractExpressCode("【菜鸟驿站】请在19:00前凭提货码（1-3-6017）至华科东校区东九楼斜对面菜鸟驿站领申通包裹，询02752863368");
         System.out.println(s);
+    }
+
+    @Test
+    public void testStr(){
+        String str = "哇哈哈";
+        Assert.assertEquals(str.contains(""), true);
+    }
+
+    @Test
+    public void testGetAllProvicnes(){
+        List<KuaiDiProvince> kuaiDiProvinces = kuaidiProvinceService.selectAllProvince();
+        System.out.println(kuaiDiProvinces);
+    }
+
+    @Test
+    public void testGetSchoolsByProvince(){
+        List<KuaiDiSchool> schoolByProvinceId = kuaidiSchoolService.getSchoolByProvinceId(1);
+        System.out.println(schoolByProvinceId);
     }
 }
