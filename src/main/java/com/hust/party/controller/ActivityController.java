@@ -8,6 +8,7 @@ import com.hust.party.pojo.*;
 import com.hust.party.common.PageInfo;
 import com.hust.party.service.*;
 
+import com.hust.party.util.PageUtil;
 import com.hust.party.util.QiNiuUtil;
 import com.hust.party.util.ReflectUtil;
 import com.hust.party.vo.ActivityEnterpriseVo;
@@ -60,62 +61,17 @@ public class ActivityController
     public ReturnMessage getIdActivity(@RequestParam("aid") Integer aid){
 
 
-        ActivityVo activityVo =new ActivityVo();
+        ActivityVo activityVo =activityService.getAcitivityId(aid);
 
-        Activity activity = activityService.selectByPrimaryKey(aid);
-        if(activity!=null) {
-            List<String> list = activitypictureService.getAllPicture(activity.getId());
-            List<String> tag = activityTagService.getActivityTag(activity.getId());
-            activityVo.setPictures(list);
-            ReflectUtil.copyProperties(activityVo, activity);
-
-            Enterprise enterprise = enterpriseService.selectByPrimaryKey(activity.getEnterpriseId());
-            ActivityEnterpriseVo activityEnterpriseVo = new ActivityEnterpriseVo();
-            activityEnterpriseVo.setEnterpriseId(enterprise.getId());
-            activityEnterpriseVo.setAvatarurl(enterprise.getAvatarurl());
-            activityEnterpriseVo.setEnterpriseName(enterprise.getName());
-            activityEnterpriseVo.setEnterprisePhone(enterprise.getLeadPhone());
-            activityVo.setActivityEnterpriseVo(activityEnterpriseVo);
-            activityVo.setTag(tag);
-         activityVo.setCommentVos(commentService.getAEnterpriseComment(enterprise.getId()));
-
-
-
-
-
-        }
-        return new ReturnMessage(200, activityVo);
+                return new ReturnMessage(200, activityVo);
     }
 
     @RequestMapping(value = "/activity/category", method = RequestMethod.POST)
     @ApiOperation(value = "根据分类提取信息", httpMethod = "POST")
     @ResponseBody
     public ReturnMessage getCategoryActivity(@RequestParam("name") String name,@RequestParam(required = false) Integer pageSize,@RequestParam(required = false) Integer pageNumber){
-        PageInfo<PerenceActivityVO> pageinfo = new PageInfo<PerenceActivityVO>();
-        pageSize=4;
-        pageinfo.setPageNum(pageNumber);
-        pageinfo.setPageSize(pageSize);
-        Page page = new Page();
-        page.setPageNumber(pageNumber);
-        page.setPageSize(pageSize);
-
-        if(name.equals("推荐")){
-            List<PerenceActivityVO>  list=activityService.getAllActivity(page);
-            pageinfo.setRows( list);
-            pageinfo.setTotal(activityService.getAllActivityCount());
-        }
-        else if(name.equals("其它")){
-            List<PerenceActivityVO> lists=  activityService.getQitaActivity(page);
-            pageinfo.setRows( lists);
-            pageinfo.setTotal(activityService.getQitaActivityCount());
-        }
-        else if(name!=null) {
-        List<PerenceActivityVO>list2=activityService.getNameActivity(name,page);
-            pageinfo.setRows(list2);
-            pageinfo.setTotal(activityService.getNameActivityCount(name));
-}
-        //  List<Activity> list = activityService.getEnterpriseActivity(eid);
-        return new ReturnMessage(200, pageinfo);
+       PageInfo<PerenceActivityVO> pageInfo=activityService.getNameActivity(name,PageUtil.setPage(pageNumber));
+        return new ReturnMessage(200, pageInfo);
     }
 
 

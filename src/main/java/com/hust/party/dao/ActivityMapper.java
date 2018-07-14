@@ -2,6 +2,7 @@ package com.hust.party.dao;
 
 import com.hust.party.common.Page;
 import com.hust.party.pojo.Activity;
+import com.hust.party.vo.ActivityVo;
 import com.hust.party.vo.PerenceActivityVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -77,5 +78,12 @@ public interface ActivityMapper extends BaseMapper<Activity>{
     List<PerenceActivityVO> getEnterpriseDeleteActivity(@Param("id") Integer id, @Param("page") Page page);
 
     Integer getEnterpriseDeleteActivityCount(Integer id);
+
+    /**
+     * 根据id获取活动详情
+     * @param aid
+     * @return
+     */
+    ActivityVo getAcitivityId(Integer aid);
 
 }

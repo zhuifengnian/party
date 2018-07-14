@@ -4,6 +4,7 @@ package com.hust.party.service;
 import com.hust.party.common.Page;
 import com.hust.party.common.PageInfo;
 import com.hust.party.pojo.Activity;
+import com.hust.party.vo.ActivityVo;
 import com.hust.party.vo.PerenceActivityVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -39,7 +40,7 @@ public interface ActivityService extends BaseService<Activity>{
      * @param page
      * @return
      */
-    List<PerenceActivityVO> getNameActivity(@Param("name") String name, @Param("page")  Page page);
+    PageInfo<PerenceActivityVO> getNameActivity(@Param("name") String name, @Param("page")  Page page);
     Integer getNameActivityCount(String name);
     /**
      * 获取当天已过期的活动列表
@@ -85,4 +86,12 @@ public interface ActivityService extends BaseService<Activity>{
      * @return
      */
     PageInfo<PerenceActivityVO> getEnterpriseActivity(String name, Integer id, Page page);
+    /**
+     * 根据id获取活动详情
+     * @param aid
+     * @return
+     */
+    ActivityVo getAcitivityId(Integer aid);
+
+
 }
