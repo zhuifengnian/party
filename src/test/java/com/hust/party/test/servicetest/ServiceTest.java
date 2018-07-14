@@ -186,11 +186,6 @@ enterprise.setNickname("dsa");
         System.out.println(integers);
     }
     @Test
-    public void testListOrders(){
-        List<OrderActivityVO> orderActivityVOS = orderUserService.selectOrders(14, Const.ORDER_LIST_STATUS_DRAWBACKING,null);
-        System.out.println(orderActivityVOS);
-    }
-    @Test
     public void selectUserId(){
        int insert=   userService.selectUserByChatId("oReIb5LdIAyYRRWD76b8wic9q2NY");
        System.out.print("+++++++++++++++++++++++++"+insert);

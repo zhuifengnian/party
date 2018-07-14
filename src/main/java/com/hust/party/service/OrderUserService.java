@@ -1,7 +1,10 @@
 package com.hust.party.service;
 
 import com.hust.party.common.Page;
+import com.hust.party.common.PageInfo;
+import com.hust.party.common.ReturnMessage;
 import com.hust.party.pojo.OrderUser;
+import com.hust.party.pojo.Orders;
 import com.hust.party.vo.OrderActivityVO;
 
 import java.util.List;
@@ -36,7 +39,7 @@ public interface OrderUserService extends BaseService<OrderUser> {
      * @param page
      * @return
      */
-    List<OrderActivityVO> selectOrders(Integer uid, Integer orderStatus, Page page);
+    PageInfo<OrderActivityVO> selectOrders(Integer uid, Integer orderStatus, Page page);
 
     /**
      * 根据order_id获取列表
@@ -44,4 +47,6 @@ public interface OrderUserService extends BaseService<OrderUser> {
      * @return
      */
     List<Integer> getUserId(Integer order_id);
+
+    ReturnMessage judgeUserInOrder(Orders orders, Integer uid);
 }

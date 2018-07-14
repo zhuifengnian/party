@@ -2,6 +2,8 @@ package com.hust.party.serviceimpl;
 
 import com.hust.party.common.Const;
 import com.hust.party.common.Page;
+import com.hust.party.common.PageInfo;
+import com.hust.party.common.ReturnMessage;
 import com.hust.party.dao.*;
 import com.hust.party.pojo.Activity;
 import com.hust.party.pojo.Enterprise;
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,8 +60,14 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
     }
 
     @Override
-    public List<OrderActivityVO> selectOrders(Integer uid, Integer orderStatus, Page page) {
+    public PageInfo<OrderActivityVO> selectOrders(Integer uid, Integer orderStatus, Page page) {
+        //分页准备
+        PageInfo<OrderActivityVO> pageInfo = new PageInfo<>();
+        pageInfo.setPageNum(page.getPageNumber());
+        pageInfo.setPageSize(page.getPageSize());
+
         List<OrderActivityVO> orderActivityVOs = new ArrayList<>();
+
         switch(orderStatus){
             //全部
             case Const.ORDER_LIST_STATUS_ALL:
@@ -82,12 +92,61 @@ public class OrderUserServiceImpl extends AbstractBaseServiceImpl<OrderUser> imp
         }
         //拿到用户id,再拿到其下指定订单
         dealOrderActivityVO(orderActivityVOs);
-        return orderActivityVOs;
+        pageInfo.setRows(orderActivityVOs);
+        return pageInfo;
     }
 
     @Override
     public List<Integer> getUserId(Integer order_id) {
         return orderUserMapper.getUserId(order_id);
+    }
+
+    @Override
+    public ReturnMessage judgeUserInOrder(Orders orders, Integer uid) {
+        //判断订单是否过期，当已经是过期的状态时，直接返回；当订单的状态还不是过期时，再拿去活动时间进行比对判断
+        if(orders.getState() == Const.ORDER_STATUS_EXCEED_TIME){
+            return new ReturnMessage(201, "订单已经过期");
+        }
+        Integer activityId = orders.getActivityId();
+        Activity activity = activityMapper.selectByPrimaryKey(activityId);
+        //获取当前时间，默认超过1天算超时
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+//        calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+        Date time = calendar.getTime();
+        Date arriveTime = activity.getArriveTime();
+        if(arriveTime.before(time)){    //当当前时间超过活动结束时间，不允许用户再参与拼团
+            orders.setState(Const.ORDER_STATUS_EXCEED_TIME);
+            ordersMapper.updateByPrimaryKey(orders);
+            return new ReturnMessage(201, "订单已经超时，不能再让用于参与");
+        }
+
+        //判断订单是否已经消费
+        if(orders.getState() == Const.ORDER_STATUS_HAS_CONSUME){
+            return new ReturnMessage(201, "订单已经消费");
+        }
+
+        //判断商家是否取消活动
+        if(orders.getState() == Const.ORDER_STATUS_ENTERPRISE_CANCEL){
+            return new ReturnMessage(201, "订单已经取消");
+        }
+
+        //判断是否人数已满,理论上根据订单状态判断已经足够，这里可能还需要再重新判断订单人数，防止记录不到位
+        if(orders.getState() == Const.ORDER_STATUS_HAS_FULL){
+            return new ReturnMessage(201, "订单人数已满，不能再参与该订单");
+        }
+
+        List<OrderUser> orderUsers = orderUserMapper.selectOrderUserByUidAndOid(uid, orders.getId());
+        if(orderUsers.size() > 0){
+            return new ReturnMessage(201, "用户已经在此订单中，不能重复参与");
+        }
+
+        //走到这说明检验成功，可以让该用户参与,生成随机插入口令存在session中，用于做插入校验。默认30分钟有效
+//        String token = UUID.randomUUID().toString();
+//        session.setAttribute("" + oid + uid, token);
+//        String sessionId = session.getId();
+        return new ReturnMessage(200, "用户校验通过，可以参与订单");
     }
 
     /**
