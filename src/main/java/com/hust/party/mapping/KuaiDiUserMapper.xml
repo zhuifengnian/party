@@ -30,7 +30,7 @@
     delete from kuaidi_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hust.party.pojo.KuaiDiUser" >
+  <insert id="insert" parameterType="com.hust.party.pojo.KuaiDiUser" useGeneratedKeys="true" keyProperty="id">
     insert into kuaidi_user (id, nickname, avatarurl, 
       gender, email, phone, 
       open_id, create_time, update_time, 
@@ -40,7 +40,7 @@
       #{openId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{state,jdbcType=VARCHAR}, #{schoolId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust.party.pojo.KuaiDiUser" >
+  <insert id="insertSelective" parameterType="com.hust.party.pojo.KuaiDiUser" useGeneratedKeys="true" keyProperty="id">
     insert into kuaidi_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
